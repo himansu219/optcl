@@ -243,19 +243,39 @@ class PensionerRecordUpdateController extends Controller{
         return view('user.pension_unit.update_pages.addnl_family_pensioner.listing', compact('result', 'changed_data_list', 'request'));
     }
     // Form Page
-    
-    
+    public function update_record_additional(){
+        $changed_data_list = DB::table('optcl_change_data_master')
+                                    ->where('status', 1)
+                                    ->where('status', 1)
+                                    ->orderBy('change_type', 'ASC')
+                                    ->get();
+        $banks = DB::table('optcl_bank_master')->where('status', 1)->where('deleted', 0)->get();
+        $pension_units = DB::table('optcl_pension_unit_master')->where('status', 1)->where('deleted', 0)->get();
+        return view('user.pension_unit.update_pages.addnl_family_pensioner.additional_pension_add', compact('changed_data_list', 'banks', 'pension_units'));             
+    }    
     // From Submission
     public function update_record_submission(Request $request){
         $validation = [];
         $ppo_number = $request->ppo_number;
         if($ppo_number == ""){
             $validation['error'][] = array("id" => "ppo_number-error","eValue" => "Please enter PPO no");
+        }else{
+            $ppo_details = DB::table('optcl_ppo_no_list')->where('ppo_no', $ppo_number)->first();
+            if($ppo_details){
+                $application_type = '';
+                $pensioner_type = '';
+                /* if($ppo_details->pensioner_type_id == 3 || $ppo_details->pensioner_type_id == 4){
+                    $application_type = '';
+                    $pensioner_type = '';
+                } */
+            }else{
+                $validation['error'][] = array("id" => "ppo_number-error","eValue" => "PPO no. not found");
+            }
         }
         $pension_emp_no = $request->pension_emp_no;
-        if($pension_emp_no == ""){
+        /* if($pension_emp_no == ""){
             $validation['error'][] = array("id" => "pension_emp_no-error","eValue" => "Please enter employee no");
-        }
+        } */
         $dod_sp_fp = $request->dod_sp_fp;
         if($dod_sp_fp == ""){
             $validation['error'][] = array("id" => "dod_sp_fp-error","eValue" => "Please enter DOD of SP/ FP");
@@ -367,8 +387,9 @@ class PensionerRecordUpdateController extends Controller{
                                             ->where('optcl_change_data_addl_family_pensioner.status', 1)
                                             ->where('optcl_change_data_addl_family_pensioner.deleted', 0)
                                             ->first();
+                                            //dd(123);
             if($addl_family_pen_details){
-                return view('user.pension_unit.update_pages.additional_family_pensioner_form', compact('banks', 'pension_units', 'addl_family_pen_details'));
+                return view('user.pension_unit.update_pages.addnl_family_pensioner.additional_pension_edit', compact('banks', 'pension_units', 'addl_family_pen_details'));
             }else{
                 Session::flash('error', 'Data not found in additional family pensioner');          
                 return redirect()->route('pension_unit_update_pension_record');
@@ -386,9 +407,9 @@ class PensionerRecordUpdateController extends Controller{
             $validation['error'][] = array("id" => "ppo_number-error","eValue" => "Please enter PPO no");
         }
         $pension_emp_no = $request->pension_emp_no;
-        if($pension_emp_no == ""){
+        /* if($pension_emp_no == ""){
             $validation['error'][] = array("id" => "pension_emp_no-error","eValue" => "Please enter employee no");
-        }
+        } */
         $dod_sp_fp = $request->dod_sp_fp;
         if($dod_sp_fp == ""){
             $validation['error'][] = array("id" => "dod_sp_fp-error","eValue" => "Please enter DOD of SP/ FP");
@@ -483,7 +504,7 @@ class PensionerRecordUpdateController extends Controller{
                                             ->where('optcl_change_data_addl_family_pensioner.deleted', 0)
                                             ->first();
             if($addl_family_pen_details){
-                return view('user.pension_unit.update_pages.additional_pensioner_view', compact('addl_family_pen_details'));
+                return view('user.pension_unit.update_pages.addnl_family_pensioner.additional_pensioner_view', compact('addl_family_pen_details'));
             }else{
                 Session::flash('error', 'Data not found in additional family pensioner');          
                 return redirect()->route('pension_unit_update_pension_record');

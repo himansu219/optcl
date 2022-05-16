@@ -59,18 +59,19 @@
   
 </style>
 <div class="content-wrapper">
-    <nav aria-label="breadcrumb" role="navigation">
+    <nav aria-label="breadcrumb" role="navigation" class="bg-white">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
         <li class="breadcrumb-item">Update Pension Record</li>
+          <li class="breadcrumb-item" >Addition of Pensioner New Pensioner</li>
       </ol>
     </nav> 
     @if(Session::has('error'))
-          <div class="alert alert-danger">{{ Session::get('error') }}</div>
-      @endif
-      @if(Session::has('success'))
-          <div class="alert alert-success">{{ Session::get('success') }}</div>
-      @endif
+        <div class="alert alert-danger">{{ Session::get('error') }}</div>
+    @endif
+    @if(Session::has('success'))
+        <div class="alert alert-success">{{ Session::get('success') }}</div>
+    @endif
     <div class="row">
         <div class="col-md-12 grid-margin">
 
@@ -105,7 +106,7 @@
         <div class="card">
           <div class="card-body">
               <h4 class="card-title">Application List                
-                  <a href="{{ route('pension_unit_update_record') }}" class="btn btn-success float-right">Update Record</a>                 
+                  <a href="{{ route('update_record_update_record_additional') }}" class="btn btn-success float-right">Add</a>                 
               </h4>
               <div class="row">
                 <div class="table-sorter-wrapper col-lg-12 table-responsive">

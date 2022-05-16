@@ -16,4 +16,5 @@ class ArrearsController extends Controller
     public function add(){
         return view('user.arrears.add');
     }
-} ?>
+}
+?>

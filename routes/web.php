@@ -274,6 +274,8 @@ Route::get('pension-unit/update-pension-record/update', [PensionerRecordUpdateCo
 /*  ------ Additional Family Pensioner after Death of SP/FP -------- */
 // Listing
 Route::any('pension-unit/update-pension-record/additional-family-pensioner/list', [PensionerRecordUpdateController::class, 'update_record_listing'])->name('pension_unit_additional_family_pensioner');
+// Form Page
+Route::get('pension-unit/update-pension-record/additional-family-pensioner/add', [PensionerRecordUpdateController::class, 'update_record_additional'])->name('update_record_update_record_additional');
 // Form Submission
 Route::post('pension-unit/update-pension-record/additional-family-pensioner', [PensionerRecordUpdateController::class, 'update_record_submission'])->name('pension_unit_update_record_submission');
 // Edit Page

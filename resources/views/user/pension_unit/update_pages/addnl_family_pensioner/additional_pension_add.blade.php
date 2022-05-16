@@ -4,12 +4,12 @@
 <div class="content-wrapper">    
   <div class="row">
     <div class="col-12 grid-margin">
-       <nav aria-label="breadcrumb" role="navigation">
+       <nav aria-label="breadcrumb" role="navigation" class="bg-white">
         <ol class="breadcrumb">
           <li class="breadcrumb-item" ><a href="{{ route('user_dashboard') }}">Dashboard</a></li>
-          <li class="breadcrumb-item" ><a href="{{ route('pension_unit_update_pension_record') }}">Update Pension Record</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Edit</li>
-          <li class="breadcrumb-item active" aria-current="page">Additional Pension</li>
+          <li class="breadcrumb-item" >Update Pension Record</li>
+          <li class="breadcrumb-item" ><a href="{{ route('pension_unit_additional_family_pensioner') }}">Addition of Pensioner New Pensioner</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Add</li>
         </ol>
       </nav>
       @if(Session::has('error'))
@@ -126,98 +126,127 @@
           return this.optional(element) || /[0-9]{4}\b[\/]{1}[0-9]{2}\b[\/]{1}[0-9]{4}\b/i.test(value); 
       }, "Please enter valid PPO no");
       
-      $("#additional_pension").validate({
-        rules: {
-          "ap_ppo_number": {
-              required: true,
-              ppo_format: true,
-          },
-          "ap_pension_emp_no": {
-              required: true,
-              minlength: 6,
-              maxlength: 6,
-          },
-          "ap_name_family_pensioner": {
-              required: true,
-              minlength: 4,
-              maxlength: 100,
-          },
-          "ap_dob": {
-              required: true,
-          },
-          "ap_effective_date": {
-              required: true,
-          },
-          "ap_additional_rate": {
-              required: true,
-              amount_only: true,
-          },
-        },
-        messages: {
-          "ap_ppo_number": {                    
-              required: 'Please enter PPO no',
-          },
-          "ap_pension_emp_no": {
-              required: 'Please enter employee no',
-              minlength: 'Employee no should be 6 digits',
-              maxlength: 'Employee no should be 6 digits',
-          },
-          "ap_name_family_pensioner": {
-              required: 'Please enter name of pensioner',
-              minlength: 'Name of pensioner must be 4 characters',
-              maxlength: 'Name of pensioner should be less than 100 characters',    
-          },
-          "ap_dob": {
-              required: 'Please select date of birth',
-          },
-          "ap_effective_date": {
-              required: 'Please slect effective date',
-          },
-          "ap_additional_rate": {
-              required: 'Please enter additional rate',
-          },
-        },
-        submitHandler: function(form, event) {
-            $('.page-loader').addClass('d-flex'); 
-            event.preventDefault();
-            var formData = new FormData(form);
-            //$("#logid").prop('disabled',true);
 
-            $.ajax({
-                type:'POST',
-                url:'{{ route("pension_unit_update_record_submission") }}',
-                data: formData,
-                dataType: 'JSON',
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                //console.log(response);
-                $('.page-loader').removeClass('d-flex');
-                  if(response['error']){
-                    //$("#logid").prop('disabled',false);
-                      for (i in response['error']) {
-                          var element = $('#' + i);
-                          var id = response['error'][i]['id'];
-                          var eValue = response['error'][i]['eValue'];
-                          //console.log(id);
-                          //console.log(eValue);
-                          $("#"+id).show();
-                          $("#"+id).html(eValue);
-                      }
-                  }else{
-                    location.href = "{{route('pension_unit_update_pension_record')}}";
+      $("#additional_family_pensioner_after_death").validate({
+          rules: {
+              "ppo_number": {
+                  required: true,
+                  ppo_format: true,
+              },
+              "pension_emp_no": {
+                  required: false,
+                  minlength: 6,
+                  maxlength: 6,
+              },
+              "dod_sp_fp": {
+                  required: true,
+              },
+              "name_family_pensioner": {
+                  required: true,
+                  minlength: 4,
+                  maxlength: 100,
+              },
+              "eod_enhanced_family_pension": {
+                  required: true,
+              },
+              "bank_name": {
+                  required: true,
+              },
+              "branch_name_address": {
+                  required: true,
+              },
+              "savings_bank_ac_no": {
+                  required: true,
+              },
+              "ifsc_code": {
+                  required: true,
+              },
+              "noc_previous_bank": {
+                  required: true,
+              },
+              "noc_previous_bank_attachment":{
+                    required: true,
+              },
+          },
+          messages: {
+              "ppo_number": {                    
+                  required: 'Please enter PPO no',
+              },
+              "pension_emp_no": {
+                  required: 'Please enter employee no',
+                  minlength: 'Employee no should be 6 digits',
+                  maxlength: 'Employee no should be 6 digits',
+              },
+              "dod_sp_fp": {
+                  required: 'Please enter DOD of SP/ FP',
+              },
+              "name_family_pensioner": {
+                  required: 'Please enter name of family pensioner',
+                  minlength: 'Name of family pensioner must be 4 characters',
+                  maxlength: 'Name of family pensioner should be less than 100 characters',
+              },
+              "eod_enhanced_family_pension": {
+                  required: 'Please enter end date of enhanced family pension',
+              },
+              "bank_name": {
+                  required: 'Please slect bank',
+              },
+              "branch_name_address": {
+                  required: 'Please select branch',
+              },
+              "savings_bank_ac_no": {
+                  required: 'Please enter savings bank A/C no',
+              },
+              "ifsc_code": {
+                  required: 'Please enter IFSC code',
+              },
+              "noc_previous_bank": {
+                  required: 'Please select NOC from previous bank',
+              },
+              "noc_previous_bank_attachment":{
+                    required: 'Please upload NOC document',
+              }, 
+          },
+          submitHandler: function(form, event) {
+              $('.page-loader').addClass('d-flex'); 
+              event.preventDefault();
+              var formData = new FormData(form);
+              //$("#logid").prop('disabled',true);
+              $.ajax({
+                  type:'POST',
+                  url:'{{ route("pension_unit_update_record_submission") }}',
+                  data: formData,
+                  dataType: 'JSON',
+                  processData: false,
+                  contentType: false,
+                  success: function(response) {
+                  //console.log(response);
+                  $('.page-loader').removeClass('d-flex');
+                    if(response['error']){
+                      //$("#logid").prop('disabled',false);
+                        for (i in response['error']) {
+                            var element = $('#' + i);
+                            var id = response['error'][i]['id'];
+                            var eValue = response['error'][i]['eValue'];
+                            //console.log(id);
+                            //console.log(eValue);
+                            $("#"+id).show();
+                            $("#"+id).html(eValue);
+                        }
+                    }else{
+                      location.href = "{{route('pension_unit_update_pension_record')}}";
+                    }
                   }
-                }
-            });             
-        },
-        errorPlacement: function(label, element) {
-            label.addClass('text-danger');
-            label.insertAfter(element);
-        },
-        highlight: function(element, errorClass) {
-            //$(element).parent().addClass('has-success');
-            $(element).addClass('form-control-danger');
-        }
+              });             
+          },
+          errorPlacement: function(label, element) {
+              label.addClass('text-danger');
+              label.insertAfter(element);
+          },
+          highlight: function(element, errorClass) {
+              //$(element).parent().addClass('has-success');
+              $(element).addClass('form-control-danger');
+          }
       });
     });
   </script>

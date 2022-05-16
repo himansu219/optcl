@@ -113,7 +113,7 @@
                                         <td colspan="3">
                                         <input type="hidden" name="gross_pension" id="gross_pension" value="{{ $response['total'] }}">
                                         <span id="gross_pension_show">{{ number_format($response['total'], 2) }}</span>
-                                        <span class="text-info small">(<strong>Gross Pension = </strong> Besic Pension + Additional Pension + TI Amount)</span>
+                                        <span class="text-info small">(<strong>Gross Pension = </strong> Basic Pension + Additional Pension + TI Amount)</span>
                                         </td>
                                     </tr>                             
                                     <tr>

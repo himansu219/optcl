@@ -100,7 +100,7 @@
                                         <th>Gross Pension</th>
                                         <td colspan="3">
                                         <span id="gross_pension_show">{{ $net_pension_details->gross_pension_amount > 0 ? number_format($net_pension_details->gross_pension_amount, 2) : 0 }}</span>
-                                        <span class="text-info small">(<strong>Gross Pension = </strong> Besic Pension + Additional Pension + TI Amount)</span>
+                                        <span class="text-info small">(<strong>Gross Pension = </strong> Basic Pension + Additional Pension + TI Amount)</span>
                                         </td>
                                     </tr>                             
                                     <tr>

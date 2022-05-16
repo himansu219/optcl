@@ -37,7 +37,7 @@
                     <label id="rbp_name_pensioner-error" class="error text-danger" for="rbp_name_pensioner"></label>
                 </div>  
                 <div class="col-md-4 form-group">
-                    <label>Receive Basic Amount<span class="text-danger">*</span></label>
+                    <label>Revised Basic Amount<span class="text-danger">*</span></label>
                     <input type="text" class="form-control amount_type" maxlength="8" name="rbp_basic_amt" id="rbp_basic_amt"  value="{{ $request_details->pensioner_basic_amount }}">
                     <label id="rbp_basic_amt-error" class="error text-danger" for="rbp_basic_amt"></label>
                 </div>  

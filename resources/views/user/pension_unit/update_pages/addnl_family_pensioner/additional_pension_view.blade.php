@@ -16,7 +16,8 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="{{route('pension_unit_update_pension_record')}}">Update Pension Record</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Additional Family Pensioner after Death of SP/FP</li>
+            <li class="breadcrumb-item active" aria-current="page">View</li>
+            <li class="breadcrumb-item active" aria-current="page">Additional Pension</li>
         </ol>
     </nav>
     <div class="row">
@@ -25,25 +26,28 @@
             <tr>
                 <th width="20%">PPO No.</th>
                 <td width="30%">{{ $request_details->ppo_no }}</td>
-                <th width="20%">Pension Employee No.</th>
+                <th width="20%">Employee No.</th>
                 <td width="30%">{{ $request_details->pensioner_emp_no }}</td>
             </tr>
             <tr>
-                <th width="20%">Pensioner Name</th>
+                <th width="20%">Name of Pensioner</th>
                 <td width="30%">{{ $request_details->pensioner_name }}</td>
-                <th width="20%">Revised Basic Amount</th>
-                <td width="30%">{{ $request_details->pensioner_basic_amount }}</td>
+                <th width="20%">Date of Birth</th>
+                <td width="30%">{{ date('d/m/Y',strtotime($request_details->dob)) }}</td>
             </tr>
             <tr>
-                <th>O.O No.</th>
-                <td>{{ $request_details->oo_no }}</td>
-                <th>O.O No. Date</th>
-                <td>{{ $request_details->oo_no_date }}</td>
-            </tr>                                          
+                <th>Effective Date</th>
+                <td>{{ date('d/m/Y',strtotime($request_details->effective_date)) }}</td>
+                <th>Additional Rate</th>
+                <td>{{ number_format($request_details->additional_rate, 2) }}</td>
+            </tr>                                        
           </table>
         </div>
     </div>
 </div>
 
+
+@endsection
+@section('page-script')
 
 @endsection

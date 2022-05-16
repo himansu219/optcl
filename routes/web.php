@@ -53,6 +53,7 @@ use App\Http\Controllers\NomineeLoginController;
 use App\Http\Controllers\NomineeProposalController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\DaAddApplicantController;
+use App\Http\Controllers\ArrearsController;
 
 use App\Libraries\Util;
 /*
@@ -271,6 +272,8 @@ Route::any('pension-unit/update-pension-record', [PensionerRecordUpdateControlle
 /* ------ Update Pension Record ------ */
 Route::get('pension-unit/update-pension-record/update', [PensionerRecordUpdateController::class, 'update_record'])->name('pension_unit_update_record');
 /*  ------ Additional Family Pensioner after Death of SP/FP -------- */
+// Listing
+Route::any('pension-unit/update-pension-record/additional-family-pensioner/list', [PensionerRecordUpdateController::class, 'update_record_listing'])->name('pension_unit_additional_family_pensioner');
 // Form Submission
 Route::post('pension-unit/update-pension-record/additional-family-pensioner', [PensionerRecordUpdateController::class, 'update_record_submission'])->name('pension_unit_update_record_submission');
 // Edit Page
@@ -359,6 +362,11 @@ Route::post('pension-unit/update-pension-record/life-certificate/import/', [Pens
 // View Page
 Route::get('pension-unit/update-pension-record/life-certificate/view/{appID}', [PensionerRecordUpdateController::class, 'life_certificate_view_page'])->name('pension_unit_life_certificate_view_page');
 
+/* ------ Arrears  ------*/
+// Listing
+Route::get('pension-unit/update-pension-record/arrears', [ArrearsController::class, 'index'])->name('billing_officer_arrears');
+// Add
+Route::get('pension-unit/update-pension-record/arrears/add', [ArrearsController::class, 'add'])->name('billing_officer_arrears_add');
 
 // Income details according to PPO number
 Route::post('pension-unit/update-pension-record/total-income-value/details/', [PensionerRecordUpdateController::class, 'get_data_from_ppo_no'])->name('pension_unit_get_data_from_ppo_no');

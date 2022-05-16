@@ -207,7 +207,44 @@ class PensionerRecordUpdateController extends Controller{
                         ->paginate(10);
         return view('user.pension_unit.update-pension-record-details', compact('result', 'changed_data_list', 'request'));             
     }
+    public function update_record(){
+        $changed_data_list = DB::table('optcl_change_data_master')
+                                    ->where('status', 1)
+                                    ->where('status', 1)
+                                    ->orderBy('change_type', 'ASC')
+                                    ->get();
+        $banks = DB::table('optcl_bank_master')->where('status', 1)->where('deleted', 0)->get();
+        $pension_units = DB::table('optcl_pension_unit_master')->where('status', 1)->where('deleted', 0)->get();
+        return view('user.pension_unit.update_record', compact('changed_data_list', 'banks', 'pension_units'));             
+    }
     /*  ------------------ Additional Family Pensioner after Death of SP/FP ------------------  */
+    // Listing
+    public function update_record_listing(Request $request){
+        $changed_data_list = DB::table('optcl_change_data_master')
+                                    ->where('status', 1)
+                                    ->where('status', 1)
+                                    ->orderBy('change_type', 'ASC')
+                                    ->get();
+        $result = DB::table('optcl_change_data_list')
+                        ->join('optcl_change_data_master', 'optcl_change_data_master.id', '=', 'optcl_change_data_list.change_data_id')
+                        ->join('optcl_application_status_master', 'optcl_application_status_master.id', '=', 'optcl_change_data_list.status_id')
+                        ->select('optcl_change_data_list.*', 'optcl_change_data_master.change_type', 'optcl_application_status_master.status_name');
+        if(!empty($request->change_data_type)) {
+            $result = $result->where('optcl_change_data_list.change_data_id', $request->change_data_type);
+        }  
+        if(!empty($request->cr_number)) {
+            $result = $result->where('optcl_change_data_list.cr_number', $request->cr_number);
+        }              
+        $result = $result->where('optcl_change_data_list.status',1)
+                        ->where('optcl_change_data_list.deleted',0)
+                        ->where('optcl_change_data_list.change_data_id',1)
+                        ->orderBy('optcl_change_data_list.id','DESC')
+                        ->paginate(10);
+        return view('user.pension_unit.update_pages.addnl_family_pensioner.listing', compact('result', 'changed_data_list', 'request'));
+    }
+    // Form Page
+    
+    
     // From Submission
     public function update_record_submission(Request $request){
         $validation = [];
@@ -2094,19 +2131,6 @@ class PensionerRecordUpdateController extends Controller{
         }
     }
 
-
-
-    public function update_record(){
-        $changed_data_list = DB::table('optcl_change_data_master')
-                                    ->where('status', 1)
-                                    ->where('status', 1)
-                                    ->orderBy('change_type', 'ASC')
-                                    ->get();
-        $banks = DB::table('optcl_bank_master')->where('status', 1)->where('deleted', 0)->get();
-        $pension_units = DB::table('optcl_pension_unit_master')->where('status', 1)->where('deleted', 0)->get();
-        return view('user.pension_unit.update_record', compact('changed_data_list', 'banks', 'pension_units'));             
-    }
-
     public function viewPensionUnitUpdatePensionRecord(Request $request,$id){
         $result = DB::table('optcl_update_pension_record')
                     ->where('status',1)
@@ -2155,6 +2179,6 @@ class PensionerRecordUpdateController extends Controller{
         Session::flash('success', 'Applicant update pension record approved successfully');
         return redirect()->route('pension_unit_update_pension_record');
     
-       }
+    }
 }
 ?>

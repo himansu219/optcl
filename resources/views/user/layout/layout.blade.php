@@ -740,6 +740,12 @@
                                 <span class="menu-title highlight_link">Process Bill</span>
                             </a>
                         </li>
+                        <li class="nav-item"> 
+                            <a class="nav-link" href="{{route('billing_officer_arrears')}}">
+                                <i class="fa fa-database menu-icon" ></i>
+                                <span class="menu-title highlight_link">Arrears</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('user_change_password')}}">
                                 <i class="icon-target menu-icon"></i>
@@ -789,7 +795,25 @@
                             <div class="collapse" id="tables2">
                                 <ul class="nav flex-column sub-menu">
                                     <li class="nav-item"> 
-                                        <a class="nav-link" href="{{ route('pension_unit_update_pension_record') }}">Additional Family Pensioner after Death of SP/FP</a>
+                                        <a class="nav-link" href="{{ route('pension_unit_additional_family_pensioner') }}">Addition of Pensioner New Pensioner</a>
+                                    </li>
+                                    <li class="nav-item"> 
+                                        <a class="nav-link" href="#">Revision of Basic Pension</a>
+                                    </li>
+                                    <li class="nav-item"> 
+                                        <a class="nav-link" href="#">Restoration of Commutation</a>
+                                    </li>
+                                    <li class="nav-item"> 
+                                        <a class="nav-link" href="#">Additional Pension</a>
+                                    </li>
+                                    <li class="nav-item"> 
+                                        <a class="nav-link" href="#">Bank Change</a>
+                                    </li>
+                                    <li class="nav-item"> 
+                                        <a class="nav-link" href="#">Unit Change for Receiving Unit (Only)</a>
+                                    </li>
+                                    <li class="nav-item"> 
+                                        <a class="nav-link" href="#">Dropped Case/Death Case</a>
                                     </li>
                                     <li class="nav-item"> 
                                         <a class="nav-link" href="{{ route('pension_unit_tds_information_list_page') }}">TDS Information</a>

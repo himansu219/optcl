@@ -4,7 +4,7 @@
 <div class="content-wrapper">    
   <div class="row">
     <div class="col-12 grid-margin">
-       <nav aria-label="breadcrumb" role="navigation">
+       <nav aria-label="breadcrumb" role="navigation" class="bg-white">
         <ol class="breadcrumb">
           <li class="breadcrumb-item" ><a href="{{ route('user_dashboard') }}">Dashboard</a></li>
           <li class="breadcrumb-item" ><a href="{{ route('pension_unit_update_pension_record') }}">Update Pension Record</a></li>
@@ -27,13 +27,13 @@
                     <label id="rbp_ppo_number-error" class="error text-danger" for="rbp_ppo_number"></label>
                 </div>
                 <div class="col-md-4 form-group">
-                    <label>Pension Employee No.<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control only_number" maxlength="6" name="rbp_pension_emp_no" id="rbp_pension_emp_no"  value="{{ $request_details->pensioner_emp_no }}">
+                    <label>Pension Employee No.</label>
+                    <input type="text" class="form-control only_number" maxlength="6" name="rbp_pension_emp_no" id="rbp_pension_emp_no"  value="{{ $request_details->pensioner_emp_no }}" readonly>
                     <label id="rbp_pension_emp_no-error" class="error text-danger" for="rbp_pension_emp_no"></label>
                 </div>
                 <div class="col-md-4 form-group">
                     <label>Pensioner Name<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control alpha" maxlength="100" name="rbp_name_pensioner" id="rbp_name_pensioner"  value="{{ $request_details->pensioner_name }}">
+                    <input type="text" class="form-control alpha" maxlength="100" name="rbp_name_pensioner" id="rbp_name_pensioner"  value="{{ $request_details->pensioner_name }}" readonly>
                     <label id="rbp_name_pensioner-error" class="error text-danger" for="rbp_name_pensioner"></label>
                 </div>  
                 <div class="col-md-4 form-group">

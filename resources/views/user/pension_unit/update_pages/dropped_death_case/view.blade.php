@@ -13,7 +13,7 @@
 </style>
 <div class="content-wrapper">
     <nav aria-label="breadcrumb" role="navigation" class="bg-white">
-        <ol class="breadcrumb">
+        <ol class="breadcrumb"
             <li class="breadcrumb-item" ><a href="{{ route('user_dashboard') }}">Dashboard</a></li>
             <li class="breadcrumb-item" >Update Pension Record</li>
             <li class="breadcrumb-item" ><a href="{{ route('pension_unit_additional_family_pensioner') }}">Addition of Pensioner New Pensioner</a></li>
@@ -22,7 +22,7 @@
     </nav>
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
-          <table class="table table-bordered perticular-table-details-page body-font-size bg-white">
+          <table class="table table-bordered perticular-table-details-page body-font-size">
             <tr>
                 <th width="20%">PPO No.</th>
                 <td width="30%">{{ $addl_family_pen_details->ppo_no }}</td>
@@ -31,13 +31,13 @@
             </tr>
             <tr>
                 <th width="20%">DOD of SP/ FP</th>
-                <td width="30%">{{ date('d/m/Y',strtotime($addl_family_pen_details->dod_sp_fp)) }}</td>
+                <td width="30%">{{ $addl_family_pen_details->dod_sp_fp }}</td>
                 <th width="20%">Name of Family Pensioner</th>
                 <td width="30%">{{ $addl_family_pen_details->name_family_pensioner }}</td>
             </tr>
             <tr>
                 <th>End Date of Enhanced Family Pension</th>
-                <td>{{ date('d/m/Y',strtotime($addl_family_pen_details->end_date_enhan_fam_pension)) }}</td>
+                <td>{{ $addl_family_pen_details->end_date_enhan_fam_pension }}</td>
                 <th>Savings Bank A/C No.</th>
                 <td>{{ $addl_family_pen_details->sb_bank_ac_number }}</td>
             </tr>

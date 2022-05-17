@@ -21,7 +21,7 @@
       
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Additional Pension</h4>
+          <h4 class="card-title">Addition of Pensioner New Pensioner</h4>
           <form method="post" action="" autocomplete="off" id="additional_family_pensioner_after_death" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="addl_fam_pen_changed_type_id" id="addl_fam_pen_changed_type_id" value="1" />

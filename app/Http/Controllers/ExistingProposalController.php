@@ -422,6 +422,8 @@ class ExistingProposalController extends Controller {
                 }
                 $ppo_data = [
                     'pensioner_type_id'   => $pensioner_type_id_value,
+                    'application_type'   => 2,
+                    'pensioner_type'   => $pesioner_type,
                     "application_id"    => $existingInsertedID,
                     "created_by"          => Auth::user()->id,
                     "created_at"          => $this->current_date,

@@ -20,7 +20,7 @@
       @endif
       <div class="card" id="additional_family_pensioner_after_death_div">
         <div class="card-body">
-            <h4 class="card-title">Addition of Pensioner New Pensioner</h4>
+            <h4 class="card-title">Additional Family Pensioner after Death of SP/FP</h4>
             <form method="post" action="" autocomplete="off" id="additional_family_pensioner_after_death_update" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="addl_fam_pen_changed_type_appl_id" id="addl_fam_pen_changed_type_appl_id" value="{{ $addl_family_pen_details->id }}">

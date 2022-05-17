@@ -288,7 +288,11 @@ Route::get('pension-unit/update-pension-record/additional-family-pensioner-view/
 // - View Details
 Route::get('pension-unit/update-pension-record/view/{id}', [PensionerRecordUpdateController::class, 'viewPensionUnitUpdatePensionRecord'])->name('pension_unit_update_pension_record_view');
 /* ------ Revision of Basic Pension ---------- */
-// - Form Submission
+// Listing
+Route::any('pension-unit/update-pension-record/revision-basic-pension/list', [PensionerRecordUpdateController::class, 'revision_basic_pension_listing'])->name('pension_unit_revision_basic_pension');
+// Form Page
+Route::get('pension-unit/update-pension-record/revision-basic-pension/add', [PensionerRecordUpdateController::class, 'revision_basic_pension_form_page'])->name('revision_basic_pension_form_page');
+// Form Submission
 Route::post('pension-unit/update-pension-record/revision-basic-pension-submission', [PensionerRecordUpdateController::class, 'revision_basic_pension_submission'])->name('pension_unit_revision_basic_pension_submission');
 // Edit Page
 Route::get('pension-unit/update-pension-record/revision-basic-pension/edit/{id}', [PensionerRecordUpdateController::class, 'revision_basic_pension_edit_page'])->name('pension_unit_revision_basic_pension_edit_page');
@@ -296,6 +300,8 @@ Route::get('pension-unit/update-pension-record/revision-basic-pension/edit/{id}'
 Route::post('pension-unit/update-pension-record/revision-basic-pension/edit-form/submission', [PensionerRecordUpdateController::class, 'revision_basic_pension_edit_submission'])->name('pension_unit_revision_basic_pension_edit_submission');
 // - View Details
 Route::get('pension-unit/update-pension-record/revision-basic-pension/view/{id}', [PensionerRecordUpdateController::class, 'revision_basic_pension_view_page'])->name('pension_unit_revision_basic_pension_view');
+// Pensioner Details
+Route::post('pension-unit/update-pension-record/revision-basic-pension/pensioner-details', [PensionerRecordUpdateController::class, 'pensioner_details'])->name('revision_basic_pension_pensioner_details');
 /* ------ Additional Pension ---------- */
 // Form Submission
 Route::post('pension-unit/update-pension-record/additional-pension-submission', [PensionerRecordUpdateController::class, 'additional_pension_submission'])->name('pension_unit_additional_pension_submission');

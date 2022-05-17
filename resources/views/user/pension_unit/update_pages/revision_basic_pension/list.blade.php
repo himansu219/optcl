@@ -63,7 +63,7 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
         <li class="breadcrumb-item">Update Pension Record</li>
-          <li class="breadcrumb-item" >Addition of Pensioner New Pensioner</li>
+        <li class="breadcrumb-item" >Revision of Basic Pension</li>
       </ol>
     </nav> 
     @if(Session::has('error'))
@@ -74,7 +74,7 @@
     @endif
     <div class="row">
         <div class="col-md-12 grid-margin">
-
+    
 
         <div class="card">
           <div class="card-body">
@@ -106,7 +106,7 @@
         <div class="card">
           <div class="card-body">
               <h4 class="card-title">Application List                
-                  <a href="{{ route('update_record_update_record_additional') }}" class="btn btn-success float-right">Add</a>                 
+                  <a href="{{ route('revision_basic_pension_form_page') }}" class="btn btn-success float-right">Add</a>                 
               </h4>
               <div class="row">
                 <div class="table-sorter-wrapper col-lg-12 table-responsive">
@@ -115,8 +115,7 @@
                       <tr>
                         <th>Sl No.</th>
                         <th>PPO No.</th>
-                        <th>Date of Death</th>
-                        <th>Name of Family Pensioner</th>
+                        <th>Revised Basic Amount</th>
                         <th>Status</th>
                         <th>Created at</th>
                         <th>Action</th>
@@ -128,8 +127,7 @@
                         <tr>
                           <td>{{ $result->firstItem() + $key }}</td>
                           <td>{{ $list->ppo_no }}</td>
-                          <td>{{ date('d/m/Y',strtotime($list->dod_sp_fp)) }}</td>
-                          <td>{{ $list->name_family_pensioner }}</td>
+                          <td>{{ $list->pensioner_basic_amount ? number_format($list->pensioner_basic_amount, 2) : 0 }}</td>
                           <td>{{$list->status_name}}</td>
                           <td>{{ date("d-m-Y h:i A", strtotime($list->created_at)) }}</td>
                           <td class="text-center">
@@ -139,8 +137,8 @@
                                         <i class="fa fa-bars"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" style="left: -21px;">
-                                        <a href="{{ route('update_record_additional_new_pensioner_edit', array($list->cID)) }}" class="dropdown-item edit_desig"><i class="fa fa-pencil-square-o"></i>Edit</a>
-                                        <a href="{{ route('update_record_additional_new_pensioner_view', array($list->cID)) }}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
+                                        <a href="{{ route('pension_unit_revision_basic_pension_edit_page', array($list->cID)) }}" class="dropdown-item edit_desig"><i class="fa fa-pencil-square-o"></i>Edit</a>
+                                        <a href="{{ route('pension_unit_revision_basic_pension_view', array($list->cID)) }}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
                                     </div>
                                 </div>
                             </div>

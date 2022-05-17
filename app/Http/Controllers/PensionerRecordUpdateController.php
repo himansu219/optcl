@@ -225,20 +225,33 @@ class PensionerRecordUpdateController extends Controller{
                                     ->where('status', 1)
                                     ->orderBy('change_type', 'ASC')
                                     ->get();
-        $result = DB::table('optcl_change_data_list')
-                        ->join('optcl_change_data_master', 'optcl_change_data_master.id', '=', 'optcl_change_data_list.change_data_id')
-                        ->join('optcl_application_status_master', 'optcl_application_status_master.id', '=', 'optcl_change_data_list.status_id')
-                        ->select('optcl_change_data_list.*', 'optcl_change_data_master.change_type', 'optcl_application_status_master.status_name');
-        if(!empty($request->change_data_type)) {
-            $result = $result->where('optcl_change_data_list.change_data_id', $request->change_data_type);
+        /* 
+            Column- Table Name
+            ------------------
+            ppo_no, date of death, name of family pensioner, created_at- optcl_change_data_addl_family_pensioner
+            status- optcl_application_status_master
+        */
+        $result = DB::table('optcl_change_data_addl_family_pensioner')
+                    ->join('optcl_change_data_list', function($join){
+                        $join->on('optcl_change_data_list.change_data_id', '=', DB::raw(1));
+                        $join->on('optcl_change_data_list.cr_application_id', '=', 'optcl_change_data_addl_family_pensioner.id');
+                    })
+                    ->join('optcl_application_status_master', 'optcl_application_status_master.id', '=', 'optcl_change_data_list.status_id')
+                    ->select('optcl_change_data_addl_family_pensioner.*','optcl_change_data_list.id AS cID', 'optcl_change_data_list.cr_number', 'optcl_application_status_master.status_name');
+
+        if(!empty($request->ppo_no_search)) {
+            $result = $result->where('optcl_change_data_addl_family_pensioner.ppo_no', 'like', '%'.$request->ppo_no_search.'%');
         }  
-        if(!empty($request->cr_number)) {
-            $result = $result->where('optcl_change_data_list.cr_number', $request->cr_number);
-        }              
-        $result = $result->where('optcl_change_data_list.status',1)
-                        ->where('optcl_change_data_list.deleted',0)
+        if(!empty($request->name_family_pensioner_search)) {
+            $result = $result->where('optcl_change_data_addl_family_pensioner.name_family_pensioner', 'like', '%'.$request->name_family_pensioner_search.'%');
+        }    
+        if(!empty($request->saving_acc_no_search)) {
+            $result = $result->where('optcl_change_data_addl_family_pensioner.sb_bank_ac_number', $request->saving_acc_no_search);
+        }        
+        $result = $result->where('optcl_change_data_addl_family_pensioner.status',1)
+                        ->where('optcl_change_data_addl_family_pensioner.deleted',0)
                         ->where('optcl_change_data_list.change_data_id',1)
-                        ->orderBy('optcl_change_data_list.id','DESC')
+                        ->orderBy('optcl_change_data_addl_family_pensioner.id','DESC')
                         ->paginate(10);
         return view('user.pension_unit.update_pages.addnl_family_pensioner.listing', compact('result', 'changed_data_list', 'request'));
     }
@@ -260,14 +273,12 @@ class PensionerRecordUpdateController extends Controller{
         if($ppo_number == ""){
             $validation['error'][] = array("id" => "ppo_number-error","eValue" => "Please enter PPO no");
         }else{
-            $ppo_details = DB::table('optcl_ppo_no_list')->where('ppo_no', $ppo_number)->first();
+            $ppo_details = DB::table('optcl_pension_application_form')->where('ppo_number', $ppo_number)->first();
             if($ppo_details){
-                $application_type = '';
-                $pensioner_type = '';
-                /* if($ppo_details->pensioner_type_id == 3 || $ppo_details->pensioner_type_id == 4){
-                    $application_type = '';
-                    $pensioner_type = '';
-                } */
+                $is_dead_status = $ppo_details->is_dead;
+                if($is_dead_status == 0){
+                    $validation['error'][] = array("id" => "ppo_number-error","eValue" => "Service pensioner status is not updated");
+                }
             }else{
                 $validation['error'][] = array("id" => "ppo_number-error","eValue" => "PPO no. not found");
             }
@@ -515,6 +526,32 @@ class PensionerRecordUpdateController extends Controller{
         }
     }
     /* ------------------ Additional Pension ------------------ */
+    // Listing
+    public function additional_pension_listing(Request $request){
+        $changed_data_list = DB::table('optcl_change_data_master')
+                                    ->where('status', 1)
+                                    ->where('status', 1)
+                                    ->orderBy('change_type', 'ASC')
+                                    ->get();
+        $result = DB::table('optcl_change_data_list')
+                        ->join('optcl_change_data_master', 'optcl_change_data_master.id', '=', 'optcl_change_data_list.change_data_id')
+                        ->join('optcl_application_status_master', 'optcl_application_status_master.id', '=', 'optcl_change_data_list.status_id')
+                        ->select('optcl_change_data_list.*', 'optcl_change_data_master.change_type', 'optcl_application_status_master.status_name');
+        if(!empty($request->change_data_type)) {
+            $result = $result->where('optcl_change_data_list.change_data_id', $request->change_data_type);
+        }  
+        if(!empty($request->cr_number)) {
+            $result = $result->where('optcl_change_data_list.cr_number', $request->cr_number);
+        }              
+        $result = $result->where('optcl_change_data_list.status',1)
+                        ->where('optcl_change_data_list.deleted',0)
+                        ->where('optcl_change_data_list.change_data_id',1)
+                        ->orderBy('optcl_change_data_list.id','DESC')
+                        ->paginate(10);
+        return view('user.pension_unit.update_pages.addnl_family_pensioner.listing', compact('result', 'changed_data_list', 'request'));
+    }
+    // Form Page
+
     // Form Submission
     public function additional_pension_submission(Request $request){
         $validation = [];
@@ -706,6 +743,82 @@ class PensionerRecordUpdateController extends Controller{
         }
     }
     /* ------------------ Revision of Basic Pension ------------------ */
+    // listing
+    public function revision_basic_pension_listing(Request $request){
+        $changed_data_list = DB::table('optcl_change_data_master')
+                                    ->where('status', 1)
+                                    ->where('status', 1)
+                                    ->orderBy('change_type', 'ASC')
+                                    ->get();
+        /* 
+            Column- Table Name
+            ------------------
+            ppo_no, date of death, name of family pensioner, created_at- optcl_change_data_addl_family_pensioner
+            status- optcl_application_status_master
+        */
+        $result = DB::table('optcl_change_data_revision_basic_pension')
+                    ->join('optcl_change_data_list', function($join){
+                        $join->on('optcl_change_data_list.change_data_id', '=', DB::raw(2));
+                        $join->on('optcl_change_data_list.cr_application_id', '=', 'optcl_change_data_revision_basic_pension.id');
+                    })
+                    ->join('optcl_application_status_master', 'optcl_application_status_master.id', '=', 'optcl_change_data_list.status_id')
+                    ->select('optcl_change_data_revision_basic_pension.*','optcl_change_data_list.id AS cID', 'optcl_change_data_list.cr_number', 'optcl_application_status_master.status_name');
+
+        if(!empty($request->ppo_no_search)) {
+            $result = $result->where('optcl_change_data_revision_basic_pension.ppo_no', 'like', '%'.$request->ppo_no_search.'%');
+        }  
+        if(!empty($request->name_family_pensioner_search)) {
+            $result = $result->where('optcl_change_data_revision_basic_pension.name_family_pensioner', 'like', '%'.$request->name_family_pensioner_search.'%');
+        }    
+        if(!empty($request->saving_acc_no_search)) {
+            $result = $result->where('optcl_change_data_revision_basic_pension.sb_bank_ac_number', $request->saving_acc_no_search);
+        }        
+        $result = $result->where('optcl_change_data_revision_basic_pension.status',1)
+                        ->where('optcl_change_data_revision_basic_pension.deleted',0)
+                        ->where('optcl_change_data_list.change_data_id',2)
+                        ->orderBy('optcl_change_data_revision_basic_pension.id','DESC')
+                        ->paginate(10);
+        return view('user.pension_unit.update_pages.revision_basic_pension.list', compact('result', 'changed_data_list', 'request'));
+    }
+    // Form Page
+    public function revision_basic_pension_form_page(){
+        $changed_data_list = DB::table('optcl_change_data_master')
+                                    ->where('status', 1)
+                                    ->where('status', 1)
+                                    ->orderBy('change_type', 'ASC')
+                                    ->get();
+        $banks = DB::table('optcl_bank_master')->where('status', 1)->where('deleted', 0)->get();
+        $pension_units = DB::table('optcl_pension_unit_master')->where('status', 1)->where('deleted', 0)->get();
+        return view('user.pension_unit.update_pages.revision_basic_pension.add', compact('changed_data_list', 'banks', 'pension_units'));             
+    }
+    // Pensioner Details
+    public function pensioner_details(Request $request){
+        $ppo_no = $request->ppo_no;
+        $response = [];
+        DB::enableQueryLog();
+        $pensioner_data = DB::table('optcl_ppo_no_list AS pnl')
+                                ->leftJoin('optcl_pension_application_form AS np', function($join){
+                                    $join->on('np.application_type', '=', 'pnl.application_type');
+                                    $join->on('np.pension_type_id', '=', 'pnl.pensioner_type');
+                                })
+                                ->leftJoin('optcl_existing_user AS ep', function($join2){
+                                    $join2->on('ep.application_type', '=', 'pnl.application_type');
+                                    $join2->on('ep.pensioner_type', '=', 'pnl.pensioner_type');
+                                })
+                                //->select('optcl_ppo_no_list.*', DB::raw('IF(pnl.application_type = 1, np.basic_amount, ep.basic_amount) AS basic_amount'))
+                                ->where('pnl.ppo_no', $ppo_no)
+                                ->first();
+        //dd(DB::getQueryLog(), $pensioner_data);
+        if($pensioner_data){
+            $response = [
+                "basic_amount" => $pensioner_data->basic_amount,
+                "employee_no" => $pensioner_data->employee_code ? $pensioner_data->employee_code : 'NA',
+                "pensioner_name" => $pensioner_data->pensioner_name,
+            ];
+        }
+        return response()->json($response);
+
+    }
     // Form Submission
     public function revision_basic_pension_submission(Request $request){
         $validation = [];
@@ -714,9 +827,9 @@ class PensionerRecordUpdateController extends Controller{
             $validation['error'][] = array("id" => "rbp_ppo_number-error","eValue" => "Please enter PPO no");
         }
         $rbp_pension_emp_no = $request->rbp_pension_emp_no;
-        if($rbp_pension_emp_no == ""){
+        /* if($rbp_pension_emp_no == ""){
             $validation['error'][] = array("id" => "rbp_pension_emp_no-error","eValue" => "Please enter employee no");
-        }
+        } */
         $rbp_name_pensioner = $request->rbp_name_pensioner;
         if($rbp_name_pensioner == ""){
             $validation['error'][] = array("id" => "rbp_name_pensioner-error","eValue" => "Please enter pensioner name");
@@ -735,7 +848,7 @@ class PensionerRecordUpdateController extends Controller{
         }
         // Check PPO number with other details
             /* ---------Code---------- */
-        $revision_basic_pension_changed_type_id = $request->revision_basic_pension_changed_type_id;
+        $revision_basic_pension_changed_type_id = 2;
         if(!isset($validation['error'])){
             try{
                 DB::beginTransaction();
@@ -799,7 +912,7 @@ class PensionerRecordUpdateController extends Controller{
                                             ->first();
             //dd($request_details, $cr_application_id);
             if($request_details){
-                return view('user.pension_unit.update_pages.revision_besic_pension_edit', compact('request_details'));
+                return view('user.pension_unit.update_pages.revision_basic_pension.edit', compact('request_details'));
             }else{
                 //dd(2);
                 Session::flash('error', 'No data found');          

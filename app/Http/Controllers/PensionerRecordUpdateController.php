@@ -814,6 +814,9 @@ class PensionerRecordUpdateController extends Controller{
                 "basic_amount" => $pensioner_data->basic_amount,
                 "employee_no" => $pensioner_data->employee_code ? $pensioner_data->employee_code : 'NA',
                 "pensioner_name" => $pensioner_data->pensioner_name,
+                "application_type" => $pensioner_data->application_type,
+                "pensioner_type" => $pensioner_data->pensioner_type,
+                "application_id" =>  $pensioner_data->application_id,
             ];
         }
         return response()->json($response);
@@ -853,6 +856,9 @@ class PensionerRecordUpdateController extends Controller{
             try{
                 DB::beginTransaction();
                 $data = [
+                    "application_type" => $rbp_ppo_number,
+                    "pensioner_type" => $rbp_pension_emp_no,
+                    "application_id" =>  $rbp_name_pensioner,
                     "ppo_no" => $rbp_ppo_number,
                     "pensioner_emp_no" => $rbp_pension_emp_no,
                     "pensioner_name" =>  $rbp_name_pensioner,
@@ -958,9 +964,6 @@ class PensionerRecordUpdateController extends Controller{
             try{
                 DB::beginTransaction();
                 $data = [
-                    "ppo_no" => $rbp_ppo_number,
-                    "pensioner_emp_no" => $rbp_pension_emp_no,
-                    "pensioner_name" =>  $rbp_name_pensioner,
                     "pensioner_basic_amount" => $rbp_basic_amt,
                     "oo_no" => $rbp_oo_no,
                     "oo_no_date" => date('Y-m-d', strtotime(str_replace("/", "-", $rbp_oo_no_date))),
@@ -980,6 +983,64 @@ class PensionerRecordUpdateController extends Controller{
         }
         echo json_encode($validation);
     }
+    // Taxable Amount Calculation
+    public function revision_taxable_amount_calculation_page($appID){
+        /* 
+            - Get all details required in taxable amount calculation page
+            - @application_id, @application_type, @pensioner_type
+        */
+        $request_details = DB::table('optcl_change_data_revision_basic_pension')
+                                        ->where('id', $appID)
+                                        ->where('status', 1)
+                                        ->where('deleted', 0)
+                                        ->first();
+        if($request_details){
+            $application_type = $request_details->application_type;
+            $pensioner_type = $request_details->pensioner_type;
+            $application_id = $request_details->application_id;
+            $revised_basic_amount = $request_details->pensioner_basic_amount;
+            if($application_type == 2 && ($pensioner_type == 1 || $pensioner_type == 2)){
+                // Existing User Details
+                $pension_details = DB::table('optcl_existing_user')
+                                        ->where('id', $application_id)
+                                        ->where('status', 1)
+                                        ->where('deleted', 0)
+                                        ->first();
+                $ti_percentage = $pension_details->ti_percentage;
+                $ti_amount = ($revised_basic_amount/100)*$ti_percentage;
+                $existing_user_id = $pension_details->id;
+                // Commutation Amount
+                $commutation_amount = DB::table('optcl_existing_user_commutation')
+                                        ->select(DB::raw('SUM(commutation_amount) AS commutation_total_amount'))
+                                        ->where('existing_user_id', $existing_user_id)
+                                        ->where('status', 1)
+                                        ->where('deleted', 0)
+                                        ->first();
+                $commutation_total_amount = $commutation_amount->commutation_total_amount;
+                $total_income = (($revised_basic_amount + $ti_amount)-$commutation_total_amount)*12;
+                /* echo "Revised Pension Amount - ".$revised_basic_amount;
+                echo "<br>";
+                echo "TI Amount - ".$ti_amount;
+                echo "<br>";
+                echo "Commutation Amount - ".$commutation_total_amount;
+                echo "<br>";
+                echo "Total Amount - ". $total_income; */
+            }else{
+                // New User Details
+
+            }
+            Session::put('application_type', $application_type);
+            Session::put('pensioner_type', $pensioner_type);
+            Session::put('application_id', $application_id);
+            Session::put('total_income', $total_income);
+            Session::put('revision_page', "true");
+            // 
+            return redirect()->route('pension_unit_tds_information_form_page');
+        }else{
+            Session::flash('error', 'No data found');          
+            return redirect()->route('pension_unit_update_pension_record');
+        }
+    } 
     // View Page    
     public function revision_basic_pension_view_page($appID){
         //dd(1);
@@ -997,7 +1058,7 @@ class PensionerRecordUpdateController extends Controller{
                                             ->first();
             //dd($request_details, $cr_application_id);
             if($request_details){
-                return view('user.pension_unit.update_pages.revision_besic_pension_view', compact('request_details'));
+                return view('user.pension_unit.update_pages.revision_basic_pension.view', compact('request_details'));
             }else{
                 //dd(2);
                 Session::flash('error', 'No data found');          

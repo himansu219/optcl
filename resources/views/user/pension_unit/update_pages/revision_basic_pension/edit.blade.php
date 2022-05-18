@@ -7,9 +7,9 @@
        <nav aria-label="breadcrumb" role="navigation" class="bg-white">
         <ol class="breadcrumb">
           <li class="breadcrumb-item" ><a href="{{ route('user_dashboard') }}">Dashboard</a></li>
-          <li class="breadcrumb-item" ><a href="{{ route('pension_unit_update_pension_record') }}">Update Pension Record</a></li>
+          <li class="breadcrumb-item" >Update Pension Record</li>
+          <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('pension_unit_revision_basic_pension') }}">Revision of Basic Pension</a></li>
           <li class="breadcrumb-item active" aria-current="page">Edit</li>
-          <li class="breadcrumb-item active" aria-current="page">Revision of Basic Pension</li>
         </ol>
       </nav>
       
@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-md-4 form-group">
                     <label>PPO No.<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control ppo_number_format" maxlength="12" name="rbp_ppo_number" id="rbp_ppo_number"  value="{{ $request_details->ppo_no }}">
+                    <input type="text" class="form-control ppo_number_format" maxlength="12" name="rbp_ppo_number" id="rbp_ppo_number"  value="{{ $request_details->ppo_no }}" readonly>
                     <label id="rbp_ppo_number-error" class="error text-danger" for="rbp_ppo_number"></label>
                 </div>
                 <div class="col-md-4 form-group">
@@ -53,9 +53,9 @@
                 </div>                
             </div>
             <div class="row">
-            <div class="col-md-4 form-group mt-2">
-                <input type="submit" class="btn btn-success" value="Submit">
-            </div>
+                <div class="col-md-4 form-group mt-2">
+                    <input type="submit" class="btn btn-success" value="Submit">
+                </div>
             </div>
         </form>
         </div>
@@ -84,9 +84,7 @@
                     ppo_format: true,
                 },
                 "rbp_pension_emp_no": {
-                    required: true,
-                    minlength: 6,
-                    maxlength: 6,
+                    required: false,
                 },
                 "rbp_name_pensioner": {
                     required: true,
@@ -110,8 +108,6 @@
                 },
                 "rbp_pension_emp_no": {
                     required: 'Please enter employee no',
-                    minlength: 'Employee No should be 6 digits',
-                    maxlength: 'Employee No should be 6 digits',
                 },
                 "rbp_name_pensioner": {
                     required: 'Please enter pensioner name',
@@ -156,7 +152,7 @@
                             $("#"+id).html(eValue);
                         }
                     }else{
-                        location.href = "{{route('pension_unit_update_pension_record')}}";
+                        location.href = "{{route('pension_unit_revision_basic_pension')}}";
                     }
                     }
                 });             

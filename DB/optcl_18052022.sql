@@ -4468,12 +4468,16 @@ DROP TABLE IF EXISTS `optcl_change_data_revision_basic_pension`;
 
 CREATE TABLE `optcl_change_data_revision_basic_pension` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ppo_no` varchar(50) DEFAULT NULL,
+  `application_type` int(11) DEFAULT NULL COMMENT 'optcl_application_type',
+  `pensioner_type` int(11) DEFAULT NULL COMMENT 'optcl_pension_type_master',
+  `application_id` int(11) DEFAULT NULL COMMENT 'optcl_pension_application_form/ optcl_existing_user',
+  `ppo_no` varchar(50) DEFAULT NULL COMMENT 'optcl_ppo_no_list',
   `pensioner_emp_no` varchar(50) DEFAULT NULL,
   `pensioner_name` varchar(150) DEFAULT NULL,
   `pensioner_basic_amount` double(18,2) DEFAULT NULL,
   `oo_no` varchar(50) DEFAULT NULL,
   `oo_no_date` date DEFAULT NULL,
+  `is_taxable_amount_submitted` tinyint(1) DEFAULT 0,
   `created_by` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -4485,10 +4489,10 @@ CREATE TABLE `optcl_change_data_revision_basic_pension` (
 
 /*Data for the table `optcl_change_data_revision_basic_pension` */
 
-insert  into `optcl_change_data_revision_basic_pension`(`id`,`ppo_no`,`pensioner_emp_no`,`pensioner_name`,`pensioner_basic_amount`,`oo_no`,`oo_no_date`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
-(1,'4561/54/5462','798465','Test User',85000.00,'789978897','2022-04-30',17,'2022-04-27 15:57:20',17,'2022-05-07 13:02:08',1,0),
-(2,'2022/05/0016','NA','PENSIONER NAME',5900.00,'7896545','2022-01-04',17,'2022-05-17 19:56:40',NULL,NULL,1,0),
-(3,'2022/05/0016','NA','PENSIONER NAME',56000.00,'987546','2022-03-09',17,'2022-05-17 20:01:16',NULL,NULL,1,0);
+insert  into `optcl_change_data_revision_basic_pension`(`id`,`application_type`,`pensioner_type`,`application_id`,`ppo_no`,`pensioner_emp_no`,`pensioner_name`,`pensioner_basic_amount`,`oo_no`,`oo_no_date`,`is_taxable_amount_submitted`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
+(1,NULL,NULL,NULL,'4561/54/5462','798465','Test User',85000.00,'789978897','2022-04-30',0,17,'2022-04-27 15:57:20',17,'2022-05-07 13:02:08',1,0),
+(2,NULL,NULL,NULL,'2022/05/0016','NA','PENSIONER NAME',5900.00,'7896545','2022-01-04',0,17,'2022-05-17 19:56:40',NULL,NULL,1,0),
+(3,2,2,30,'2022/05/0016','NA','PENSIONER NAME',90000.00,'987546','2022-03-09',0,17,'2022-05-17 20:01:16',17,'2022-05-18 17:21:27',1,0);
 
 /*Table structure for table `optcl_change_data_status_history` */
 
@@ -4542,9 +4546,9 @@ DROP TABLE IF EXISTS `optcl_change_data_tds_information`;
 
 CREATE TABLE `optcl_change_data_tds_information` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `application_id` int(11) DEFAULT NULL COMMENT 'optcl_pension_application_form/ 	optcl_existing_user',
   `application_type` int(11) DEFAULT NULL COMMENT 'optcl_application_type',
   `pensioner_type` int(11) DEFAULT NULL COMMENT 'optcl_pension_type_master',
+  `application_id` int(11) DEFAULT NULL COMMENT 'optcl_pension_application_form/ 	optcl_existing_user',
   `ppo_no` varchar(50) DEFAULT NULL COMMENT 'optcl_ppo_no_list',
   `total_income` double(18,2) DEFAULT NULL,
   `amount_80c` double(18,2) DEFAULT NULL COMMENT '80C (LIC/ PPFA/ HB Principal)',
@@ -4567,8 +4571,8 @@ CREATE TABLE `optcl_change_data_tds_information` (
 
 /*Data for the table `optcl_change_data_tds_information` */
 
-insert  into `optcl_change_data_tds_information`(`id`,`application_id`,`application_type`,`pensioner_type`,`ppo_no`,`total_income`,`amount_80c`,`amount_80d`,`amount_8dd`,`amount_80e`,`amount_80u`,`amount_24b`,`others_amount`,`taxable_amount`,`declaration_status`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
-(1,30,1,2,'2022/05/0016',713280.00,2000.00,0.00,0.00,0.00,0.00,0.00,0.00,711280.00,1,17,'2022-05-11 19:46:34',17,'2022-05-12 12:38:01',1,0);
+insert  into `optcl_change_data_tds_information`(`id`,`application_type`,`pensioner_type`,`application_id`,`ppo_no`,`total_income`,`amount_80c`,`amount_80d`,`amount_8dd`,`amount_80e`,`amount_80u`,`amount_24b`,`others_amount`,`taxable_amount`,`declaration_status`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
+(1,1,2,30,'2022/05/0016',713280.00,2000.00,0.00,0.00,0.00,0.00,0.00,0.00,711280.00,1,17,'2022-05-11 19:46:34',17,'2022-05-12 12:38:01',1,0);
 
 /*Table structure for table `optcl_change_unit_change_receiving_unit_only` */
 
@@ -8944,12 +8948,12 @@ CREATE TABLE `optcl_ti_master` (
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
 
 /*Data for the table `optcl_ti_master` */
 
 insert  into `optcl_ti_master`(`id`,`start_date`,`end_date`,`da_rate`,`is_latest`,`status`,`created_by`,`created_at`,`modified_by`,`modified_at`,`deleted`) values 
-(1,'1986-01-01','1986-06-30',0,NULL,1,NULL,NULL,NULL,NULL,0),
+(0,'1986-01-01','1986-06-30',0,NULL,1,NULL,NULL,NULL,NULL,0),
 (2,'1986-07-01','1986-12-31',4,NULL,1,NULL,NULL,NULL,NULL,0),
 (3,'1987-01-01','1987-06-30',8,NULL,1,NULL,NULL,NULL,NULL,0),
 (4,'1987-07-01','1987-12-31',13,NULL,1,NULL,NULL,NULL,NULL,0),
@@ -8987,8 +8991,8 @@ insert  into `optcl_ti_master`(`id`,`start_date`,`end_date`,`da_rate`,`is_latest
 (36,'2003-07-01','2003-12-31',59,NULL,1,NULL,NULL,NULL,NULL,0),
 (37,'2004-01-01','2004-06-30',61,NULL,1,NULL,NULL,NULL,NULL,0),
 (38,'2004-07-01','2004-12-31',72,NULL,1,NULL,NULL,NULL,NULL,0),
-(39,'2005-01-01','2005-06-30',NULL,NULL,1,NULL,NULL,NULL,NULL,0),
-(40,'2005-07-01','2005-12-31',NULL,NULL,1,NULL,NULL,NULL,NULL,0),
+(39,'2005-01-01','2005-06-30',0,NULL,1,NULL,NULL,NULL,NULL,0),
+(40,'2005-07-01','2005-12-31',0,NULL,1,NULL,NULL,NULL,NULL,0),
 (41,'2006-01-01','2006-06-30',0,NULL,1,NULL,NULL,NULL,NULL,0),
 (42,'2006-07-01','2006-12-31',2,NULL,1,NULL,NULL,NULL,NULL,0),
 (43,'2007-01-01','2007-06-30',6,NULL,1,NULL,NULL,NULL,NULL,0),
@@ -9019,8 +9023,10 @@ insert  into `optcl_ti_master`(`id`,`start_date`,`end_date`,`da_rate`,`is_latest
 (68,'2019-07-01','2019-12-31',17,NULL,1,NULL,NULL,NULL,NULL,0),
 (69,'2020-01-01','2020-06-30',17,NULL,1,NULL,NULL,NULL,NULL,0),
 (70,'2020-07-01','2020-12-31',17,NULL,1,NULL,NULL,NULL,NULL,0),
-(71,'2021-01-01','2021-06-30',NULL,NULL,1,NULL,NULL,NULL,NULL,0),
-(72,'2021-07-01','2021-12-31',NULL,NULL,1,NULL,NULL,NULL,NULL,0);
+(71,'2021-01-01','2021-06-30',0,NULL,1,NULL,NULL,NULL,NULL,0),
+(72,'2021-07-01','2021-12-31',0,NULL,1,NULL,NULL,NULL,NULL,0),
+(73,'2022-01-01','2022-06-30',0,NULL,1,NULL,NULL,NULL,NULL,0),
+(74,'2022-07-01','2022-12-31',0,NULL,1,NULL,NULL,NULL,NULL,0);
 
 /*Table structure for table `optcl_unit_master` */
 

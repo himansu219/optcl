@@ -735,10 +735,12 @@ class ExistingProposalController extends Controller {
 
     public function show_taxable_amount($appID) {
         //dd($appID);
+        // Only for Existing User
         $application_id = $appID;
         $applicationDetails = DB::table('optcl_existing_user')
                                 ->join('optcl_pension_type_master', 'optcl_pension_type_master.id', '=', 'optcl_existing_user.pensioner_type')
-                                ->select('optcl_existing_user.*', 'optcl_pension_type_master.pension_type')
+                                ->join('optcl_application_type', 'optcl_application_type.id', '=', 'optcl_existing_user.application_type')
+                                ->select('optcl_existing_user.*', 'optcl_pension_type_master.pension_type', 'optcl_application_type.type_name AS application_type_name')
                                 ->where('optcl_existing_user.id', '=', $application_id)
                                 ->first();
         $response = [];
@@ -747,6 +749,9 @@ class ExistingProposalController extends Controller {
             $basic_amount = $applicationDetails->basic_amount;
             $additional_pension_amount = $applicationDetails->additional_pension_amount == NULL ? 0 : $applicationDetails->additional_pension_amount;
             $ti_amount = $applicationDetails->ti_amount;
+            $ti_percentage = $applicationDetails->ti_percentage;
+            $gross_pension_amount = $applicationDetails->gross_pension_amount;
+            $application_type_name = $applicationDetails->application_type_name;
             $total = $basic_amount + $additional_pension_amount + $ti_amount;
             $response = [
                 "pensioner_name" => $applicationDetails->pensioner_name,
@@ -755,7 +760,10 @@ class ExistingProposalController extends Controller {
                 "pension_type_id" => $applicationDetails->pensioner_type,
                 "basic_amount" => $basic_amount,
                 "additional_pension_amount" => $additional_pension_amount,
-                "ti_amount" => $ti_amount, 
+                "ti_amount" => $ti_amount,
+                "ti_percentage" => $ti_percentage,
+                "gross_pension_amount" => $gross_pension_amount,
+                "application_type_name" => $application_type_name,
                 "total" => $total,
                 "total_income" => $applicationDetails->total_income,
             ];

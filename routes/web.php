@@ -302,6 +302,8 @@ Route::post('pension-unit/update-pension-record/revision-basic-pension/edit-form
 Route::get('pension-unit/update-pension-record/revision-basic-pension/view/{id}', [PensionerRecordUpdateController::class, 'revision_basic_pension_view_page'])->name('pension_unit_revision_basic_pension_view');
 // Pensioner Details
 Route::post('pension-unit/update-pension-record/revision-basic-pension/pensioner-details', [PensionerRecordUpdateController::class, 'pensioner_details'])->name('revision_basic_pension_pensioner_details');
+// Taxable Amount Update Redirection
+Route::get('pension-unit/update-pension-record/revision-basic-pension/taxable-amount-update/{id}', [PensionerRecordUpdateController::class, 'revision_taxable_amount_calculation_page'])->name('pension_unit_revision_taxable_amount_calculation_page');
 /* ------ Additional Pension ---------- */
 // Form Submission
 Route::post('pension-unit/update-pension-record/additional-pension-submission', [PensionerRecordUpdateController::class, 'additional_pension_submission'])->name('pension_unit_additional_pension_submission');

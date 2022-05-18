@@ -71,17 +71,27 @@
                                 <h4 class="card-title">Pensioner Details</h4>
                                 <table class="table table-bordered">
                                     <tr>
-                                        <th width="25%">Pensioner Name</th>
-                                        <td>{{ $response['pensioner_name'] }}</td>
+                                        <th>Application Type</th>
+                                        <td>{{ $response['application_type_name'] }}</td>
+                                        <th>Pensioner Type</th>
+                                        <td>{{ $response['pension_type'] }}</td>
                                     </tr>
                                     <tr>
+                                        <th width="25%">Pensioner Name</th>
+                                        <td>{{ $response['pensioner_name'] }}</td>
                                         <th>PPO No.</th>
                                         <td>{{ $response['ppo_number'] }}</td>
                                     </tr>
-                                        <th>Application Type</th>
-                                        <td>{{ $response['pension_type'] }}</td>
+                                    <tr>
+                                        <th>TI Amount (%)</th>
+                                        <td>{{ $response['ti_amount'] ? number_format($response['ti_amount'], 2) : 0 }} ({{ $response['ti_percentage'] }}%)</td>
+                                        <th>Basic Amount</th>
+                                        <td>{{ $response['basic_amount'] ? number_format($response['basic_amount'], 2) : 0 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Gross Pension Amount</th>
+                                        <td colspan="3">{{ $response['gross_pension_amount'] ? number_format($response['gross_pension_amount'], 2) : 0 }}</td>
                                     </tr>                             
-                                    
                                 </table>
                             </div> 
                             <div class="col-md-8">

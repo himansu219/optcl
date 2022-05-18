@@ -24,6 +24,9 @@
               <h4 class="card-title">Revision of Basic Pension</h4>
               <form method="post" action="" autocomplete="off" id="revision_basic_pension">
                   @csrf
+                  <input type="hidden" name="application_id" id="application_id">
+                  <input type="hidden" name="pensioner_type_id" id="pensioner_type_id">
+                  <input type="hidden" name="application_type_id" id="application_type_id">
                   <input type="hidden" name="revision_basic_pension_changed_type_id" id="revision_basic_pension_changed_type_id" >
                   <div class="row">
                       <div class="col-md-4 form-group">
@@ -93,6 +96,10 @@
           $("#rbp_basic_amt").val(response.basic_amount);
           $("#rbp_pension_emp_no").val(response.employee_no);
           $("#rbp_name_pensioner").val(response.pensioner_name);
+
+          $("#application_id").val(response.application_id);
+          $("#pensioner_type_id").val(response.pensioner_type);
+          $("#application_type_id").val(response.application_type);
         });         
       });
 

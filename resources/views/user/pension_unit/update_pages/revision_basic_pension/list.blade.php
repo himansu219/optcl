@@ -116,6 +116,7 @@
                         <th>Sl No.</th>
                         <th>PPO No.</th>
                         <th>Revised Basic Amount</th>
+                        <th>O.O No.</th>
                         <th>Status</th>
                         <th>Created at</th>
                         <th>Action</th>
@@ -128,6 +129,7 @@
                           <td>{{ $result->firstItem() + $key }}</td>
                           <td>{{ $list->ppo_no }}</td>
                           <td>{{ $list->pensioner_basic_amount ? number_format($list->pensioner_basic_amount, 2) : 0 }}</td>
+                          <td>{{$list->oo_no}}</td>
                           <td>{{$list->status_name}}</td>
                           <td>{{ date("d-m-Y h:i A", strtotime($list->created_at)) }}</td>
                           <td class="text-center">
@@ -138,6 +140,7 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" style="left: -21px;">
                                         <a href="{{ route('pension_unit_revision_basic_pension_edit_page', array($list->cID)) }}" class="dropdown-item edit_desig"><i class="fa fa-pencil-square-o"></i>Edit</a>
+                                        <a href="{{ route('pension_unit_revision_taxable_amount_calculation_page', array($list->id)) }}" class="dropdown-item edit_desig"><i class="fa fa-calculator"></i>Taxable Income</a>
                                         <a href="{{ route('pension_unit_revision_basic_pension_view', array($list->cID)) }}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
                                     </div>
                                 </div>

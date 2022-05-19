@@ -53,19 +53,24 @@
 <div class="content-wrapper">
 	<div class="row">
 		<div class="col-12 grid-margin">
-            <nav aria-label="breadcrumb" role="navigation">
+            <nav aria-label="breadcrumb" role="navigation" class="bg-white">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
                     <li class="breadcrumb-item">Update Pension Record</li>
+                    @if(Session::has('ppo_no'))
+                    <li class="breadcrumb-item"><a href="{{ route('pension_unit_revision_basic_pension') }}">Revision of Basic Pension</a></li>
+                    @else
                     <li class="breadcrumb-item"><a href="{{ route('pension_unit_tds_information_list_page') }}">TDS Information</a></li>
+                    @endif
                     <li class="breadcrumb-item">Add</li>
                 </ol>
             </nav> 
+            <!-- <input type="hidden" name="" -->
             <form method="post" action="" id="net_pension_application" autocomplete="off">
                 @csrf
-                <input type="hidden" name="application_id" id="application_id" value="">
-                <input type="hidden" name="pensioner_type_id" id="pensioner_type_id" value="">
-                <input type="hidden" name="application_type_id" id="application_type_id" value="">
+                <input type="hidden" name="application_id" id="application_id" value="{{ Session::get('application_id') }}">
+                <input type="hidden" name="pensioner_type_id" id="pensioner_type_id" value="{{ Session::get('pensioner_type') }}">
+                <input type="hidden" name="application_type_id" id="application_type_id" value="{{ Session::get('application_type') }}">
     			<div class="card">
     				<div class="card-body">
                         <div class="row">
@@ -75,7 +80,7 @@
                                     <tr>
                                         <th>PPO No.</th>
                                         <td>
-                                            <input type="test" class="form-control ppo_number_format" maxlength="12" name="tds_info_ppo_no" id="tds_info_ppo_no">
+                                            <input type="test" class="form-control ppo_number_format" maxlength="12" name="tds_info_ppo_no" id="tds_info_ppo_no" value="{{ Session::get('ppo_no') }}" @if(Session::has('ppo_no')) readonly @endif>
                                             <label id="tds_info_ppo_no-error" class="error text-danger" for="tds_info_ppo_no" ></label>
                                         </td>
                                     </tr>
@@ -87,7 +92,7 @@
                                     <tr>
                                         <th colspan="2">Total Income</th>
                                         <td colspan="2">
-                                            <input type="text" class="form-control amount_type" maxlength="8" name="tds_info_total_income" id="tds_info_total_income" readonly>                                            
+                                            <input type="text" class="form-control amount_type" maxlength="8" name="tds_info_total_income" id="tds_info_total_income" readonly value="{{ Session::get('total_income') }}">                                            
                                             <label id="tds_info_total_income-error" class="error text-danger" for="tds_info_total_income" ></label>
                                             <span id="gross_basic_show"></span>
                                         </td>

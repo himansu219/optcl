@@ -53,7 +53,7 @@
 <div class="content-wrapper">
 	<div class="row">
 		<div class="col-12 grid-margin">
-            <nav aria-label="breadcrumb" role="navigation">
+            <nav aria-label="breadcrumb" role="navigation" class="bg-white">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
                     <li class="breadcrumb-item">Update Pension Record</li>

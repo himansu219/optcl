@@ -27,7 +27,7 @@
                   <input type="hidden" name="application_id" id="application_id">
                   <input type="hidden" name="pensioner_type_id" id="pensioner_type_id">
                   <input type="hidden" name="application_type_id" id="application_type_id">
-                  <input type="hidden" name="revision_basic_pension_changed_type_id" id="revision_basic_pension_changed_type_id" >
+                  <input type="hidden" name="revision_basic_pension_changed_type_id" id="revision_basic_pension_changed_type_id">
                   <div class="row">
                       <div class="col-md-4 form-group">
                           <label>PPO No.<span class="text-danger">*</span></label>

@@ -332,6 +332,12 @@ Route::post('pension-unit/update-pension-record/dropped-case-death-case/edit/sub
 // View Details
 Route::get('pension-unit/update-pension-record/dropped-case-death-case/view/{id}', [PensionerRecordUpdateController::class, 'dropped_case_death_case_view_page'])->name('pension_unit_dropped_case_death_case_view');
 /* ------ Restoration of Commutation  ------*/
+// Listing
+Route::any('pension-unit/update-pension-record/restoration-commutation/list', [PensionerRecordUpdateController::class, 'restoration_commutation_listing'])->name('pension_unit_restoration_commutation');
+// Form Page
+Route::get('pension-unit/update-pension-record/restoration-commutation/add', [PensionerRecordUpdateController::class, 'restoration_commutation_add'])->name('pension_unit_restoration_commutation_add');
+// Pensioner and Commutation Details
+Route::post('pension-unit/update-pension-record/restoration-commutation/add', [PensionerRecordUpdateController::class, 'restoration_commutation_pensioner_commutation_details'])->name('pension_unit_restoration_commutation_pensioner_commutation_details');
 // Form Submission
 Route::post('pension-unit/update-pension-record/restoration-commutation/submission', [PensionerRecordUpdateController::class, 'restoration_commutation_submission'])->name('pension_unit_restoration_commutation_submission');
 // Edit Page

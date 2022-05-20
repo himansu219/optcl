@@ -85,20 +85,20 @@
                     
                     <div class="col-md-3">
                       <label>PPO No.</label>
-                      <input type="text" name="ppo_no_search" class="form-control" id="ppo_no_search" value="{{ !empty($request->ppo_no_search) ? $request->ppo_no_search : '' }}" maxlength="11">
+                      <input type="text" name="ppo_no_search" class="form-control" id="ppo_no_search" value="{{ !empty($request->ppo_no_search) ? $request->ppo_no_search : '' }}" maxlength="50">
                     </div>                    
                     <div class="col-md-3">
-                      <label>Name of Family Pensioner</label>
-                      <input type="text" name="name_family_pensioner_search" class="form-control" id="name_family_pensioner_search" value="{{ !empty($request->name_family_pensioner_search) ? $request->name_family_pensioner_search : '' }}" maxlength="11">
+                      <label>O.O. No.</label>
+                      <input type="text" name="oo_no" class="form-control" id="oo_no" value="{{ !empty($request->oo_no) ? $request->oo_no : '' }}" maxlength="50">
                     </div>
                     <div class="col-md-3">
-                      <label>Savings Bank A/C No.</label>
-                      <input type="text" name="saving_acc_no_search" class="form-control" id="saving_acc_no_search" value="{{ !empty($request->saving_acc_no_search) ? $request->saving_acc_no_search : '' }}" maxlength="11">
+                      <label>O.O. Date</label>
+                      <input type="text" name="oo_date" class="form-control datepicker-default" id="oo_date" value="{{ !empty($request->oo_date) ? $request->oo_date : '' }}" readonly>
                     </div>
 
                   </div><br>
                   <button type="submit" id="filters" class="btn btn-success">Filter</button>
-                  <a href="{{ route('pension_unit_additional_family_pensioner') }}" class="btn btn-warning">Reset</a>
+                  <a href="{{ route('pension_unit_revision_basic_pension') }}" class="btn btn-warning">Reset</a>
               </form>
             </div>
         </div>
@@ -116,7 +116,8 @@
                         <th>Sl No.</th>
                         <th>PPO No.</th>
                         <th>Revised Basic Amount</th>
-                        <th>O.O No.</th>
+                        <th>O.O. No.</th>
+                        <th>O.O. Date</th>
                         <th>Status</th>
                         <th>Created at</th>
                         <th>Action</th>
@@ -130,6 +131,7 @@
                           <td>{{ $list->ppo_no }}</td>
                           <td>{{ $list->pensioner_basic_amount ? number_format($list->pensioner_basic_amount, 2) : 0 }}</td>
                           <td>{{$list->oo_no}}</td>
+                          <td>{{date("d/m/Y", strtotime($list->oo_no_date))}}</td>
                           <td>{{$list->status_name}}</td>
                           <td>{{ date("d-m-Y h:i A", strtotime($list->created_at)) }}</td>
                           <td class="text-center">

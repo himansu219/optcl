@@ -2166,7 +2166,7 @@ CREATE TABLE `optcl_application_monthly_changed_data_mapping` (
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_application_monthly_changed_data_mapping` */
 
@@ -2194,7 +2194,8 @@ insert  into `optcl_application_monthly_changed_data_mapping`(`id`,`monthly_chan
 (21,22,3,27,17,'2022-04-11 17:31:24',NULL,NULL,1,0),
 (22,23,3,28,17,'2022-04-19 20:01:39',NULL,NULL,1,0),
 (23,24,3,29,17,'2022-04-26 16:52:24',NULL,NULL,1,0),
-(24,25,3,30,17,'2022-05-11 16:58:05',NULL,NULL,1,0);
+(24,25,3,30,17,'2022-05-11 16:58:05',NULL,NULL,1,0),
+(25,27,4,30,17,'2022-05-20 11:24:03',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_application_pensioner_type_master` */
 
@@ -2238,7 +2239,7 @@ CREATE TABLE `optcl_application_status_history` (
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=237 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=239 DEFAULT CHARSET=utf8;
 
 /*Data for the table `optcl_application_status_history` */
 
@@ -2472,7 +2473,9 @@ insert  into `optcl_application_status_history`(`id`,`is_new`,`user_id`,`applica
 (233,0,17,28,54,NULL,1,17,'2022-04-19 20:01:39',NULL,NULL,0),
 (234,0,17,29,54,NULL,1,17,'2022-04-26 16:52:24',NULL,NULL,0),
 (235,0,17,30,54,NULL,1,17,'2022-05-11 16:58:05',NULL,NULL,0),
-(236,0,17,30,50,'test',1,17,'2022-05-19 18:36:05',NULL,NULL,0);
+(236,0,17,30,50,'test',1,17,'2022-05-19 18:36:05',NULL,NULL,0),
+(237,0,17,30,50,'test forward',1,17,'2022-05-20 11:25:31',NULL,NULL,0),
+(238,0,69,30,51,'test',1,69,'2022-05-20 11:28:36',NULL,NULL,0);
 
 /*Table structure for table `optcl_application_status_master` */
 
@@ -4408,7 +4411,7 @@ CREATE TABLE `optcl_change_data_list` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_change_data_list` */
 
@@ -4433,7 +4436,9 @@ insert  into `optcl_change_data_list`(`id`,`change_data_id`,`cr_number`,`cr_appl
 (24,8,'CR202200024',1,59,17,'2022-05-11 19:46:34',NULL,NULL,1,0),
 (25,2,'CR202200025',2,59,17,'2022-05-17 19:56:40',NULL,NULL,1,0),
 (26,2,'CR202200026',3,59,17,'2022-05-17 20:01:16',NULL,NULL,1,0),
-(27,8,'CR202200027',2,59,17,'2022-05-19 17:18:54',NULL,NULL,1,0);
+(27,8,'CR202200027',2,59,17,'2022-05-19 17:18:54',NULL,NULL,1,0),
+(28,8,'CR202200028',3,59,17,'2022-05-20 11:24:03',NULL,NULL,1,0),
+(29,3,'CR202200029',2,59,17,'2022-05-20 20:48:34',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_change_data_master` */
 
@@ -4510,7 +4515,7 @@ CREATE TABLE `optcl_change_data_status_history` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_change_data_status_history` */
 
@@ -4541,7 +4546,9 @@ insert  into `optcl_change_data_status_history`(`id`,`change_data_id`,`cr_status
 (24,8,59,1,17,'2022-05-11 19:46:34',1,0),
 (25,NULL,59,2,17,'2022-05-17 19:56:40',1,0),
 (26,2,59,3,17,'2022-05-17 20:01:16',1,0),
-(27,8,59,2,17,'2022-05-19 17:18:54',1,0);
+(27,8,59,2,17,'2022-05-19 17:18:54',1,0),
+(28,8,59,3,17,'2022-05-20 11:24:03',1,0),
+(29,3,59,2,17,'2022-05-20 20:48:34',1,0);
 
 /*Table structure for table `optcl_change_data_tds_information` */
 
@@ -4570,13 +4577,14 @@ CREATE TABLE `optcl_change_data_tds_information` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_change_data_tds_information` */
 
 insert  into `optcl_change_data_tds_information`(`id`,`application_type`,`pensioner_type`,`application_id`,`ppo_no`,`total_income`,`amount_80c`,`amount_80d`,`amount_8dd`,`amount_80e`,`amount_80u`,`amount_24b`,`others_amount`,`taxable_amount`,`declaration_status`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
 (1,1,2,30,'2022/05/0016',713280.00,2000.00,0.00,0.00,0.00,0.00,0.00,0.00,711280.00,1,17,'2022-05-11 19:46:34',17,'2022-05-12 12:38:01',1,0),
-(2,2,2,30,'2022/05/0016',720000.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,720000.00,1,17,'2022-05-19 17:18:54',NULL,NULL,1,0);
+(2,2,2,30,'2022/05/0016',720000.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,720000.00,1,17,'2022-05-19 17:18:54',NULL,NULL,1,0),
+(3,2,2,30,'2022/05/0016',720000.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,720000.00,1,17,'2022-05-20 11:24:03',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_change_unit_change_receiving_unit_only` */
 
@@ -4623,12 +4631,13 @@ CREATE TABLE `optcl_changed_data_restoration_commutation` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_changed_data_restoration_commutation` */
 
 insert  into `optcl_changed_data_restoration_commutation`(`id`,`ppo_no`,`pensioner_emp_no`,`pensioner_name`,`rev_comm_amount`,`date_restoration`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
-(1,'7894/87/0001','798645','test user',45500.00,'2022-05-25',17,'2022-05-09 20:46:19',17,'2022-05-10 12:30:33',1,0);
+(1,'7894/87/0001','798645','test user',45500.00,'2022-05-25',17,'2022-05-09 20:46:19',17,'2022-05-10 12:30:33',1,0),
+(2,'2022/05/0016','NA','PENSIONER NAME',30000.00,'2022-06-04',17,'2022-05-20 20:48:34',17,'2022-05-20 21:13:56',1,0);
 
 /*Table structure for table `optcl_changed_data_type_master` */
 
@@ -5767,7 +5776,7 @@ insert  into `optcl_existing_user`(`id`,`application_type`,`pensioner_type`,`tax
 (27,2,1,2,17,1,'7894/8/9874','public/uploads/documents/1649678484-189958302.pdf','04/2022/00013',2,2240.00,'4','USER TEST',NULL,NULL,NULL,400,'89764512312',NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,2,'1990-12-31','2022-04-27',NULL,56000.00,'2022-04-28',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,564480.00,1,1400000.00,54,1,17,'2022-04-11 17:31:24',NULL,NULL,1,0),
 (28,2,1,2,17,1,'9874/2/4231','public/uploads/documents/1650378699-1780678744.pdf','04/2022/00014',2,3400.00,'4','TEST USER',NULL,NULL,NULL,401,'9876543124',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1966-08-26','2022-05-07',NULL,85000.00,'2022-05-08',NULL,NULL,NULL,NULL,NULL,NULL,NULL,88400.00,1006800.00,1,955800.00,54,1,17,'2022-04-19 20:01:39',NULL,NULL,1,0),
 (29,2,1,2,17,1,'9784/4/4657','public/uploads/documents/1650972144-1603602873.pdf','04/2022/00015',2,3440.00,'4','NEW USER NAME',NULL,NULL,NULL,400,'87956412341',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,2,'1970-02-03','2022-04-26',NULL,86000.00,'2022-04-27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,89440.00,1067280.00,0,NULL,54,1,17,'2022-04-26 16:52:24',NULL,NULL,1,0),
-(30,2,1,1,17,1,'7984/8/5467','public/uploads/documents/1652268485-1332888090.pdf','2022/05/0016',2,0.00,'0','USER NAME',NULL,NULL,NULL,399,'8977897894',NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1944-06-20','2022-05-11',NULL,90000.00,'2022-03-09',NULL,NULL,NULL,NULL,NULL,NULL,NULL,90000.00,720000.00,1,663280.00,54,1,17,'2022-05-11 16:58:05',NULL,NULL,1,0);
+(30,2,1,1,17,1,'7984/8/5467','public/uploads/documents/1652268485-1332888090.pdf','2022/05/0016',2,0.00,'0','USER NAME',NULL,NULL,NULL,399,'8977897894',NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1944-06-20','2022-05-11',NULL,90000.00,'2022-03-09',NULL,NULL,NULL,NULL,NULL,NULL,NULL,90000.00,720000.00,1,663280.00,51,1,17,'2022-05-11 16:58:05',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_existing_user_commutation` */
 
@@ -5891,7 +5900,7 @@ CREATE TABLE `optcl_monthly_changed_data` (
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_monthly_changed_data` */
 
@@ -5921,7 +5930,7 @@ insert  into `optcl_monthly_changed_data`(`id`,`appliation_type`,`pensioner_type
 (23,2,1,0,NULL,28,1,0,0,17,'2022-04-19 20:01:39',NULL,NULL,1,0),
 (24,2,1,0,NULL,29,1,0,0,17,'2022-04-26 16:52:24',NULL,NULL,1,0),
 (25,2,1,0,NULL,30,1,0,0,17,'2022-05-11 16:58:05',NULL,NULL,1,0),
-(26,2,2,1,2,30,1,0,0,17,'2022-05-19 17:18:54',NULL,NULL,1,0);
+(27,2,2,1,2,30,1,1,1,17,'2022-05-20 11:24:03',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_net_pension_commutation_list` */
 
@@ -5940,13 +5949,14 @@ CREATE TABLE `optcl_net_pension_commutation_list` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='We will store all commutation details after net pension calculation. It only for history';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='We will store all commutation details after net pension calculation. It only for history';
 
 /*Data for the table `optcl_net_pension_commutation_list` */
 
 insert  into `optcl_net_pension_commutation_list`(`id`,`net_pension_details_id`,`comm_id`,`comm_date`,`comm_amount`,`created_by`,`created_at`,`modified_by`,`modified_at`,`status`,`deleted`) values 
 (4,14,36,'2022-04-19',4500.00,17,'2022-04-20 19:42:08',NULL,NULL,1,0),
-(5,15,38,'2023-05-30',30000.00,17,'2022-05-19 17:23:13',NULL,NULL,1,0);
+(5,15,38,'2023-05-30',30000.00,17,'2022-05-19 17:23:13',NULL,NULL,1,0),
+(6,16,38,'2023-05-30',30000.00,17,'2022-05-20 11:24:49',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_net_pension_details` */
 
@@ -5977,13 +5987,14 @@ CREATE TABLE `optcl_net_pension_details` (
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_net_pension_details` */
 
 insert  into `optcl_net_pension_details`(`id`,`application_type`,`pension_type`,`application_id`,`basic_amount`,`additional_amount`,`ti_amount`,`gross_pension_amount`,`trust_recovery_amount`,`other_recovery_amount`,`net_pension_amount`,`rebate_amount`,`health_education_percentage`,`health_education_amount`,`tot_tax_amount`,`tot_tax_payable_anually`,`tds_amount`,`created_by`,`created_at`,`modified_by`,`modified_at`,`status`,`deleted`) values 
 (14,2,1,28,85000.00,0.00,3400.00,88400.00,0.00,0.00,79249.47,0.00,4.00,2146.40,53660.00,55806.40,4650.53,17,'2022-04-20 19:42:08',NULL,NULL,1,0),
-(15,2,1,30,90000.00,0.00,0.00,90000.00,0.00,0.00,57501.57,0.00,4.00,1153.12,28828.00,29981.12,2498.43,17,'2022-05-19 17:23:13',NULL,NULL,1,0);
+(15,2,1,30,90000.00,0.00,0.00,90000.00,0.00,0.00,57501.57,0.00,4.00,1153.12,28828.00,29981.12,2498.43,17,'2022-05-19 17:23:13',NULL,NULL,1,0),
+(16,2,1,30,90000.00,0.00,0.00,90000.00,0.00,0.00,57501.57,0.00,4.00,1153.12,28828.00,29981.12,2498.43,17,'2022-05-20 11:24:49',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_net_pension_tax_details` */
 
@@ -6004,7 +6015,7 @@ CREATE TABLE `optcl_net_pension_tax_details` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COMMENT='We will store all tax details according to tax regimes after net pension calculation. It only for history';
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COMMENT='We will store all tax details according to tax regimes after net pension calculation. It only for history';
 
 /*Data for the table `optcl_net_pension_tax_details` */
 
@@ -6019,7 +6030,14 @@ insert  into `optcl_net_pension_tax_details`(`id`,`net_pension_details_id`,`tax_
 (20,15,8,750001.00,1000000.00,15.00,0.00,17,'2022-05-19 17:23:13',NULL,NULL,1,0),
 (21,15,9,1000001.00,1250000.00,20.00,0.00,17,'2022-05-19 17:23:13',NULL,NULL,1,0),
 (22,15,10,1250001.00,1500000.00,25.00,0.00,17,'2022-05-19 17:23:13',NULL,NULL,1,0),
-(23,15,11,1500001.00,NULL,30.00,0.00,17,'2022-05-19 17:23:13',NULL,NULL,1,0);
+(23,15,11,1500001.00,NULL,30.00,0.00,17,'2022-05-19 17:23:13',NULL,NULL,1,0),
+(24,16,5,0.00,250000.00,0.00,0.00,17,'2022-05-20 11:24:49',NULL,NULL,1,0),
+(25,16,6,250001.00,500000.00,5.00,12500.00,17,'2022-05-20 11:24:49',NULL,NULL,1,0),
+(26,16,7,500001.00,750000.00,10.00,16328.00,17,'2022-05-20 11:24:49',NULL,NULL,1,0),
+(27,16,8,750001.00,1000000.00,15.00,0.00,17,'2022-05-20 11:24:49',NULL,NULL,1,0),
+(28,16,9,1000001.00,1250000.00,20.00,0.00,17,'2022-05-20 11:24:49',NULL,NULL,1,0),
+(29,16,10,1250001.00,1500000.00,25.00,0.00,17,'2022-05-20 11:24:49',NULL,NULL,1,0),
+(30,16,11,1500001.00,NULL,30.00,0.00,17,'2022-05-20 11:24:49',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_nominee_add_recovery` */
 

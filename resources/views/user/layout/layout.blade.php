@@ -801,7 +801,7 @@
                                         <a class="nav-link" href="{{ route('pension_unit_revision_basic_pension') }}">Revision of Basic Pension</a>
                                     </li>
                                     <li class="nav-item"> 
-                                        <a class="nav-link" href="#">Restoration of Commutation</a>
+                                        <a class="nav-link" href="{{ route('pension_unit_restoration_commutation') }}">Restoration of Commutation</a>
                                     </li>
                                     <li class="nav-item"> 
                                         <a class="nav-link" href="#">Additional Pension</a>

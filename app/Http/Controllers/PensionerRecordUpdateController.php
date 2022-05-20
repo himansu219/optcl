@@ -767,11 +767,11 @@ class PensionerRecordUpdateController extends Controller{
         if(!empty($request->ppo_no_search)) {
             $result = $result->where('optcl_change_data_revision_basic_pension.ppo_no', 'like', '%'.$request->ppo_no_search.'%');
         }  
-        if(!empty($request->name_family_pensioner_search)) {
-            $result = $result->where('optcl_change_data_revision_basic_pension.name_family_pensioner', 'like', '%'.$request->name_family_pensioner_search.'%');
+        if(!empty($request->oo_no)) {
+            $result = $result->where('optcl_change_data_revision_basic_pension.oo_no', 'like', '%'.$request->oo_no.'%');
         }    
-        if(!empty($request->saving_acc_no_search)) {
-            $result = $result->where('optcl_change_data_revision_basic_pension.sb_bank_ac_number', $request->saving_acc_no_search);
+        if(!empty($request->oo_date)) {
+            $result = $result->where('optcl_change_data_revision_basic_pension.oo_no_date', date('Y-m-d', strtotime(str_replace("/","-", $request->oo_date))));
         }        
         $result = $result->where('optcl_change_data_revision_basic_pension.status',1)
                         ->where('optcl_change_data_revision_basic_pension.deleted',0)
@@ -795,7 +795,7 @@ class PensionerRecordUpdateController extends Controller{
     public function pensioner_details(Request $request){
         $ppo_no = $request->ppo_no;
         $response = [];
-        DB::enableQueryLog();
+        //DB::enableQueryLog();
         $pensioner_data = DB::table('optcl_ppo_no_list AS pnl')
                                 ->leftJoin('optcl_pension_application_form AS np', function($join){
                                     $join->on('np.application_type', '=', 'pnl.application_type');
@@ -820,7 +820,6 @@ class PensionerRecordUpdateController extends Controller{
             ];
         }
         return response()->json($response);
-
     }
     // Form Submission
     public function revision_basic_pension_submission(Request $request){
@@ -1507,6 +1506,86 @@ class PensionerRecordUpdateController extends Controller{
         }
     }
     /* ------------------ Restoration of Commutation ------------------ */
+    // Listing
+    public function restoration_commutation_listing(Request $request){
+        $changed_data_list = DB::table('optcl_change_data_master')
+                                    ->where('status', 1)
+                                    ->where('status', 1)
+                                    ->orderBy('change_type', 'ASC')
+                                    ->get();
+        /* 
+            Column- Table Name
+            ------------------
+            ppo_no, date of death, name of family pensioner, created_at- optcl_change_data_addl_family_pensioner
+            status- optcl_application_status_master
+        */
+        $result = DB::table('optcl_changed_data_restoration_commutation')
+                    ->join('optcl_change_data_list', function($join){
+                        $join->on('optcl_change_data_list.change_data_id', '=', DB::raw(3));
+                        $join->on('optcl_change_data_list.cr_application_id', '=', 'optcl_changed_data_restoration_commutation.id');
+                    })
+                    ->join('optcl_application_status_master', 'optcl_application_status_master.id', '=', 'optcl_change_data_list.status_id')
+                    ->select('optcl_changed_data_restoration_commutation.*','optcl_change_data_list.id AS cID', 'optcl_change_data_list.cr_number', 'optcl_application_status_master.status_name');
+
+        if(!empty($request->ppo_no_search)) {
+            $result = $result->where('optcl_changed_data_restoration_commutation.ppo_no', 'like', '%'.$request->ppo_no_search.'%');
+        }  
+        if(!empty($request->rev_pensioner_name)) {
+            $result = $result->where('optcl_changed_data_restoration_commutation.pensioner_name', 'like', '%'.$request->rev_pensioner_name.'%');
+        }    
+        if(!empty($request->date_restoration)) {
+            $result = $result->where('optcl_changed_data_restoration_commutation.date_restoration', date('Y-m-d', strtotime(str_replace("/","-", $request->date_restoration))));
+        }        
+        $result = $result->where('optcl_changed_data_restoration_commutation.status',1)
+                        ->where('optcl_changed_data_restoration_commutation.deleted',0)
+                        ->where('optcl_change_data_list.change_data_id',3)
+                        ->orderBy('optcl_changed_data_restoration_commutation.id','DESC')
+                        ->paginate(10);
+        return view('user.pension_unit.update_pages.restoration_commutation.list', compact('result', 'changed_data_list', 'request'));
+    }
+    // Form Page
+    public function restoration_commutation_add(){
+        return view('user.pension_unit.update_pages.restoration_commutation.add');
+    }
+    // Pensioner and Commutation Details
+    public function restoration_commutation_pensioner_commutation_details(Request $request){
+        $ppo_no = $request->ppo_no;
+        $response = [];
+        //DB::enableQueryLog();
+        $pensioner_data = DB::table('optcl_ppo_no_list AS pnl')
+                                ->leftJoin('optcl_pension_application_form AS np', function($join){
+                                    $join->on('np.application_type', '=', 'pnl.application_type');
+                                    $join->on('np.pension_type_id', '=', 'pnl.pensioner_type');
+                                })
+                                ->leftJoin('optcl_existing_user AS ep', function($join2){
+                                    $join2->on('ep.application_type', '=', 'pnl.application_type');
+                                    $join2->on('ep.pensioner_type', '=', 'pnl.pensioner_type');
+                                })
+                                //->select('optcl_ppo_no_list.*', DB::raw('IF(pnl.application_type = 1, np.basic_amount, ep.basic_amount) AS basic_amount'))
+                                ->where('pnl.ppo_no', $ppo_no)
+                                ->first();
+        //dd(DB::getQueryLog(), $pensioner_data);
+        $commutation_list = "<option value=''>Select Commutation</option>";
+        if(!empty($pensioner_data) && $pensioner_data->application_type == 2){
+            $application_id = $pensioner_data->application_id;
+            $commutations = DB::table('optcl_existing_user_commutation')->where('existing_user_id', $application_id)->where('status', 1)->where('deleted', 0)->get();
+            foreach($commutations as $commutation){
+                $commutation_list .= "<option value='".$commutation->commutation_amount."'>".$commutation->commutation_amount."</option>";                
+            }
+        }
+        if($pensioner_data){
+            $response = [
+                "basic_amount" => $pensioner_data->basic_amount,
+                "employee_no" => $pensioner_data->employee_code ? $pensioner_data->employee_code : 'NA',
+                "pensioner_name" => $pensioner_data->pensioner_name,
+                "application_type" => $pensioner_data->application_type,
+                "pensioner_type" => $pensioner_data->pensioner_type,
+                "application_id" =>  $pensioner_data->application_id,
+                "commutation_list" =>  $commutation_list,
+            ];
+        }
+        return response()->json($response);
+    }
     // Form Submission
     public function restoration_commutation_submission(Request $request){
         $validation = [];
@@ -1596,7 +1675,14 @@ class PensionerRecordUpdateController extends Controller{
             //dd($branchs);
             //dd($request_details, $cr_application_id);
             if($request_details){
-                return view('user.pension_unit.update_pages.restoration_commutation_edit', compact('request_details'));
+                $ppo_no = $request_details->ppo_no;
+                $ppo_list_data = DB::table('optcl_ppo_no_list')->where('ppo_no', $ppo_no)->where('status', 1)->where('deleted', 0)->first(); 
+                $commutations = [];
+                if(!empty($ppo_list_data) && $ppo_list_data->application_type == 2){
+                    $existing_application_id = $ppo_list_data->application_id;
+                    $commutations = DB::table('optcl_existing_user_commutation')->where('existing_user_id', $existing_application_id)->where('status', 1)->where('deleted', 0)->get();                    
+                }
+                return view('user.pension_unit.update_pages.restoration_commutation.edit', compact('request_details', 'commutations'));
             }else{
                 //dd(2);
                 Session::flash('error', 'No data found');          
@@ -1677,7 +1763,7 @@ class PensionerRecordUpdateController extends Controller{
             //dd($branchs);
             //dd($request_details, $cr_application_id);
             if($request_details){
-                return view('user.pension_unit.update_pages.restoration_commutation_view', compact('request_details'));
+                return view('user.pension_unit.update_pages.restoration_commutation.view', compact('request_details'));
             }else{
                 //dd(2);
                 Session::flash('error', 'No data found');          
@@ -2098,7 +2184,27 @@ class PensionerRecordUpdateController extends Controller{
                                 'created_by' => Auth::user()->id,
                                 'created_at' => $this->current_date,
                             ];
-                            DB::table('optcl_monthly_changed_data')->insert($monthly_changed_data_revised_pension);
+                            $monthly_changed_data_id = DB::table('optcl_monthly_changed_data')->insertGetId($monthly_changed_data_revised_pension);
+                            // Data Mapping
+                            if($application_type == 1 && $pensioner_type == 1){
+                                $application_pensioner_type_id = 1;
+                            }else if($application_type == 1 && $pensioner_type == 2){
+                                $application_pensioner_type_id = 2;
+                            }else if($application_type == 2 && $pensioner_type == 1){
+                                $application_pensioner_type_id = 3;
+                            }else{
+                                $application_pensioner_type_id = 4;
+                            }
+
+                            $monthlyChangedMappingData = [
+                                "monthly_changed_data_id"   => $monthly_changed_data_id,
+                                "application_pensioner_type_id"   => $application_pensioner_type_id,
+                                "application_id"    => $application_id,
+                                "created_by"        => Auth::user()->id,
+                                "created_at"        => $this->current_date,
+                            ];
+                            DB::table('optcl_application_monthly_changed_data_mapping')->insert($monthlyChangedMappingData);
+
                         }else if(Session::has('ppo_no') && Session::get('user_type') == 'new_user'){
                             // New User
                         }

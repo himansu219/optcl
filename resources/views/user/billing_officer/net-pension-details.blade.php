@@ -416,7 +416,7 @@
                                     }
                                 }else{
                                     // Success
-                                    location.href = "{{route('billing_officer_list')}}";
+                                    location.href = "{{route('pension_unit_restoration_commutation')}}";
                                 }
                             }
                         });

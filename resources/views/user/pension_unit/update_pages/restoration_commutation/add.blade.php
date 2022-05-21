@@ -149,7 +149,7 @@
 
               $.ajax({
                   type:'POST',
-                  url:'{{ route("pension_unit_restoration_commutation") }}',
+                  url:'{{ route("pension_unit_restoration_commutation_submission") }}',
                   data: formData,
                   dataType: 'JSON',
                   processData: false,
@@ -169,7 +169,7 @@
                             $("#"+id).html(eValue);
                         }
                     }else{
-                      location.href = "{{route('pension_unit_update_pension_record')}}";
+                      location.href = "{{route('pension_unit_restoration_commutation')}}";
                     }
                   }
               });             

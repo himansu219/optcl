@@ -40,19 +40,7 @@
                                 
                                         <form class="forms-sample" autocomplete="off" id="pension_form" action="" method="post" enctype="multipart/form-data">
                                            @csrf
-                                              <div class="row form_1_">
-                                              <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputPassword4">Tax Type<span class="text-danger">*</span></label>
-                                                        <select class="js-example-basic-single form-control" id="tax_type" name="tax_type">
-                                                            <option value="">Select Tax Type</option>
-                                                            @foreach($tax_master_list as $tax_master_value)
-                                                                <option value="{{ $tax_master_value->id }}">{{ $tax_master_value->type_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <label id="tax_type-error" class="error text-danger" for="tax_type"></label>
-                                                    </div>
-                                                </div>
+                                              <div class="row form_1_">                                              
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="exampleInputPassword4">Pensioner Type<span class="text-danger">*</span></label>
@@ -311,6 +299,18 @@
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail3">Savings Bank A/C No. (Single or Joint Account with Spouse)<span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control only_number" id="saving_bank_ac_no" maxlength="18" name="saving_bank_ac_no" placeholder="Savings Bank A/C No." value="{{ isset($personal_details->savings_bank_account_no) ? $personal_details->savings_bank_account_no: ''}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" id="tax_type_div">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword4">Tax Type<span class="text-danger">*</span></label>
+                                                        <select class="js-example-basic-single form-control" id="tax_type" name="tax_type">
+                                                            <option value="">Select Tax Type</option>
+                                                            @foreach($tax_master_list as $tax_master_value)
+                                                                <option value="{{ $tax_master_value->id }}">{{ $tax_master_value->type_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <label id="tax_type-error" class="error text-danger" for="tax_type"></label>
                                                     </div>
                                                 </div>
 
@@ -755,6 +755,9 @@
                 $("#fam_pen_mob_div").show();
                 $("#fam_pen_aadhar_div").show();
                 $("#fam_pen_dob_div").show();
+                $("#tax_type_div").hide();
+                $("#tax_type").val('');
+
                 //$("#rel_cur_status_end_date_div").show();
                 // Clear Data
                 $("#gross_pension").val("");
@@ -782,6 +785,7 @@
                 $("#closing_date_div").hide();
                 $("#date_of_death_div").hide();
                 $("#attached_date_of_death_certificate_div").hide();
+                $("#tax_type_div").show();
                 // -------------------
                 $("#enhanced_pension_amount_div").hide();
                 $("#enhanced_pension_end_date_div").hide();
@@ -827,15 +831,17 @@
             }
         });
 
-        $("#ti_category_id").on('change', function(){            
-            var ti_category_id = $(this).val();
+        function tiCalculationResult(){
+            var ti_category_id = $("#ti_category_id").val();
             var basic_amount = $("#basic_pension_amount").val();
+            var additional_pension_amount = $("#additional_pension_amount").val();
             if(basic_amount != ""){
                 $('.page-loader').addClass('d-flex');
                 $.post('{{ route("category_ta_percentage_amount") }}',{
                     "_token": "{{ csrf_token() }}",
                     "ti_category_id":ti_category_id,
                     "basic_amount":basic_amount,
+                    "additional_pension_amount":additional_pension_amount,
                 },function(response){
                     $('.page-loader').removeClass('d-flex');
                     var resObj = JSON.parse(response);
@@ -846,7 +852,10 @@
             }
             setTimeout(calculate_gross_amount, 3000);
             setTimeout(tiAmtVal, 1500);
-            //calculate_gross_amount();
+        }
+
+        $("#ti_category_id").on('change', function(){  
+            setTimeout(tiCalculationResult, 1500);
         });
 
         function tiAmtVal(){
@@ -1168,7 +1177,15 @@
             onkeyup:false,
             rules: {
                 "tax_type": {
-                    required: true,
+                    required: {
+                        depends:function(){
+                            if($('#pesioner_type').val() == 2){
+                                return false;
+                            }else{
+                                return true;
+                            }
+                        }
+                    },
                 },
                 "pesioner_type": {
                     required: true,

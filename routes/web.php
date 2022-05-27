@@ -276,6 +276,8 @@ Route::get('pension-unit/update-pension-record/update', [PensionerRecordUpdateCo
 Route::any('pension-unit/update-pension-record/additional-family-pensioner/list', [PensionerRecordUpdateController::class, 'update_record_listing'])->name('pension_unit_additional_family_pensioner');
 // Form Page
 Route::get('pension-unit/update-pension-record/additional-family-pensioner/add', [PensionerRecordUpdateController::class, 'update_record_additional'])->name('update_record_update_record_additional');
+// Pensioner Details
+Route::post('pension-unit/update-pension-record/additional-family-pensioner/pensioner-details', [PensionerRecordUpdateController::class, 'additional_pensioner_new_pensioner_pensioner_details'])->name('pension_unit_additional_pensioner_new_pensioner_pensioner_details');
 // Form Submission
 Route::post('pension-unit/update-pension-record/additional-family-pensioner', [PensionerRecordUpdateController::class, 'update_record_submission'])->name('pension_unit_update_record_submission');
 // Edit Page
@@ -305,6 +307,12 @@ Route::post('pension-unit/update-pension-record/revision-basic-pension/pensioner
 // Taxable Amount Update Redirection
 Route::get('pension-unit/update-pension-record/revision-basic-pension/taxable-amount-update/{id}', [PensionerRecordUpdateController::class, 'revision_taxable_amount_calculation_page'])->name('pension_unit_revision_taxable_amount_calculation_page');
 /* ------ Additional Pension ---------- */
+// Listing
+Route::any('pension-unit/update-pension-record/additional-pension/list', [PensionerRecordUpdateController::class, 'additional_pension_listing'])->name('pension_unit_additional_pension_listing');
+// Form Page
+Route::get('pension-unit/update-pension-record/additional-pension/add', [PensionerRecordUpdateController::class, 'additional_pension_add'])->name('pension_unit_update_additional_pension_add_page');
+// Get Pensioner Details
+Route::post('pension-unit/update-pension-record/additional-pension/pensioner-details', [PensionerRecordUpdateController::class, 'additional_pension_pensioner_details'])->name('pension_unit_update_additional_pension_pensioner_details');
 // Form Submission
 Route::post('pension-unit/update-pension-record/additional-pension-submission', [PensionerRecordUpdateController::class, 'additional_pension_submission'])->name('pension_unit_additional_pension_submission');
 // Edit Page
@@ -314,6 +322,12 @@ Route::post('pension-unit/update-pension-record/additional-pension/edit/submissi
 // View Details
 Route::get('pension-unit/update-pension-record/additional-pension/view/{id}', [PensionerRecordUpdateController::class, 'additional_pension_view_page'])->name('pension_unit_additional_pension_page_view');
 /* ------ Bank Change  ------*/
+// Listing
+Route::any('pension-unit/update-pension-record/bank-change/list', [PensionerRecordUpdateController::class, 'bank_change_list'])->name('pension_unit_bank_change_list');
+// Form Page
+Route::get('pension-unit/update-pension-record/bank-change/add', [PensionerRecordUpdateController::class, 'bank_change_add'])->name('pension_unit_bank_change_add');
+// Pensioner Details
+Route::post('pension-unit/update-pension-record/bank-change/pensioner-details', [PensionerRecordUpdateController::class, 'bank_change_pensioner_details'])->name('pension_unit_bank_change_pensioner_details');
 // Form Submission
 Route::post('pension-unit/update-pension-record/bank-change-submission', [PensionerRecordUpdateController::class, 'bank_change_submission'])->name('pension_unit_bank_change_submission');
 // Edit Page
@@ -322,7 +336,28 @@ Route::get('pension-unit/update-pension-record/bank-change/edit/{id}', [Pensione
 Route::post('pension-unit/update-pension-record/bank-change/edit/submission', [PensionerRecordUpdateController::class, 'bank_change_edit_submission'])->name('pension_unit_bank_change_edit_submission');
 // View Details
 Route::get('pension-unit/update-pension-record/bank-change/view/{id}', [PensionerRecordUpdateController::class, 'bank_change_view_page'])->name('pension_unit_bank_change_view');
+/* ------ Unit Change for Receiving Unit (Only)  ------*/
+// Listing
+Route::any('pension-unit/update-pension-record/unit-change-receiving-unit-only/list', [PensionerRecordUpdateController::class, 'unit_change_receiving_unit_only_list'])->name('pension_unit_unit_change_receiving_unit_only_list');
+// Form Page
+Route::get('pension-unit/update-pension-record/unit-change-receiving-unit-only/add', [PensionerRecordUpdateController::class, 'unit_change_receiving_unit_only_add'])->name('pension_unit_unit_change_receiving_unit_only_add');
+// Pensioner Details
+Route::post('pension-unit/update-pension-record/unit-change-receiving-unit-only/pensioner-details', [PensionerRecordUpdateController::class, 'unit_change_receiving_unit_only_pensioner_details'])->name('pension_unit_unit_change_receiving_unit_only_pensioner_details');
+// Form Submission
+Route::post('pension-unit/update-pension-record/unit-change-receiving-unit-only/submission', [PensionerRecordUpdateController::class, 'unit_change_receiving_unit_only_submission'])->name('pension_unit_unit_change_receiving_unit_only_submission');
+// Edit Page
+Route::get('pension-unit/update-pension-record/unit-change-receiving-unit-only/edit/{id}', [PensionerRecordUpdateController::class, 'unit_change_receiving_unit_only_edit_page'])->name('unit_change_receiving_unit_only_edit_page');
+// Edit Form Submission
+Route::post('pension-unit/update-pension-record/unit-change-receiving-unit-only/edit/submission', [PensionerRecordUpdateController::class, 'unit_change_receiving_unit_only_edit_submission'])->name('pension_unit_unit_change_receiving_unit_only_edit_submission');
+// View Page
+Route::get('pension-unit/update-pension-record/unit-change-receiving-unit-only/view/{id}', [PensionerRecordUpdateController::class, 'unit_change_receiving_unit_only_view_page'])->name('unit_change_receiving_unit_only_view_page');
 /* ------ Dropped Case/ Death Case  ------*/
+// Listing
+Route::any('pension-unit/update-pension-record/udropped-case-death-case/list', [PensionerRecordUpdateController::class, 'dropped_case_death_case_list'])->name('pension_unit_dropped_case_death_case_list');
+// Form Page
+Route::get('pension-unit/update-pension-record/udropped-case-death-case/add', [PensionerRecordUpdateController::class, 'dropped_case_death_case_add'])->name('pension_unit_dropped_case_death_case_add');
+// Pensioner Details
+Route::post('pension-unit/update-pension-record/dropped-case-death-case/pensioner-details', [PensionerRecordUpdateController::class, 'dropped_case_death_case_pensioner_details'])->name('pension_unit_dropped_case_death_case_pensioner_details');
 // Form Submission
 Route::post('pension-unit/update-pension-record/dropped-case-death-case/submission', [PensionerRecordUpdateController::class, 'dropped_case_death_case_submission'])->name('pension_unit_dropped_case_death_case_submission');
 // Edit Page
@@ -346,15 +381,6 @@ Route::get('pension-unit/update-pension-record/restoration-commutation/edit/{id}
 Route::post('pension-unit/update-pension-record/restoration-commutation/edit/submission', [PensionerRecordUpdateController::class, 'restoration_commutation_edit_submission'])->name('pension_unit_restoration_commutation_edit_submission');
 // View Details
 Route::get('pension-unit/update-pension-record/restoration-commutation/view/{id}', [PensionerRecordUpdateController::class, 'restoration_commutation_view_page'])->name('pension_unit_restoration_commutation_view');
-/* ------ Unit Change for Receiving Unit (Only)  ------*/
-// Form Submission
-Route::post('pension-unit/update-pension-record/unit-change-receiving-unit-only/submission', [PensionerRecordUpdateController::class, 'unit_change_receiving_unit_only_submission'])->name('pension_unit_unit_change_receiving_unit_only_submission');
-// Edit Page
-Route::get('pension-unit/update-pension-record/unit-change-receiving-unit-only/edit/{id}', [PensionerRecordUpdateController::class, 'unit_change_receiving_unit_only_edit_page'])->name('unit_change_receiving_unit_only_edit_page');
-// Edit Form Submission
-Route::post('pension-unit/update-pension-record/unit-change-receiving-unit-only/edit/submission', [PensionerRecordUpdateController::class, 'unit_change_receiving_unit_only_edit_submission'])->name('pension_unit_unit_change_receiving_unit_only_edit_submission');
-// View Page
-Route::get('pension-unit/update-pension-record/unit-change-receiving-unit-only/view/{id}', [PensionerRecordUpdateController::class, 'unit_change_receiving_unit_only_view_page'])->name('unit_change_receiving_unit_only_view_page');
 /* ------ TDS Information  ------*/
 // List Page
 Route::get('pension-unit/update-pension-record/tds-information/list/', [PensionerRecordUpdateController::class, 'tds_information_list_page'])->name('pension_unit_tds_information_list_page');
@@ -380,9 +406,11 @@ Route::get('pension-unit/update-pension-record/life-certificate/view/{appID}', [
 
 /* ------ Arrears  ------*/
 // Listing
-Route::get('pension-unit/update-pension-record/arrears', [ArrearsController::class, 'index'])->name('billing_officer_arrears');
+Route::get('billing-officers/update-pension-record/arrears', [ArrearsController::class, 'index'])->name('billing_officer_arrears');
 // Add
-Route::get('pension-unit/update-pension-record/arrears/add', [ArrearsController::class, 'add'])->name('billing_officer_arrears_add');
+Route::get('billing-officers/update-pension-record/arrears/add', [ArrearsController::class, 'add'])->name('billing_officer_arrears_add');
+// Pensioner Details
+Route::post('billing-officers/arrears/pensioner-details/', [ArrearsController::class, 'pensioner_details'])->name('billing_officer_pensioner_details');
 
 // Income details according to PPO number
 Route::post('pension-unit/update-pension-record/total-income-value/details/', [PensionerRecordUpdateController::class, 'get_data_from_ppo_no'])->name('pension_unit_get_data_from_ppo_no');

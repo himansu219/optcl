@@ -4360,12 +4360,13 @@ CREATE TABLE `optcl_change_data_dropped_death_case` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_change_data_dropped_death_case` */
 
 insert  into `optcl_change_data_dropped_death_case`(`id`,`ppo_no`,`pensioner_emp_no`,`pensioner_name`,`dod`,`remark_value`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
-(1,'7984/78/0001','798564','test name','2022-05-09','test user remark updated',17,'2022-05-09 16:44:29',17,'2022-05-09 17:58:40',1,0);
+(1,'7984/78/0001','798564','test name','2022-05-09','test user remark updated',17,'2022-05-09 16:44:29',17,'2022-05-09 17:58:40',1,0),
+(2,'2022/05/0016','NA','PENSIONER NAME','2022-05-24','Test remark goes here test',17,'2022-05-24 12:39:55',17,'2022-05-24 13:04:38',1,0);
 
 /*Table structure for table `optcl_change_data_life_certificate` */
 
@@ -4414,7 +4415,7 @@ CREATE TABLE `optcl_change_data_list` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_change_data_list` */
 
@@ -4442,7 +4443,8 @@ insert  into `optcl_change_data_list`(`id`,`change_data_id`,`cr_number`,`cr_appl
 (27,8,'CR202200027',2,59,17,'2022-05-19 17:18:54',NULL,NULL,1,0),
 (28,8,'CR202200028',3,59,17,'2022-05-20 11:24:03',NULL,NULL,1,0),
 (29,3,'CR202200029',2,59,17,'2022-05-20 20:48:34',NULL,NULL,1,0),
-(31,3,'CR202200031',4,59,17,'2022-05-21 13:14:40',NULL,NULL,1,0);
+(31,3,'CR202200031',4,59,17,'2022-05-21 13:14:40',NULL,NULL,1,0),
+(32,7,'CR202200032',2,59,17,'2022-05-24 12:39:55',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_change_data_master` */
 
@@ -4519,7 +4521,7 @@ CREATE TABLE `optcl_change_data_status_history` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_change_data_status_history` */
 
@@ -4553,7 +4555,8 @@ insert  into `optcl_change_data_status_history`(`id`,`change_data_id`,`cr_status
 (27,8,59,2,17,'2022-05-19 17:18:54',1,0),
 (28,8,59,3,17,'2022-05-20 11:24:03',1,0),
 (29,3,59,2,17,'2022-05-20 20:48:34',1,0),
-(31,3,59,4,17,'2022-05-21 13:14:40',1,0);
+(31,3,59,4,17,'2022-05-21 13:14:40',1,0),
+(32,7,59,2,17,'2022-05-24 12:39:55',1,0);
 
 /*Table structure for table `optcl_change_data_tds_information` */
 
@@ -8658,7 +8661,7 @@ insert  into `optcl_ppo_no_list`(`id`,`pensioner_type_id`,`application_type`,`pe
 (13,3,NULL,NULL,NULL,'04/2022/00013',17,'2022-04-11 17:31:24',1,0),
 (14,3,NULL,NULL,NULL,'04/2022/00014',17,'2022-04-19 20:01:39',1,0),
 (15,3,NULL,NULL,NULL,'04/2022/0015',17,'2022-04-26 16:52:24',1,0),
-(16,3,2,2,30,'2022/05/0016',17,'2022-05-11 16:58:05',1,0);
+(16,3,2,1,30,'2022/05/0016',17,'2022-05-11 16:58:05',1,0);
 
 /*Table structure for table `optcl_relation_master` */
 

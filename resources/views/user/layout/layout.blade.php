@@ -804,16 +804,16 @@
                                         <a class="nav-link" href="{{ route('pension_unit_restoration_commutation') }}">Restoration of Commutation</a>
                                     </li>
                                     <li class="nav-item"> 
-                                        <a class="nav-link" href="#">Additional Pension</a>
+                                        <a class="nav-link" href="{{ route('pension_unit_additional_pension_listing') }}">Additional Pension</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('pension_unit_bank_change_list') }}">Bank Change</a>
                                     </li>
                                     <li class="nav-item"> 
-                                        <a class="nav-link" href="#">Bank Change</a>
+                                        <a class="nav-link" href="{{ route('pension_unit_unit_change_receiving_unit_only_list') }}">Unit Change for Receiving Unit (Only)</a>
                                     </li>
-                                    <li class="nav-item"> 
-                                        <a class="nav-link" href="#">Unit Change for Receiving Unit (Only)</a>
-                                    </li>
-                                    <li class="nav-item"> 
-                                        <a class="nav-link" href="#">Dropped Case/Death Case</a>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('pension_unit_dropped_case_death_case_list') }}">Dropped Case/Death Case</a>
                                     </li>
                                     <li class="nav-item"> 
                                         <a class="nav-link" href="{{ route('pension_unit_tds_information_list_page') }}">TDS Information</a>

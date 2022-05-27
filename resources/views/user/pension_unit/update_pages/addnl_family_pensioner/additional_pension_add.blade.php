@@ -1,7 +1,13 @@
 @extends('user.layout.layout')
 @section('section_content')
 
-<div class="content-wrapper">    
+<div class="content-wrapper"> 
+  @if(Session::has('error'))
+      <div class="alert alert-danger">{{ Session::get('error') }}</div>
+  @endif
+  @if(Session::has('success'))
+      <div class="alert alert-success">{{ Session::get('success') }}</div>
+  @endif
   <div class="row">
     <div class="col-12 grid-margin">
        <nav aria-label="breadcrumb" role="navigation" class="bg-white">
@@ -12,12 +18,7 @@
           <li class="breadcrumb-item active" aria-current="page">Add</li>
         </ol>
       </nav>
-      @if(Session::has('error'))
-          <div class="alert alert-danger">{{ Session::get('error') }}</div>
-      @endif
-      @if(Session::has('success'))
-          <div class="alert alert-success">{{ Session::get('success') }}</div>
-      @endif
+      
       
       <div class="card">
         <div class="card-body">
@@ -33,7 +34,7 @@
                 </div>
                 <div class="col-md-4 form-group">
                   <label>Pension Employee No.<span class="text-danger">*</span></label>
-                  <input type="text" class="form-control only_number" name="pension_emp_no" id="pension_emp_no" maxlength="6">
+                  <input type="text" class="form-control only_number" name="pension_emp_no" id="pension_emp_no" maxlength="6" readonly>
                   <label id="pension_emp_no-error" class="error text-danger" for="pension_emp_no"></label>
                 </div>
                 <div class="col-md-4 form-group">
@@ -43,7 +44,7 @@
                 </div>
                 <div class="col-md-4 form-group">
                   <label>Name of Family Pensioner<span class="text-danger">*</span></label>
-                  <input type="text" class="form-control alpha" name="name_family_pensioner" id="name_family_pensioner" >
+                  <input type="text" class="form-control alpha" name="name_family_pensioner" id="name_family_pensioner" readonly>
                   <label id="name_family_pensioner-error" class="error text-danger" for="name_family_pensioner"></label>
                 </div>
                 <div class="col-md-4 form-group">
@@ -87,7 +88,7 @@
                   </select>
                   <label id="noc_previous_bank-error" class="error text-danger" for="noc_previous_bank"></label>
                 </div>
-                <div class="col-md-4 form-group">
+                <div class="col-md-4 form-group" id="noc_previous_bank_attachment_div">
                     <label>NOC Document<span class="text-danger">*</span></label>
                     <input type="file" name="noc_previous_bank_attachment" id="noc_previous_bank_attachment" class="file-upload-default dob_attachment_path" >
                     <div class="input-group col-xs-12">
@@ -126,6 +127,32 @@
           return this.optional(element) || /[0-9]{4}\b[\/]{1}[0-9]{2}\b[\/]{1}[0-9]{4}\b/i.test(value); 
       }, "Please enter valid PPO no");
       
+      $("#noc_previous_bank").on("change", function () {
+        var previuos_bank_status = $(this).val();
+        if(previuos_bank_status == 0){
+          $("#noc_previous_bank_attachment_div").addClass("d-none");
+        }else{
+          $("#noc_previous_bank_attachment_div").removeClass("d-none");
+        }
+      });
+
+      $("#ppo_number").on('keyup', function (){
+        var ppo_no = $(this).val();
+        $.post("{{ route('pension_unit_additional_pensioner_new_pensioner_pensioner_details') }}",
+        { 
+          "_token": "{{ csrf_token() }}",
+          "ppo_no": ppo_no,
+        },function(response){         
+          if(response.employee_no){
+            $("#pension_emp_no").val(response.employee_no);
+            //$("#dcdc_name_pensioner").val(response.pensioner_name);
+            //$("#dcdc_name_pensioner").valid();
+          }else{
+            $("#pension_emp_no").val('');
+            //$("#dcdc_name_pensioner").val('');
+          }          
+        });         
+      });
 
       $("#additional_family_pensioner_after_death").validate({
           rules: {
@@ -165,7 +192,16 @@
                   required: true,
               },
               "noc_previous_bank_attachment":{
-                    required: true,
+                    required: {
+                      depends:function(element){
+                        var noc_previous_bank = $("#noc_previous_bank").val();
+                        if(noc_previous_bank == 1 || noc_previous_bank == "" ){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }
+                  },
               },
           },
           messages: {

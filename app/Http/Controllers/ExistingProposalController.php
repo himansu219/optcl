@@ -24,6 +24,7 @@ class ExistingProposalController extends Controller {
     public function get_category_ti_amount(Request $request){
         $ti_category_id = $request->ti_category_id;
         $basic_amount = $request->basic_amount;
+        $additional_pension_amount = $request->additional_pension_amount ? $request->additional_pension_amount : 0;
         $categoryDetails = DB::table('optcl_ti_category_master')
                                 ->join('optcl_ti_master', 'optcl_ti_master.id', '=', 'optcl_ti_category_master.ti_master_id')
                                 ->select('optcl_ti_category_master.*', 'optcl_ti_master.da_rate')
@@ -32,7 +33,7 @@ class ExistingProposalController extends Controller {
                                 ->where('optcl_ti_category_master.deleted', 0)->first();
         //print_r($categoryDetails);
         $da_rate = $categoryDetails->da_rate;
-        $da_amount = ($basic_amount/100)*$da_rate;
+        $da_amount = (($basic_amount + $additional_pension_amount)/100)*$da_rate;
         $display_value = $da_amount." (".$da_rate."%)";
         echo json_encode(['da_amount' => $da_amount, 'da_percentage' => $da_rate, 'display_value' => $display_value]);
     }
@@ -322,7 +323,7 @@ class ExistingProposalController extends Controller {
         }
 
         $tax_type = $request->tax_type;
-        if($tax_type == ""){
+        if($pesioner_type == 2 && $tax_type == ""){
             $validation['error'][] = array("id" => "tax_type-error","eValue" => "Please select tax type");
         }
 
@@ -339,8 +340,7 @@ class ExistingProposalController extends Controller {
             $ppo_attachment_path = Util::upload_file($ppo_attachment_file, $filename, null, $upload_path);
         }else{
             $validation['error'][] = array("id" => "attached_ppo_certificate-error","eValue" => "Please upload PPO file");
-        }
-        
+        }        
         if(!isset($validation['error'])){
             DB::beginTransaction();
             try{
@@ -392,6 +392,7 @@ class ExistingProposalController extends Controller {
                 $commutation_amount = $request->commutation_amount;
                 $commutation_amount_end_date = $request->commutation_amount_end_date;
                 foreach($commutation_amount as $key => $commutation_amount){
+                    
                     $commutation_data = [
                         "existing_user_id"      => $existingInsertedID,
                         "commutation_amount"    => $commutation_amount,

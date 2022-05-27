@@ -5,6 +5,7 @@
     .tablerow {
          background-color: white;
      }
+    
 </style>
 <div class="content-wrapper">
     <div class="row">
@@ -22,74 +23,109 @@
                     </ol>
                 </nav>
              
-                <div class="card">
-                  <div class="card-body">                
-                    <form class="forms-sample" id="add_applicant_form" method="post">
-                      @csrf
-                      <div class="row">
-                            <div class="col-md-4">
-                              <div class="form-group">
-                                  <label for="exampleInputEmail3">PPO No.<span class="span-red">*</span></label>
-                                  <input type="text" class="form-control" id="applicant_name" name="applicant_name" placeholder="Enter applicant name" autocomplete="off">
-                                  <label id="applicant_name-error" class="error mt-2 text-danger" for="applicant_name"></label>
-                              </div>
-                            </div>
-                      </div>                 
-                      <button type="submit" class="btn btn-success mr-2">Submit</button>
-                    </form>
-                  </div>
-                </div>
+               
 
                 <div class="card">
                   <div class="card-body">     
                     <!-- <h4 class="card-title">Pension Proposal List</h4>            -->
-                    <form class="forms-sample" id="add_applicant_form" method="post">
+                    <form class="forms-sample" id="arrear_form_id" method="post">
                       @csrf
+                      <input type="hidden" id="application_id" name="application_id">
+                      <input type="hidden" id="application_type" name="application_type">
+                      <input type="hidden" id="pensioner_type" name="pensioner_type">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group">
+                              <label for="exampleInputEmail3">PPO No.<span class="span-red">*</span></label>
+                              <input type="text" class="form-control ppo_number_format" id="arrear_ppo_no" name="arrear_ppo_no">
+                              <label id="arrear_ppo_no-error" class="error mt-2 text-danger" for="arrear_ppo_no"></label>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                              <label for="exampleInputEmail3">Pensioner Name<span class="span-red">*</span></label>
+                              <input type="text" class="form-control" id="arrear_pensioner_name" name="arrear_pensioner_name" readonly>
+                              <label id="arrear_pensioner_name-error" class="error mt-2 text-danger" for="arrear_pensioner_name"></label>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                              <label for="exampleInputEmail3">From Date<span class="span-red">*</span></label>
+                              <input type="text" class="form-control datepicker-default" id="arraer_from_date" name="arraer_from_date" readonly>
+                              <label id="arraer_from_date-error" class="error mt-2 text-danger" for="arraer_from_date"></label>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                              <label for="exampleInputEmail3">To Date<span class="span-red">*</span></label>
+                              <input type="text" class="form-control datepicker-default" id="arrear_to_date" name="arrear_to_date" readonly>
+                              <label id="arrear_to_date-error" class="error mt-2 text-danger" for="arrear_to_date"></label>
+                          </div>
+                        </div>
+                      </div>
+                      <h4>Due</h2>
                       <div class="row">
                             <div class="col-md-3">
                               <div class="form-group">
-                                  <label for="exampleInputEmail3">From Date<span class="span-red">*</span></label>
-                                  <input type="text" class="form-control" id="applicant_name" name="applicant_name" placeholder="Enter applicant name" autocomplete="off">
-                                  <label id="applicant_name-error" class="error mt-2 text-danger" for="applicant_name"></label>
+                                  <label for="exampleInputEmail3">TI Percentage<span class="span-red">*</span></label>
+                                  <input type="text" class="form-control only_number" maxlength="3" id="due_arrear_ti_percentage" name="due_arrear_ti_percentage">
+                                  <label id="due_arrear_ti_percentage-error" class="error mt-2 text-danger" for="due_arrear_ti_percentage"></label>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="form-group">
-                                  <label for="exampleInputEmail3">To Date<span class="span-red">*</span></label>
-                                  <input type="text" class="form-control" id="applicant_name" name="applicant_name" placeholder="Enter applicant name" autocomplete="off">
-                                  <label id="applicant_name-error" class="error mt-2 text-danger" for="applicant_name"></label>
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                  <label for="exampleInputEmail3">Old TI Percentage<span class="span-red">*</span></label>
-                                  <input type="text" class="form-control" id="applicant_name" name="applicant_name" placeholder="Enter applicant name" autocomplete="off">
-                                  <label id="applicant_name-error" class="error mt-2 text-danger" for="applicant_name"></label>
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                  <label for="exampleInputEmail3">New TI Percentage<span class="span-red">*</span></label>
-                                  <input type="text" class="form-control" id="applicant_name" name="applicant_name" placeholder="Enter applicant name" autocomplete="off">
-                                  <label id="applicant_name-error" class="error mt-2 text-danger" for="applicant_name"></label>
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                  <label for="exampleInputEmail3">Besic Pension<span class="span-red">*</span></label>
-                                  <input type="text" class="form-control" id="applicant_name" name="applicant_name" placeholder="Enter applicant name" autocomplete="off">
-                                  <label id="applicant_name-error" class="error mt-2 text-danger" for="applicant_name"></label>
+                                  <label for="exampleInputEmail3">Basic Pension<span class="span-red">*</span></label>
+                                  <input type="text" class="form-control amount_type" maxlength="8"ssss id="due_arrear_basic_pension" name="due_arrear_basic_pension">
+                                  <label id="due_arrear_basic_pension-error" class="error mt-2 text-danger" for="due_arrear_basic_pension"></label>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="form-group">
                                   <label for="exampleInputEmail3">Additional Pension<span class="span-red">*</span></label>
-                                  <input type="text" class="form-control" id="applicant_name" name="applicant_name" placeholder="Enter applicant name" autocomplete="off">
-                                  <label id="applicant_name-error" class="error mt-2 text-danger" for="applicant_name"></label>
+                                  <input type="text" class="form-control amount_type" maxlength="8" id="due_arrear_additional_pension_amount" name="due_arrear_additional_pension_amount">
+                                  <label id="due_arrear_additional_pension_amount-error" class="error mt-2 text-danger" for="due_arrear_additional_pension_amount"></label>
                               </div>
                             </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                  <label for="exampleInputEmail3">Commmutation<span class="span-red">*</span></label>
+                                  <input type="text" class="form-control amount_type" maxlength="8" id="due_arrear_commutation_amount" name="due_arrear_commutation_amount">
+                                  <label id="due_arrear_commutation_amount-error" class="error mt-2 text-danger" for="due_arrear_commutation_amount"></label>
+                              </div>
+                            </div>
+                      </div>
+                      <h4>Drawn</h2>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group">
+                              <label for="exampleInputEmail3">TI Percentage<span class="span-red">*</span></label>
+                              <input type="text" class="form-control only_number" maxlength="3" id="drawn_ti_percentage" name="drawn_ti_percentage">
+                              <label id="drawn_ti_percentage-error" class="error mt-2 text-danger" for="drawn_ti_percentage"></label>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                              <label for="exampleInputEmail3">Basic Pension<span class="span-red">*</span></label>
+                              <input type="text" class="form-control amount_type" maxlength="8" id="drawn_besic_pension" name="drawn_besic_pension">
+                              <label id="drawn_besic_pension-error" class="error mt-2 text-danger" for="drawn_besic_pension"></label>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                              <label for="exampleInputEmail3">Additional Pension<span class="span-red">*</span></label>
+                              <input type="text" class="form-control amount_type" maxlength="8" id="drawn_additional_pension" name="drawn_additional_pension">
+                              <label id="drawn_additional_pension-error" class="error mt-2 text-danger" for="drawn_additional_pension"></label>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                              <label for="exampleInputEmail3">Commmutation<span class="span-red">*</span></label>
+                              <input type="text" class="form-control amount_type" maxlength="8" id="drawn_commutation" name="drawn_commutation">
+                              <label id="drawn_commutation-error" class="error mt-2 text-danger" for="drawn_commutation"></label>
+                          </div>
+                        </div>
                       </div>                 
-                      <button type="submit" class="btn btn-success mr-2">Add Arrear</button>
+                      <button type="submit" class="btn btn-success mr-2">Submit Arrear</button>
                     </form>
                   </div>
                 </div>
@@ -137,147 +173,112 @@
             return this.optional(element) || /^[a-zA-Z\s-]*$/.test(value);
          }, "Please use only letters");
 
-         $("#designation").on('change', function(){
-            $(this).valid();
-         });
-         $("#dob").on('change', function(){
-            $(this).valid();
-         });
-         $("#doj").on('change', function(){
-            $(this).valid();
-         });
-         $("#dor").on('change', function(){
-            $(this).valid();
-         });
+         $("#arrear_ppo_no").on('keyup', function (){
+          var ppo_no = $(this).val();
+          $.post("{{ route('billing_officer_pensioner_details') }}",
+          { 
+            "_token": "{{ csrf_token() }}",
+            "ppo_no": ppo_no,
+          },function(response){
+            console.log(response);
+            //$("#rbp_basic_amt").val(response.basic_amount);
+            //$("#rbp_pension_emp_no").val(response.employee_no);
+            $("#arrear_pensioner_name").val(response.pensioner_name);
 
-          
+            $("#application_id").val(response.application_id);
+            $("#pensioner_type").val(response.pensioner_type);
+            $("#application_type").val(response.application_type);
+          });         
+        });
+                   
           // form validation 
-          $("#add_applicant_form").validate({
+          $("#arrear_form_id").validate({
               rules: {
-                applicant_name: {
+                arrear_ppo_no: {
                   required: true,
-                  minlength: 2,
-                  maxlength: 70,
-                  addressReg: true
                 },
-                employee_code: {
+                arrear_pensioner_name: {
                   required: true,
-                  minlength: 5,
-                  maxlength: 5,
-                  remote: {
-                        url:'{{ route("validate_da_employee_code") }}',
-                        type:"post",
-                        data:{
-                            '_token': function() {
-                               return '{{ csrf_token() }}';
-                            }
-                        }
-                  },
                 },
-                aadhaar_no: {
+                arraer_from_date: {
                   required: true,
-                  minlength: 12,
-                  maxlength: 12,
-                  remote: {
-                        url:'{{ route("validate_da_aadhaar_no") }}',
-                        type:"post",
-                        data:{
-                            '_token': function() {
-                               return '{{ csrf_token() }}';
-                            }
-                        }
-                  },
                 },
-                mobile_no: {
+                arrear_to_date: {
                   required: true,
-                  minlength: 10,
-                  maxlength: 10,
-                  remote: {
-                        url:'{{ route("validate_da_mobile_number") }}',
-                        type:"post",
-                        data:{
-                            '_token': function() {
-                               return '{{ csrf_token() }}';
-                            }
-                        }
-                  },
                 },
-                designation: {
-                  required: true
+                due_arrear_ti_percentage: {
+                  required: true,
+                  maxlength: 3,
                 },
-                dob: {
-                    required: true,
+                due_arrear_basic_pension: {
+                  required: true,
+                  maxlength: 8,
                 },
-                doj: {
-                    required: true,
-                    remote:{
-                        url:'{{ route("validate_doj") }}',
-                        type:"post",
-                        data:{
-                            '_token': function() {
-                               return '{{ csrf_token() }}';
-                            },
-                            'dob': function() {
-                               return $('#dob').val();
-                            }
-                        }
-                    },
+                due_arrear_additional_pension_amount: {
+                  required: true,
+                  maxlength: 8,
                 },
-                dor: {
-                    required: true,
-                    remote:{
-                        url:'{{ route("validate_dor") }}',
-                        type:"post",
-                        data:{
-                            '_token': function() {
-                               return '{{ csrf_token() }}';
-                            },
-                            'doj': function() {
-                               return $('#doj').val();
-                            }
-                        }
-                    },
-                }
-                
+                drawn_ti_percentage: {
+                  required: true,
+                  maxlength: 3,
+                },
+                drawn_besic_pension: {
+                  required: true,
+                  maxlength: 8,
+                },
+                drawn_additional_pension: {
+                  required: true,
+                  maxlength: 8,
+                },
+                drawn_commutation: {
+                  required: true,
+                  maxlength: 8,
+                }              
               },
               messages: {
-                applicant_name: {
-                  required: 'Please enter applicant name',
-                  minlength: 'Applicant name should be minimum 2 characters',
-                  maxlength: 'Applicant name should be maximum 70 characters'
+                arrear_ppo_no: {
+                  required: 'Please enter PPO no',
                 },
-                employee_code: {
-                  required: 'Please enter employee code',
-                  minlength: 'Employee Code should be minimum 5 digits',
-                  maxlength: 'Employee Code should be maximum 5 digits',
-                  remote: 'Employee code already exits'
-
+                arrear_pensioner_name: {
+                  required: 'Please enter pensioner name',
                 },
-                aadhaar_no: {                    
-                  required: 'Please enter Aadhaar no',
-                  minlength: 'Aadhaar no should be minimum of 12 digits',
-                  maxlength: 'Aadhaar no should be maximum upto 12 digits',
-                  remote: 'Aadhaar no already exits'
+                arraer_from_date: {
+                  required: 'Please select from date',
                 },
-                mobile_no: {                    
-                    required: 'Please enter Mobile no',
-                    minlength: 'Mobile no should be minimum 10 digits',
-                    maxlength: 'Mobile no should be maximum 10 digits',
-                    remote: 'Mobile no already exits'
+                arrear_to_date: {
+                  required: 'Please select to date',
                 },
-                designation: {
-                    required: 'Please select designation'
+                due_arrear_ti_percentage: {
+                  required: 'Please enter TI percentage',
+                  maxlength: 'Percentage must less than 3 digits',
                 },
-                dob: {
-                    required: 'Please select date of birth'
+                due_arrear_basic_pension: {
+                  required: 'Please enter basic pension',
+                  maxlength: 'Amount must less than 8 digits',
                 },
-                doj: {
-                    required: 'Please select date of joining in service',
-                    remote: 'Please select valid date of joining in service',
+                due_arrear_additional_pension_amount: {
+                  required: 'Please enter additional pension',
+                  maxlength: 'Amount must less than 8 digits',
                 },
-                dor: {
-                    required: 'Please select date of retirement',
-                    remote: 'Please select valid date of retirement',
+                due_arrear_commutation_amount: {
+                  required: 'Please enter commutation',
+                  maxlength: 'Amount must less than 8 digits',
+                },
+                drawn_ti_percentage: {
+                  required: 'Please enter TI percentage',
+                  maxlength: 'Percentage must less than 3 digits',
+                },
+                drawn_besic_pension: {
+                  required: 'Please enter basic pension',
+                  maxlength: 'Amount must less than 8 digits',
+                },
+                drawn_additional_pension: {
+                  required: 'Please enter additional pension',
+                  maxlength: 'Amount must less than 8 digits',
+                },
+                drawn_commutation: {
+                  required: 'Please enter commutation',
+                  maxlength: 'Amount must less than 8 digits',
                 }
               },
                submitHandler: function(form, event) { 

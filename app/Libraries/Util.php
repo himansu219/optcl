@@ -141,6 +141,33 @@ class Util {
         return $response;
     }
 
+    // Additional Pension Calculation
+    public static function get_additional_pension_amount($datas) {
+        $basic_amount = $datas['basic_amount'];
+        $year_value = $datas['year_value'];
+        $month_value = $datas['month_value'];
+        $day_value = $datas['day_value'];
+        $increment_percentage = 0;
+        if($year_value >= 80 && $year_value < 85){
+            $increment_percentage = 20;
+        }else if($year_value >= 85 && $year_value < 90){
+            $increment_percentage = 30;
+        }else if($year_value >= 90 && $year_value < 95){
+            $increment_percentage = 40;
+        }else if($year_value >= 95 && $year_value < 100){ 
+            $increment_percentage = 50;
+        }else if($year_value >= 100){ 
+            $increment_percentage = 100;
+        }else{
+            $increment_percentage = 0;
+        }
+        $increment_value = ($basic_amount/100)*$increment_percentage;
+        $response = ['increment_value' => $increment_value, 
+            'increment_percentage' => $increment_percentage, 
+        ];
+        return $response;
+    }
+
     public static function otp_value(){
         //return rand(111111,999999);
         return 987654;

@@ -12,17 +12,17 @@
 	}
 </style>
 <div class="content-wrapper">
-    <nav aria-label="breadcrumb" role="navigation">
+    <nav aria-label="breadcrumb" role="navigation" class="bg-white">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{route('pension_unit_update_pension_record')}}">Update Pension Record</a></li>
+            <li class="breadcrumb-item" ><a href="{{ route('user_dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item" >Update Pension Record</li>
+            <li class="breadcrumb-item" ><a href="{{ route('pension_unit_unit_change_receiving_unit_only_list') }}">Unit Change for Receiving Unit (Only)</a></li>
             <li class="breadcrumb-item active" aria-current="page">View</li>
-            <li class="breadcrumb-item active" aria-current="page">Additional Pension</li>
         </ol>
     </nav>
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
-          <table class="table table-bordered perticular-table-details-page body-font-size">
+          <table class="table table-bordered perticular-table-details-page body-font-size bg-white">
             <tr>
                 <th width="20%">PPO No.</th>
                 <td width="30%">{{ $request_details->ppo_no }}</td>

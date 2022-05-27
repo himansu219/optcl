@@ -2,112 +2,64 @@
 @section('section_content')
 
 <div class="content-wrapper">    
+  @if(Session::has('error'))
+      <div class="alert alert-danger">{{ Session::get('error') }}</div>
+  @endif
+  @if(Session::has('success'))
+      <div class="alert alert-success">{{ Session::get('success') }}</div>
+  @endif
   <div class="row">
     <div class="col-12 grid-margin">
        <nav aria-label="breadcrumb" role="navigation" class="bg-white">
         <ol class="breadcrumb">
           <li class="breadcrumb-item" ><a href="{{ route('user_dashboard') }}">Dashboard</a></li>
           <li class="breadcrumb-item" >Update Pension Record</li>
-          <li class="breadcrumb-item" ><a href="{{ route('pension_unit_additional_family_pensioner') }}">Addition of Pensioner New Pensioner</a></li>
+          <li class="breadcrumb-item" ><a href="{{ route('pension_unit_dropped_case_death_case_list') }}">Dropped Case/Death Case</a></li>
           <li class="breadcrumb-item active" aria-current="page">Add</li>
         </ol>
       </nav>
-      @if(Session::has('error'))
-          <div class="alert alert-danger">{{ Session::get('error') }}</div>
-      @endif
-      @if(Session::has('success'))
-          <div class="alert alert-success">{{ Session::get('success') }}</div>
-      @endif
-      
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Additional Pension</h4>
-          <form method="post" action="" autocomplete="off" id="additional_family_pensioner_after_death" enctype="multipart/form-data">
-              @csrf
-              <input type="hidden" name="addl_fam_pen_changed_type_id" id="addl_fam_pen_changed_type_id" value="1" />
-              <div class="row">
-                <div class="col-md-4 form-group form-group">
-                  <label>PPO No.<span class="text-danger">*</span></label>
-                  <input type="text" class="form-control ppo_number_format" name="ppo_number" id="ppo_number" minlength="12" maxlength="12">
-                  <label id="ppo_number-error" class="error text-danger" for="ppo_number"></label>
-                </div>
-                <div class="col-md-4 form-group">
-                  <label>Pension Employee No.<span class="text-danger">*</span></label>
-                  <input type="text" class="form-control only_number" name="pension_emp_no" id="pension_emp_no" maxlength="6">
-                  <label id="pension_emp_no-error" class="error text-danger" for="pension_emp_no"></label>
-                </div>
-                <div class="col-md-4 form-group">
-                  <label>DOD of SP/ FP<span class="text-danger">*</span></label>
-                  <input type="text" class="form-control datepicker-upto-current" name="dod_sp_fp" id="dod_sp_fp" readonly>
-                  <label id="dod_sp_fp-error" class="error text-danger" for="dod_sp_fp"></label>
-                </div>
-                <div class="col-md-4 form-group">
-                  <label>Name of Family Pensioner<span class="text-danger">*</span></label>
-                  <input type="text" class="form-control alpha" name="name_family_pensioner" id="name_family_pensioner" >
-                  <label id="name_family_pensioner-error" class="error text-danger" for="name_family_pensioner"></label>
-                </div>
-                <div class="col-md-4 form-group">
-                  <label>End Date of Enhanced Family Pension<span class="text-danger">*</span></label>
-                  <input type="text" class="form-control datepicker-default" name="eod_enhanced_family_pension" id="eod_enhanced_family_pension" readonly>
-                  <label id="eod_enhanced_family_pension-error" class="error text-danger" for="eod_enhanced_family_pension"></label>
-                </div>
-                <div class="col-md-4 form-group">
-                  <label>Savings Bank A/C No.<span class="text-danger">*</span></label>
-                  <input type="text" class="form-control only_number" name="savings_bank_ac_no" id="savings_bank_ac_no" maxlength="18">
-                  <label id="savings_bank_ac_no-error" class="error text-danger" for="savings_bank_ac_no"></label>
-                </div>
-                <div class="col-md-4 form-group">
-                  <label>Bank<span class="text-danger">*</span></label>
-                  <select class="js-example-basic-single" style="width:100%" id="bank_name" name="bank_name">
-                      <option value="">Select Bank</option>
-                      @foreach($banks as $bank)
-                          <option value="{{$bank->id}}">{{$bank->bank_name}}</option>
-                      @endforeach
-                  </select>
-                  <label id="bank_name-error" class="error text-danger" for="bank_name"></label>
-                </div>
-                <div class="col-md-4 form-group">
-                  <label>Branch<span class="text-danger">*</span></label>
-                  <select class="js-example-basic-single" style="width:100%" id="branch_name_address" name="branch_name_address">
-                      <option value="">Select Branch</option>
-                  </select>
-                  <label id="branch_name_address-error" class="error text-danger" for="branch_name_address"></label>
-                </div>
-                <div class="col-md-4 form-group">
-                  <label>IFSC Code<span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="ifsc_code" name="ifsc_code" placeholder=" Enter ifsc code" readonly>
-                  <label id="ifsc_code-error" class="error text-danger" for="ifsc_code"></label>
-                </div>
-                <div class="col-md-4 form-group">
-                  <label>NOC From Previous Bank<span class="text-danger">*</span></label>
-                  <select class="js-example-basic-single form-control" id="noc_previous_bank" name="noc_previous_bank">
-                    <option value="">Select Status</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                  </select>
-                  <label id="noc_previous_bank-error" class="error text-danger" for="noc_previous_bank"></label>
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>NOC Document<span class="text-danger">*</span></label>
-                    <input type="file" name="noc_previous_bank_attachment" id="noc_previous_bank_attachment" class="file-upload-default dob_attachment_path" >
-                    <div class="input-group col-xs-12">
-                        <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-                        <div class="input-group-append">
-                            <button class="file-upload-browse btn btn-info" type="button">Upload</button>
-                        </div>
-                    </div>
-                    <label id="noc_previous_bank_attachment-error" class="error text-danger" for="noc_previous_bank_attachment"></label>
-                </div>
-                
-                
-              </div>
-              <div class="row">
-                <div class="col-md-4 form-group mt-2">
-                    <input type="submit" class="btn btn-success" value="Submit">
-                </div>
-              </div>
-            </form>
-        </div>
+
+      <div class="card" id="dropped_case_death_case_div">
+          <div class="card-body">
+              <h4 class="card-title">Dropped Case/Death Case</h4>
+              <form method="post" action="" autocomplete="off" id="dropped_case_death_case">
+                  @csrf
+                  <input type="hidden" id="dropped_case_death_case_changed_type_id" name="dropped_case_death_case_changed_type_id" value="7">
+                  <div class="row">
+                  <div class="col-md-4 form-group">
+                      <label>PPO No.<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control ppo_number_format" maxlength="12" name="dcdc_ppo_number" id="dcdc_ppo_number" >
+                      <label id="dcdc_ppo_number-error" class="error text-danger" for="dcdc_ppo_number"></label>
+                  </div>
+                  <div class="col-md-4 form-group">
+                      <label>Pension Employee No.<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control only_number" maxlength="6" name="dcdc_pension_emp_no" id="dcdc_pension_emp_no" readonly>
+                      <label id="dcdc_pension_emp_no-error" class="error text-danger" for="dcdc_pension_emp_no"></label>
+                  </div>
+                  <div class="col-md-4 form-group">
+                      <label>Pensioner Name<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control alpha" maxlength="100" name="dcdc_name_pensioner" id="dcdc_name_pensioner" readonly>
+                      <label id="dcdc_name_pensioner-error" class="error text-danger" for="dcdc_name_pensioner"></label>
+                  </div>
+                  <div class="col-md-4 form-group">
+                      <label>Date of Death<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control datepicker-upto-current" name="dcdc_dod" id="dcdc_dod" readonly>
+                      <label id="dcdc_dod-error" class="error text-danger" for="dcdc_dod"></label>
+                  </div>
+                  <div class="col-md-4 form-group">
+                      <label>Remark<span class="text-danger">*</span></label>
+                      <textarea name="dcdc_remark" id="dcdc_remark" class="form-control remark_box" maxlength="200"></textarea>
+                      <label id="dcdc_remark-error" class="error text-danger" for="dcdc_remark"></label>
+                  </div>
+                  
+                  </div>
+                  <div class="row">
+                  <div class="col-md-4 form-group mt-2">
+                      <input type="submit" class="btn btn-success" value="Submit">
+                  </div>
+                  </div>
+              </form>
+          </div>
       </div>
 
     </div>
@@ -126,95 +78,77 @@
           return this.optional(element) || /[0-9]{4}\b[\/]{1}[0-9]{2}\b[\/]{1}[0-9]{4}\b/i.test(value); 
       }, "Please enter valid PPO no");
       
+      $("#dcdc_ppo_number").on('keyup', function (){
+        var ppo_no = $(this).val();
+        $.post("{{ route('pension_unit_dropped_case_death_case_pensioner_details') }}",
+        { 
+          "_token": "{{ csrf_token() }}",
+          "ppo_no": ppo_no,
+        },function(response){         
+          if(response.employee_no){
+            $("#dcdc_pension_emp_no").val(response.employee_no);
+            $("#dcdc_name_pensioner").val(response.pensioner_name);
+            $("#dcdc_name_pensioner").valid();
+          }else{
+            $("#dcdc_pension_emp_no").val('');
+            $("#dcdc_name_pensioner").val('');
+          }          
+        });         
+      });
 
-      $("#additional_family_pensioner_after_death").validate({
+      $("#dropped_case_death_case").validate({
           rules: {
-              "ppo_number": {
-                  required: true,
-                  ppo_format: true,
-              },
-              "pension_emp_no": {
-                  required: false,
-                  minlength: 6,
-                  maxlength: 6,
-              },
-              "dod_sp_fp": {
-                  required: true,
-              },
-              "name_family_pensioner": {
-                  required: true,
-                  minlength: 4,
-                  maxlength: 100,
-              },
-              "eod_enhanced_family_pension": {
-                  required: true,
-              },
-              "bank_name": {
-                  required: true,
-              },
-              "branch_name_address": {
-                  required: true,
-              },
-              "savings_bank_ac_no": {
-                  required: true,
-              },
-              "ifsc_code": {
-                  required: true,
-              },
-              "noc_previous_bank": {
-                  required: true,
-              },
-              "noc_previous_bank_attachment":{
-                    required: true,
-              },
+            "dcdc_ppo_number": {
+                required: true,
+                ppo_format: true,
+            },
+            "dcdc_pension_emp_no": {
+                required: false,
+            },
+            "dcdc_name_pensioner": {
+                required: true,
+                minlength: 4,
+                maxlength: 100,
+            },
+            "dcdc_dod": {
+                required: true,
+            },
+            "dcdc_remark": {
+                required: true,
+                minlength: 10,
+                maxlength: 200,
+            },
           },
           messages: {
-              "ppo_number": {                    
-                  required: 'Please enter PPO no',
-              },
-              "pension_emp_no": {
-                  required: 'Please enter employee no',
-                  minlength: 'Employee no should be 6 digits',
-                  maxlength: 'Employee no should be 6 digits',
-              },
-              "dod_sp_fp": {
-                  required: 'Please enter DOD of SP/ FP',
-              },
-              "name_family_pensioner": {
-                  required: 'Please enter name of family pensioner',
-                  minlength: 'Name of family pensioner must be 4 characters',
-                  maxlength: 'Name of family pensioner should be less than 100 characters',
-              },
-              "eod_enhanced_family_pension": {
-                  required: 'Please enter end date of enhanced family pension',
-              },
-              "bank_name": {
-                  required: 'Please slect bank',
-              },
-              "branch_name_address": {
-                  required: 'Please select branch',
-              },
-              "savings_bank_ac_no": {
-                  required: 'Please enter savings bank A/C no',
-              },
-              "ifsc_code": {
-                  required: 'Please enter IFSC code',
-              },
-              "noc_previous_bank": {
-                  required: 'Please select NOC from previous bank',
-              },
-              "noc_previous_bank_attachment":{
-                    required: 'Please upload NOC document',
-              }, 
+            "dcdc_ppo_number": {                    
+                required: 'Please enter PPO no',
+            },
+            "dcdc_pension_emp_no": {
+                required: 'Please enter employee no',
+            },
+            "dcdc_name_pensioner": {
+                required: 'Please enter pensioner name',
+                minlength: 'Name of pensioner must be 4 characters',
+                maxlength: 'Name of pensioner should be less than 100 characters', 
+            },
+            "dcdc_dod": {
+                required: 'Please select date of death',
+            },
+            "dcdc_remark": {
+                required: 'Please enter remark',
+                minlength: 'Remark must be 10 characters',
+                maxlength: 'Remark should be less than 200 characters',
+            },
           },
           submitHandler: function(form, event) {
               $('.page-loader').addClass('d-flex'); 
               event.preventDefault();
               var formData = new FormData(form);
               //$("#logid").prop('disabled',true);
+
               $.ajax({
                   type:'POST',
-                  url:'{{ route("pension_unit_update_record_submission") }}',
+                  url:'{{ route("pension_unit_dropped_case_death_case_submission") }}',
                   data: formData,
                   dataType: 'JSON',
                   processData: false,
@@ -234,7 +168,7 @@
                             $("#"+id).html(eValue);
                         }
                     }else{
-                      location.href = "{{route('pension_unit_update_pension_record')}}";
+                      location.href = "{{route('pension_unit_dropped_case_death_case_list')}}";
                     }
                   }
               });             
@@ -248,6 +182,7 @@
               $(element).addClass('form-control-danger');
           }
       });
+
     });
   </script>
 @endsection

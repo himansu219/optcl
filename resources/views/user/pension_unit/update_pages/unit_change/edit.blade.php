@@ -1,23 +1,24 @@
 @extends('user.layout.layout')
 @section('section_content')
 
-<div class="content-wrapper">    
+<div class="content-wrapper">   
+    @if(Session::has('error'))
+        <div class="alert alert-danger">{{ Session::get('error') }}</div>
+    @endif
+    @if(Session::has('success'))
+        <div class="alert alert-success">{{ Session::get('success') }}</div>
+    @endif 
   <div class="row">
     <div class="col-12 grid-margin">
-       <nav aria-label="breadcrumb" role="navigation">
+       <nav aria-label="breadcrumb" role="navigation" class="bg-white">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item" ><a href="{{ route('user_dashboard') }}">Dashboard</a></li>
-          <li class="breadcrumb-item" ><a href="{{ route('pension_unit_update_pension_record') }}">Update Pension Record</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Edit</li>
-          <li class="breadcrumb-item active" aria-current="page">Unit Change for Receiving Unit (Only)</li>
+            <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
+            <li class="breadcrumb-item">Update Pension Record</li>
+            <li class="breadcrumb-item" ><a href="{{ route('pension_unit_unit_change_receiving_unit_only_list') }}">Unit Change for Receiving Unit (Only)</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit</li>
         </ol>
       </nav>
-      @if(Session::has('error'))
-          <div class="alert alert-danger">{{ Session::get('error') }}</div>
-      @endif
-      @if(Session::has('success'))
-          <div class="alert alert-success">{{ Session::get('success') }}</div>
-      @endif
+      
       
       <div class="card">
         <div class="card-body">
@@ -29,17 +30,17 @@
             <div class="row">
             <div class="col-md-4 form-group">
                 <label>PPO No.<span class="text-danger">*</span></label>
-                <input type="text" class="form-control ppo_number_format" maxlength="12" name="ucruo_ppo_number" id="ucruo_ppo_number"  value="{{ $request_details->ppo_no }}">
+                <input type="text" class="form-control ppo_number_format" maxlength="12" name="ucruo_ppo_number" id="ucruo_ppo_number"  value="{{ $request_details->ppo_no }}" readonly>
                 <label id="ucruo_ppo_number-error" class="error text-danger" for="ucruo_ppo_number"></label>
             </div>
             <div class="col-md-4 form-group">
                 <label>Pension Employee No.<span class="text-danger">*</span></label>
-                <input type="text" class="form-control only_number" maxlength="6" name="ucruo_pension_emp_no" id="ucruo_pension_emp_no"  value="{{ $request_details->pensioner_emp_no }}">
+                <input type="text" class="form-control only_number" name="ucruo_pension_emp_no" id="ucruo_pension_emp_no"  value="{{ $request_details->pensioner_emp_no }}" readonly>
                 <label id="ucruo_pension_emp_no-error" class="error text-danger" for="ucruo_pension_emp_no"></label>
             </div>
             <div class="col-md-4 form-group">
                 <label>Pensioner Name<span class="text-danger">*</span></label>
-                <input type="text" class="form-control alpha" maxlength="100" name="ucruo_name_pensioner" id="ucruo_name_pensioner" value="{{ $request_details->pensioner_name }}">
+                <input type="text" class="form-control alpha" maxlength="100" name="ucruo_name_pensioner" id="ucruo_name_pensioner" value="{{ $request_details->pensioner_name }}" readonly>
                 <label id="ucruo_name_pensioner-error" class="error text-danger" for="ucruo_name_pensioner"></label>
             </div>   
             <div class="col-md-4 form-group">
@@ -112,9 +113,7 @@
                     ppo_format: true,
                 },
                 "ucruo_pension_emp_no": {
-                    required: true,
-                    minlength: 6,
-                    maxlength: 6,
+                    required: false,
                 },
                 "ucruo_name_pensioner": {
                     required: true,
@@ -148,8 +147,6 @@
                 },
                 "ucruo_pension_emp_no": {
                     required: 'Please enter employee no',
-                    minlength: 'Employee no should be 6 digits',
-                    maxlength: 'Employee no should be 6 digits',
                 },
                 "ucruo_name_pensioner": {
                     required: 'Please enter pensioner name',

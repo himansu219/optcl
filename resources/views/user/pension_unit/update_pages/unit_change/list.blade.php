@@ -69,10 +69,9 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
         <li class="breadcrumb-item">Update Pension Record</li>
-        <li class="breadcrumb-item">Bank Change</li>
+          <li class="breadcrumb-item" >Unit Change for Receiving Unit (Only)</li>
       </ol>
     </nav> 
-    
     <div class="row">
         <div class="col-md-12 grid-margin">
 
@@ -82,18 +81,23 @@
               <h4 class="card-title">Filter</h4>
               <form class="forms-sample" id="filter_applications" method="post" action="" autocomplete="off">
                   @csrf
-                  <div class="row">
-                    <div class="col-md-3">
-                      <label>PPO No.</label>
-                      <input type="text" name="ppo_no_search" class="form-control" id="ppo_no_search" value="{{ !empty($request->ppo_no_search) ? $request->ppo_no_search : '' }}" maxlength="11">
-                    </div> 
-                    <div class="col-md-3">
-                      <label>Pensioner Name</label>
-                      <input type="text" name="search_pensioner_name" class="form-control" id="search_pensioner_name" value="{{ !empty($request->search_pensioner_name) ? $request->search_pensioner_name : '' }}" maxlength="11">
-                    </div>         
-                  </div><br>
-                  <button type="submit" id="filters" class="btn btn-success">Filter</button>
-                  <a href="{{ route('pension_unit_bank_change_list') }}" class="btn btn-warning">Reset</a>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>PPO No.</label>
+                        <input type="text" name="ppo_no_search" class="form-control" id="ppo_no_search" value="{{ !empty($request->ppo_no_search) ? $request->ppo_no_search : '' }}" maxlength="50">
+                      </div>                    
+                      <div class="col-md-3">
+                        <label>Pensioner Name</label>
+                        <input type="text" name="search_pensioner_name" class="form-control" id="search_pensioner_name" value="{{ !empty($request->search_pensioner_name) ? $request->search_pensioner_name : '' }}" maxlength="50">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3 mt-2">
+                        <button type="submit" id="filters" class="btn btn-success">Filter</button>
+                        <a href="{{ route('pension_unit_unit_change_receiving_unit_only_list') }}" class="btn btn-warning">Reset</a>
+                      </div>
+                    </div>
+                  
               </form>
             </div>
         </div>
@@ -101,7 +105,7 @@
         <div class="card">
           <div class="card-body">
               <h4 class="card-title">Application List                
-                  <a href="{{ route('pension_unit_bank_change_add') }}" class="btn btn-success float-right">Add</a>                 
+                  <a href="{{ route('pension_unit_unit_change_receiving_unit_only_add') }}" class="btn btn-success float-right">Add</a>                 
               </h4>
               <div class="row">
                 <div class="table-sorter-wrapper col-lg-12 table-responsive">
@@ -124,9 +128,7 @@
                           <td>{{ $list->ppo_no }}</td>
                           <td>{{ $list->pensioner_name }}</td>
                           <td>{{ date("d-m-Y h:i A", strtotime($list->created_at)) }}</td>
-                          <td>
-                            {{$list->status_name}}
-                          </td>
+                          <td>{{$list->status_name}}</td>
                           <td class="text-center">
                             <div class="list-icons">
                                 <div class="dropdown">
@@ -134,8 +136,8 @@
                                         <i class="fa fa-bars"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" style="left: -21px;">
-                                      <a href="{{ route('pension_unit_bank_change_edit_page', array($list->cID)) }}" class="dropdown-item edit_desig"><i class="fa fa-pencil-square-o"></i>Edit</a>
-                                      <a href="{{ route('pension_unit_bank_change_view', array($list->cID)) }}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
+                                      <a href="{{ route('unit_change_receiving_unit_only_edit_page', array($list->cID)) }}" class="dropdown-item edit_desig"><i class="fa fa-pencil-square-o"></i>Edit</a>
+                                      <a href="{{ route('unit_change_receiving_unit_only_view_page', array($list->cID)) }}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
                                     </div>
                                 </div>
                             </div>

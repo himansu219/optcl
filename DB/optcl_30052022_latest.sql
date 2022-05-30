@@ -2603,6 +2603,101 @@ insert  into `optcl_application_user_assignments`(`id`,`application_id`,`user_id
 (4,12,15,19,'2022-02-02 20:05:15',NULL,NULL,1,0),
 (5,13,15,19,'2022-02-07 15:16:06',NULL,NULL,1,0);
 
+/*Table structure for table `optcl_arrear` */
+
+DROP TABLE IF EXISTS `optcl_arrear`;
+
+CREATE TABLE `optcl_arrear` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `application_type` int(11) DEFAULT NULL,
+  `pensioner_type` int(11) DEFAULT NULL,
+  `application_id` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_arrear` */
+
+insert  into `optcl_arrear`(`id`,`application_type`,`pensioner_type`,`application_id`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
+(1,2,1,30,69,'2022-05-30 20:23:47',NULL,NULL,1,0);
+
+/*Table structure for table `optcl_arrear_section` */
+
+DROP TABLE IF EXISTS `optcl_arrear_section`;
+
+CREATE TABLE `optcl_arrear_section` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `arraer_id` int(11) DEFAULT NULL,
+  `from_date` date DEFAULT NULL,
+  `to_date` date DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
+  `deleted` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_arrear_section` */
+
+insert  into `optcl_arrear_section`(`id`,`arraer_id`,`from_date`,`to_date`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
+(1,1,'2021-06-09','2022-05-30',NULL,NULL,NULL,NULL,NULL,NULL);
+
+/*Table structure for table `optcl_arrear_section_list` */
+
+DROP TABLE IF EXISTS `optcl_arrear_section_list`;
+
+CREATE TABLE `optcl_arrear_section_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `arrear_id` int(11) DEFAULT NULL COMMENT 'optcl_arrear',
+  `arrear_section_id` int(11) DEFAULT NULL COMMENT 'optcl_arrear_section',
+  `year_value` int(11) DEFAULT NULL,
+  `month_value` int(11) DEFAULT NULL,
+  `drawn_ti_percentage` double(18,2) DEFAULT NULL,
+  `drawn_ti_amount` double(18,2) DEFAULT NULL,
+  `drawn_basic_amount` double(18,2) DEFAULT NULL,
+  `drawn_gross_pension` double(18,2) DEFAULT NULL,
+  `drawn_additional_amount` double(18,2) DEFAULT NULL,
+  `drawn_comm_amount` double(18,2) DEFAULT NULL,
+  `drawn_net_pension` double(18,2) DEFAULT NULL,
+  `due_ti_percentage` double(18,2) DEFAULT NULL,
+  `due_ti_amount` double(18,2) DEFAULT NULL,
+  `due_basic_amount` double(18,2) DEFAULT NULL,
+  `due_gross_amount` double(18,2) DEFAULT NULL,
+  `due_additional_amount` double(18,2) DEFAULT NULL,
+  `due_comm_amount` double(18,2) DEFAULT NULL,
+  `due_net_pension` double(18,2) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_arrear_section_list` */
+
+insert  into `optcl_arrear_section_list`(`id`,`arrear_id`,`arrear_section_id`,`year_value`,`month_value`,`drawn_ti_percentage`,`drawn_ti_amount`,`drawn_basic_amount`,`drawn_gross_pension`,`drawn_additional_amount`,`drawn_comm_amount`,`drawn_net_pension`,`due_ti_percentage`,`due_ti_amount`,`due_basic_amount`,`due_gross_amount`,`due_additional_amount`,`due_comm_amount`,`due_net_pension`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
+(1,1,1,2021,6,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(2,1,1,2021,7,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(3,1,1,2021,8,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(4,1,1,2021,9,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(5,1,1,2021,10,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(6,1,1,2021,11,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(7,1,1,2021,12,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(8,1,1,2022,1,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(9,1,1,2022,2,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(10,1,1,2022,3,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(11,1,1,2022,4,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(12,1,1,2022,5,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,69,'2022-05-30 20:23:47',NULL,NULL,1,0);
+
 /*Table structure for table `optcl_bank_branch_master` */
 
 DROP TABLE IF EXISTS `optcl_bank_branch_master`;

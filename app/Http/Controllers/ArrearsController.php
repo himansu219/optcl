@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Otp;
+use App\Libraries\Util;
+use Session;
+use Auth; 
 
 class ArrearsController extends Controller
 {
-
+    public function __construct() {
+        $this->middleware('auth');
+        $this->current_date = date('Y-m-d H:i:s');
+    }
     public function index(){
         return view('user.arrears.list');
     }
@@ -74,93 +80,131 @@ class ArrearsController extends Controller
         if($due_arrear_basic_pension == ""){
             $validation['error'][] = array("id" => "due_arrear_basic_pension-error","eValue" => "Please enter basic pension");
         }
-        $due_arrear_ti_percentage = $request->due_arrear_ti_percentage;
-        if($due_arrear_ti_percentage == ""){
-            $validation['error'][] = array("id" => "due_arrear_ti_percentage-error","eValue" => "Please enter TI percentage");
+        $due_arrear_additional_pension_amount = $request->due_arrear_additional_pension_amount;
+        if($due_arrear_additional_pension_amount == ""){
+            $validation['error'][] = array("id" => "due_arrear_additional_pension_amount-error","eValue" => "PPlease enter additional pension");
         }
-        $due_arrear_ti_percentage = $request->due_arrear_ti_percentage;
-        if($due_arrear_ti_percentage == ""){
-            $validation['error'][] = array("id" => "due_arrear_ti_percentage-error","eValue" => "Please enter TI percentage");
+        $due_arrear_commutation_amount = $request->due_arrear_commutation_amount;
+        if($due_arrear_commutation_amount == ""){
+            $validation['error'][] = array("id" => "due_arrear_commutation_amount-error","eValue" => "Please enter commutation");
         }
+        $drawn_ti_percentage = $request->drawn_ti_percentage;
+        if($drawn_ti_percentage == ""){
+            $validation['error'][] = array("id" => "drawn_ti_percentage-error","eValue" => "Please enter TI percentage");
+        }
+        $drawn_besic_pension = $request->drawn_besic_pension;
+        if($drawn_besic_pension == ""){
+            $validation['error'][] = array("id" => "drawn_besic_pension-error","eValue" => "Please enter basic pension");
+        }
+        $drawn_additional_pension = $request->drawn_additional_pension;
+        if($drawn_additional_pension == ""){
+            $validation['error'][] = array("id" => "drawn_additional_pension-error","eValue" => "Please enter additional pension");
+        }
+        $drawn_commutation = $request->drawn_commutation;
+        if($drawn_commutation == ""){
+            $validation['error'][] = array("id" => "drawn_commutation-error","eValue" => "Please enter commutation");
+        }
+
         // Check PPO number with other details
-            /* ---------Code---------- */
-        $cr_changed_type_id = $request->dropped_case_death_case_changed_type_id;
+        /* ---------Code---------- */
+        $application_id = $request->application_id;
+        $application_type = $request->application_type;
+        $pensioner_type = $request->pensioner_type;
         if(!isset($validation['error'])){
             try{
                 DB::beginTransaction();
-                $data = [
-                    "ppo_no" => $dcdc_ppo_number,
-                    "pensioner_emp_no" => $dcdc_pension_emp_no,
-                    "pensioner_name" =>  $dcdc_name_pensioner,
-                    "dod" => date('Y-m-d', strtotime(str_replace("/", "-", $dcdc_dod))),
-                    "remark_value" => $dcdc_remark,
+                // Arrear Data
+                $arreat_data = [
+                    "application_type" => $application_type,
+                    "pensioner_type" => $pensioner_type,
+                    "application_id" => $application_id,
                     "created_by" => Auth::user()->id,
                     "created_at" => $this->current_date,
                 ];
-                $change_data_id = DB::table('optcl_change_data_dropped_death_case')->insertGetId($data);
-                // Store in Changed Data List
-                $data_1 = [
-                    "change_data_id" => $cr_changed_type_id,
-                    "cr_application_id" => $change_data_id,
-                    "status_id" => 59,
-                    "created_by" => Auth::user()->id,
-                    "created_at" => $this->current_date,
+                $array_id = DB::table('optcl_arrear')->insertGetId($arreat_data);
+                // Arrear Section Data
+                $arrear_section_data = [
+                    "arraer_id"  => $array_id,
+                    "from_date"  => date('Y-m-d', strtotime(str_replace("/", "-", $arraer_from_date))),
+                    "to_date"  => date('Y-m-d', strtotime(str_replace("/", "-", $arrear_to_date))),
                 ];
-                $data_1_id = DB::table('optcl_change_data_list')->insertGetId($data_1);
-                // Update Change Request Number
-                $cr_number = 'CR'.date('Y').sprintf('%05d',$data_1_id);
-                $update_cr_number = ['cr_number' => $cr_number];
-                DB::table('optcl_change_data_list')->where('id', $data_1_id)->update($update_cr_number);
-                // Status History
-                $data_2 = [
-                    "change_data_id" => $cr_changed_type_id,
-                    "cr_status_id" => 59,
-                    "cr_application_id" => $change_data_id,
-                    "created_by" => Auth::user()->id,
-                    "created_at" => $this->current_date,
-                ];
-                DB::table('optcl_change_data_status_history')->insertGetId($data_2);
-                // Update Monthly Changed Data
-                $ppo_details = DB::table('optcl_ppo_no_list')
-                                ->where('ppo_no', $dcdc_ppo_number)
-                                ->where('status', 1)
-                                ->where('deleted', 0)
-                                ->first();
-                if($ppo_details){
-                    $application_type = $ppo_details->application_type;
-                    $pensioner_type = $ppo_details->pensioner_type;
-                    $application_id = $ppo_details->application_id;
-                    $monthly_changed_data_revised_pension = [
-                        'appliation_type' => $application_type,
-                        'pensioner_type' => $pensioner_type,
-                        'is_changed_request' => 1,
-                        'cr_type_id' => 3,
-                        'application_id' => $application_id,
-                        'pension_unit_id' => Auth::user()->pension_unit_id,
-                        'created_by' => Auth::user()->id,
-                        'created_at' => $this->current_date,
-                    ];
-                    $monthly_changed_data_id = DB::table('optcl_monthly_changed_data')->insertGetId($monthly_changed_data_revised_pension);
-                    // Mothers Changed Data Mapping
-                    if($application_type == 1 && $pensioner_type == 1){
-                        $application_pensioner_type_id = 1;
-                    }else if($application_type == 1 && $pensioner_type == 2){
-                        $application_pensioner_type_id = 2;
-                    }else if($application_type == 2 && $pensioner_type == 1){
-                        $application_pensioner_type_id = 3;
+                $array_section_id = DB::table('optcl_arrear_section')->insertGetId($arrear_section_data);
+                // Arrear Section Listing
+                // Drawn Details
+                $drawn_total_besic_amount = $drawn_besic_pension + $drawn_additional_pension;
+                $drawn_ti_amount = ($drawn_total_besic_amount/100) * $drawn_ti_percentage;
+                $drawn_gross_pension = $drawn_total_besic_amount + $drawn_ti_amount;
+                $drawn_net_pension = ($drawn_total_besic_amount + $drawn_ti_amount) - $drawn_commutation;
+                // Due Details
+                $due_total_besic_amount = $due_arrear_basic_pension + $due_arrear_additional_pension_amount;
+                $due_ti_amount = ($due_total_besic_amount/100) * $due_arrear_ti_percentage;
+                $due_gross_pension = $due_total_besic_amount + $due_ti_amount;
+                $due_net_pension = ($due_total_besic_amount + $due_ti_amount) - $due_arrear_commutation_amount;
+                
+                $from_year = date('Y', strtotime(str_replace("/", "-", $arraer_from_date)));
+                $from_month = date('m', strtotime(str_replace("/", "-", $arraer_from_date)));
+                $to_year = date('Y', strtotime(str_replace("/", "-", $arrear_to_date)));
+                $to_month = date('m', strtotime(str_replace("/", "-", $arrear_to_date)));
+                for($year = $from_year; $year <= $to_year; $year++){
+                    if($year == $from_year){
+                        $month_value = $from_month;
                     }else{
-                        $application_pensioner_type_id = 4;
+                        $month_value = 1;
                     }
-                    $monthlyChangedMappingData = [
-                        "monthly_changed_data_id"   => $monthly_changed_data_id,
-                        "application_pensioner_type_id"   => $application_pensioner_type_id,
-                        "application_id"    => $application_id,
-                        "created_by"        => Auth::user()->id,
-                        "created_at"        => $this->current_date,
-                    ];
-                    DB::table('optcl_application_monthly_changed_data_mapping')->insert($monthlyChangedMappingData);
+                    if($year == $to_year){
+                        $month_max = $to_month;
+                    }else{
+                        $month_max = 12;
+                    }
+                    for($month = $month_value; $month <= $month_max; $month++){                        
+                        $arrear_section_listing = [
+                            "arrear_id" => $array_id,
+                            "arrear_section_id" => $array_section_id,
+                            "year_value" => $year,
+                            "month_value" => $month,
+                            "drawn_ti_percentage" => $drawn_ti_percentage,
+                            "drawn_ti_amount" => $drawn_ti_amount,
+                            "drawn_basic_amount" => $drawn_besic_pension,
+                            "drawn_gross_pension" => $drawn_gross_pension,
+                            "drawn_additional_amount" => $drawn_additional_pension,
+                            "drawn_comm_amount" => $drawn_commutation,
+                            "drawn_net_pension" => $drawn_net_pension,
+                            "due_ti_percentage" => $due_arrear_ti_percentage,
+                            "due_ti_amount" => $due_ti_amount,
+                            "due_basic_amount" => $due_arrear_basic_pension,
+                            "due_gross_amount" => $due_gross_pension,
+                            "due_additional_amount" => $due_arrear_additional_pension_amount,
+                            "due_comm_amount" => $drawn_commutation,
+                            "due_net_pension" => $due_net_pension,
+                            "created_by" => Auth::user()->id,
+                            "created_at" => $this->current_date,
+                        ];
+                        DB::table('optcl_arrear_section_list')->insert($arrear_section_listing);
+                    }
                 }
-
+                //dd($request->all());    
+                $section_list = DB::table('optcl_arrear_section_list')->where('status', 1)->where('status', 1)->get();
+                $results = "";
+                $i = 1;
+                foreach($section_list as $key=>$section_data){
+                    $results .= "<tr>";
+                    $results .= "<td>".($i++)."</td>";
+                    $results .= "<td>".$section_data->drawn_ti_percentage."</td>";
+                    $results .= "<td>".$section_data->due_ti_percentage."</td>";
+                    $results .= "<td>".date('M',$section_data->month_value)."-".$section_data->year_value."</td>";
+                    $results .= "<td>".$section_data->due_basic_amount."</td>";
+                    $results .= "<td>".$section_data->due_ti_amount."</td>";
+                    $results .= "<td>".$section_data->due_gross_amount."</td>";
+                    $results .= "<td>".$section_data->due_comm_amount."</td>";
+                    $results .= "<td>".$section_data->due_net_pension."</td>";
+                    $results .= "<td>".$section_data->drawn_basic_amount."</td>";
+                    $results .= "<td>".$section_data->drawn_ti_amount."</td>";
+                    $results .= "<td>".$section_data->drawn_gross_pension."</td>";
+                    $results .= "<td>".$section_data->drawn_comm_amount."</td>";
+                    $results .= "<td>".$section_data->drawn_net_pension."</td>";
+                    $results .= "</tr>";
+                }     
+                $validation['results'] = $results;
                 Session::flash('success','Data saved successfully');
                 DB::commit();         
             }catch (\Throwable $e) {
@@ -172,4 +216,6 @@ class ArrearsController extends Controller
     }
 
 }
+
+       
 ?>

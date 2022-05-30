@@ -16,19 +16,17 @@
             @if(Session::has('success'))
                 <div class="alert alert-success">{{ Session::get('success') }}</div>
             @endif
-                <nav aria-label="breadcrumb" role="navigation">
+                <nav aria-label="breadcrumb" role="navigation" class="bg-white">
                     <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('admin_dashboard')}}">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Add Applicant</li>
+                    <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('billing_officer_arrears')}}">Arrears</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add</li>
                     </ol>
                 </nav>
-             
-               
-
                 <div class="card">
                   <div class="card-body">     
                     <!-- <h4 class="card-title">Pension Proposal List</h4>            -->
-                    <form class="forms-sample" id="arrear_form_id" method="post">
+                    <form class="forms-sample" id="arrear_form_id" method="post" autocomplete="off">
                       @csrf
                       <input type="hidden" id="application_id" name="application_id">
                       <input type="hidden" id="application_type" name="application_type">
@@ -37,7 +35,7 @@
                         <div class="col-md-3">
                           <div class="form-group">
                               <label for="exampleInputEmail3">PPO No.<span class="span-red">*</span></label>
-                              <input type="text" class="form-control ppo_number_format" id="arrear_ppo_no" name="arrear_ppo_no">
+                              <input type="text" class="form-control ppo_number_format" id="arrear_ppo_no" name="arrear_ppo_no" maxlength="12">
                               <label id="arrear_ppo_no-error" class="error mt-2 text-danger" for="arrear_ppo_no"></label>
                           </div>
                         </div>
@@ -135,21 +133,31 @@
                       <h4 class="card-title">Arrear List</h4>
 
                       <div class="row">
-                        <div class="table-sorter-wrapper col-lg-12 table-responsive">
-                          <table id="sampleTable" class="table table-striped">
+                        <div class="" style="overflow-y: auto;">
+                          <table id="sampleTable" class="table table-striped table-bordered" style="width:2000px">
                             <thead>
                               <tr>
-                              <th>Sl No.</th>
-                                <th>Pensioner Type</th>
-                                <th>Application Type</th>
-                                <th>PPO No</th>
-                                <th>Status</th>
-                                <th>Created At</th>
-                                <th>Action</th>
+                                <th rowspan="2">Sl No.</th>
+                                <th rowspan="2">Pre Rev TI</th>
+                                <th rowspan="2">Rev TI</th>
+                                <th rowspan="2">Month/Period</th>
+                                <th colspan="5" class="text-center">Due</th>
+                                <th colspan="5" class="text-center">Drawn</th>
+                              </tr>
+                              <tr>
+                                <th>Basic Pension</th>
+                                <th>TI Amount</th>
+                                <th>Gross Pension</th>
+                                <th>Comm Val</th>
+                                <th>Net pension</th>
+                                <th>Basic Pension</th>
+                                <th>TI Amount</th>
+                                <th>Gross Pension</th>
+                                <th>Comm Val</th>
+                                <th>Net pension</th>
                               </tr>
                             </thead>
                             <tbody>
-                            
                             </tbody>
                           </table>
                           
@@ -288,7 +296,7 @@
                   //$("#logid").prop('disabled',true);
                   $.ajax({
                       type:'POST',
-                      url:'{{ route("da_add_applicant_submit") }}',
+                      url:'{{ route("billing_officer_arrear_submission") }}',
                       data: formData,
                       dataType: 'JSON',
                       processData: false,
@@ -306,12 +314,11 @@
                                   $("#"+id).show();
                                   $("#"+id).html(eValue);
                               }
-                          }else if(response['loginCheckMessage']){
-                            location.href = "{{route('da_add_applicant_submit')}}";
                           }else{
                             // Success
+                            $("#sampleTable").append(response['results']);
                             //location.reload();
-                            location.href = "{{route('add_applicant')}}";
+                            //location.href = "{{route('billing_officer_arrears')}}";
                           }
                       }
                   });

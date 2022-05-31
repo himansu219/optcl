@@ -406,13 +406,15 @@ Route::get('pension-unit/update-pension-record/life-certificate/view/{appID}', [
 
 /* ------ Arrears  ------*/
 // Listing
-Route::get('billing-officers/update-pension-record/arrears', [ArrearsController::class, 'index'])->name('billing_officer_arrears');
+Route::any('billing-officers/update-pension-record/arrears', [ArrearsController::class, 'index'])->name('billing_officer_arrears');
 // Add
 Route::get('billing-officers/update-pension-record/arrears/add', [ArrearsController::class, 'add'])->name('billing_officer_arrears_add');
 // Pensioner Details
 Route::post('billing-officers/arrears/pensioner-details/', [ArrearsController::class, 'pensioner_details'])->name('billing_officer_pensioner_details');
 // Form Submission
 Route::post('billing-officers/arrears/submission/', [ArrearsController::class, 'arrear_submission'])->name('billing_officer_arrear_submission');
+// Pensioner Arrear Details
+Route::get('billing-officers/update-pension-record/arrears/arrear-details/{pID}', [ArrearsController::class, 'arrear_data_details'])->name('billing_officer_arrears_arrear_details');
 
 // Income details according to PPO number
 Route::post('pension-unit/update-pension-record/total-income-value/details/', [PensionerRecordUpdateController::class, 'get_data_from_ppo_no'])->name('pension_unit_get_data_from_ppo_no');

@@ -15,8 +15,37 @@ class ArrearsController extends Controller
         $this->middleware('auth');
         $this->current_date = date('Y-m-d H:i:s');
     }
-    public function index(){
-        return view('user.arrears.list');
+    public function index(Request $request){
+        $applications = DB::table('optcl_arrear')
+                ->join('optcl_pension_type_master', 'optcl_pension_type_master.id', '=', 'optcl_arrear.pensioner_type')
+                ->join('optcl_application_type', 'optcl_application_type.id', '=', 'optcl_arrear.application_type')
+                ->leftJoin('optcl_existing_user', function($join){
+                    $join->on('optcl_existing_user.id', '=', 'optcl_arrear.application_id');
+                    $join->on('optcl_existing_user.application_type', '=', 'optcl_arrear.application_type');
+                })
+                ->leftJoin('optcl_pension_application_form', function($join2){
+                    $join2->on('optcl_pension_application_form.id', '=', 'optcl_arrear.application_id');
+                    $join2->on('optcl_pension_application_form.application_type', '=', 'optcl_arrear.application_type');
+                })
+                ->leftJoin('optcl_application_status_master', 'optcl_application_status_master.id', '=', DB::raw('if(optcl_arrear.application_type = 1, optcl_pension_application_form.application_status_id, optcl_existing_user.application_status_id)'))
+                ->select('optcl_arrear.*', 'optcl_pension_type_master.pension_type', 'optcl_application_type.type_name', DB::raw('if(optcl_arrear.application_type = 1, optcl_pension_application_form.ppo_number, optcl_existing_user.new_ppo_no) AS new_ppo_no'), 'optcl_application_status_master.status_name')
+                ->where('optcl_arrear.status', 1)
+                ->where('optcl_arrear.deleted', 0);
+
+        // Old/New PPO No.
+        if(!empty($request->search_ppo_no)) {
+            $search_ppo_no = $request->search_ppo_no;
+            //$applications = $applications->where('a.search_ppo_no', 'like', '%' . $request->search_ppo_no . '%');
+            $applications = $applications->where(function($query) use($search_ppo_no) {
+                $query->orWhere('optcl_existing_user.new_ppo_no', 'like', '%' . $search_ppo_no . '%');
+                $query->orWhere('optcl_pension_application_form.ppo_number', 'like', '%' . $search_ppo_no . '%');
+            });
+        }
+
+        $applications = $applications->orderBy('optcl_arrear.id','DESC');
+        $applications = $applications->paginate(10);
+
+        return view('user.arrears.list', compact('applications', 'request'));
     }
 
     public function add(){
@@ -213,6 +242,22 @@ class ArrearsController extends Controller
             } 
         }
         echo json_encode($validation);
+    }
+
+    public function arrear_data_details($appID){
+        //dd(123);
+        $cr_data = DB::table('optcl_arrear')
+                        ->where('id', $appID)
+                        ->where('status', 1)
+                        ->where('deleted', 0)
+                        ->first();
+        if($cr_data){
+
+            return view('user.arrears.arrear_listing');
+        }else{
+            Session::flash('error', 'No data found');            
+            return redirect()->route('billing_officer_arrears');
+        }
     }
 
 }

@@ -24,32 +24,14 @@
                 @csrf
                 <div class="row">
                   <div class="col-md-3">
-                    <label>Old/New PPO No.</label>
-                    <input type="text" name="application_no" class="form-control" id="application_no" value="{{ !empty($request->application_no) ? $request->application_no : '' }}" >
-                  </div>
-
-                  <div class="col-md-3">
-                    <label>Employee Code</label>
-                    <input type="text" name="employee_code" class="form-control" id="employee_code" value="{{ !empty($request->employee_code) ? $request->employee_code : '' }}" maxlength="5">
-                  </div>
-
-                  <div class="col-md-3">
-                    <label>Aadhaar/ Mobile No.</label>
-                    <input type="text" name="employee_aadhaar_no" class="form-control only_number" maxlength="12" id="employee_aadhaar_no" value="{{ !empty($request->employee_aadhaar_no) ? $request->employee_aadhaar_no : '' }}">
-                  </div>
-
-                  <div class="col-md-3">
-                    <label>Status</label>
-                    <select class="js-example-basic-single form-control" id="app_status_id" name="app_status_id">
-                        <option value="">Select Status</option>
-                        
-                    </select>
-                  </div>                                        
+                    <label>PPO No.</label>
+                    <input type="text" name="search_ppo_no" class="form-control" id="search_ppo_no" value="{{ !empty($request->search_ppo_no) ? $request->search_ppo_no : '' }}" >
+                  </div>                                      
                 </div>
                 <div class="row mt-4">
                   <div class="col-md-12">
                     <button type="submit" id="filters" class="btn btn-success">Filter</button>
-                    <a href="{{ route('billing_officer_approval_list_list') }}" class="btn btn-warning">Reset</a>
+                    <a href="{{ route('billing_officer_arrears') }}" class="btn btn-warning">Reset</a>
                   </div>                  
                 </div>
                 
@@ -68,19 +50,57 @@
                 <table id="sampleTable" class="table table-striped">
                   <thead>
                     <tr>
-                    <th>Sl No.</th>
+                      <th>Sl No.</th>
                       <th>Pensioner Type</th>
                       <th>Application Type</th>
                       <th>PPO No</th>
-                      <th>Status</th>
                       <th>Created At</th>
-                      <th>Action</th>
+                      <th class="text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                   
+                    @if($applications->count() > 0)
+                      @foreach($applications as $key => $application)
+                        <tr>
+                          <td>{{ $applications->firstItem() + $key }}</td>
+                          <td>{{ $application->type_name }}</td>
+                          <td>{{ $application->pension_type }}</td>
+                          <td>{{ $application->new_ppo_no }}</td>
+                          <td>{{ \Carbon\Carbon::parse($application->created_at)->format('d-m-Y h:i A') }}</td>
+                          <td class="text-center">
+                            <div class="list-icons">
+                                <div class="dropdown">
+                                    <a href="#" class="list-icons-item text-black" data-toggle="dropdown">
+                                        <i class="fa fa-bars"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" style="left: -21px;">
+                                      <a href="{{ route('billing_officer_arrears_arrear_details', array($application->id)) }}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>Arrear Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                          </td>
+                        </tr>
+                      @endforeach
+                    @else
+                      <tr><td colspan="5" align="center">No Data Found</td></tr>    
+                    @endif
                   </tbody>
                 </table>
+                <nav aria-label="..." class="float-right">
+                    <ul class="pagination">
+                        <li class="{{ ($applications->currentPage() == 1) ? ' disabled' : '' }} page-item">
+                            <a class="page-link" href="{{ $applications->url(1) }}">Previous</a>
+                        </li>
+                        @for ($i = 1; $i <= $applications->lastPage(); $i++)
+                            <li class="{{ ($applications->currentPage() == $i) ? ' active' : '' }}  page-item">
+                                <a class="page-link" href="{{ $applications->url($i) }}">{{ $i }}</a>
+                            </li>
+                        @endfor
+                        <li class="{{ ($applications->currentPage() == $applications->lastPage()) ? ' disabled' : '' }} page-item">
+                            <a class="page-link" href="{{ $applications->url($applications->currentPage()+1) }}" >Next</a>
+                        </li>
+                    </ul>
+                </nav>
                 
               </div>
             </div>

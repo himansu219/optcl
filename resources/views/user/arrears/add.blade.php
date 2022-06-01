@@ -128,43 +128,6 @@
                   </div>
                 </div>
 
-                <div class="card">
-                  <div class="card-body">
-                      <h4 class="card-title">Arrear List</h4>
-
-                      <div class="row">
-                        <div class="" style="overflow-y: auto;">
-                          <table id="sampleTable" class="table table-striped table-bordered" style="width:2000px">
-                            <thead>
-                              <tr>
-                                <th rowspan="2">Sl No.</th>
-                                <th rowspan="2">Pre Rev TI</th>
-                                <th rowspan="2">Rev TI</th>
-                                <th rowspan="2">Month/Period</th>
-                                <th colspan="5" class="text-center">Due</th>
-                                <th colspan="5" class="text-center">Drawn</th>
-                              </tr>
-                              <tr>
-                                <th>Basic Pension</th>
-                                <th>TI Amount</th>
-                                <th>Gross Pension</th>
-                                <th>Comm Val</th>
-                                <th>Net pension</th>
-                                <th>Basic Pension</th>
-                                <th>TI Amount</th>
-                                <th>Gross Pension</th>
-                                <th>Comm Val</th>
-                                <th>Net pension</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                          </table>
-                          
-                        </div>
-                      </div>
-                  </div>
-                </div>
 
        </div>
     </div>

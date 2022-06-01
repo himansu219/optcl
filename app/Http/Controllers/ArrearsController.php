@@ -185,7 +185,8 @@ class ArrearsController extends Controller
                     }else{
                         $month_max = 12;
                     }
-                    for($month = $month_value; $month <= $month_max; $month++){                        
+                    for($month = $month_value; $month <= $month_max; $month++){   
+                        $rest_pension = $due_net_pension - $drawn_net_pension;                     
                         $arrear_section_listing = [
                             "arrear_id" => $array_id,
                             "arrear_section_id" => $array_section_id,
@@ -203,8 +204,9 @@ class ArrearsController extends Controller
                             "due_basic_amount" => $due_arrear_basic_pension,
                             "due_gross_amount" => $due_gross_pension,
                             "due_additional_amount" => $due_arrear_additional_pension_amount,
-                            "due_comm_amount" => $drawn_commutation,
+                            "due_comm_amount" => $due_arrear_commutation_amount,
                             "due_net_pension" => $due_net_pension,
+                            "rest_pension"=> $rest_pension,
                             "created_by" => Auth::user()->id,
                             "created_at" => $this->current_date,
                         ];
@@ -252,8 +254,8 @@ class ArrearsController extends Controller
                         ->where('deleted', 0)
                         ->first();
         if($cr_data){
-
-            return view('user.arrears.arrear_listing');
+            $section_list = DB::table('optcl_arrear_section_list')->where('arrear_id', $appID)->where('status', 1)->where('status', 1)->get();
+            return view('user.arrears.arrear_listing', compact('section_list'));
         }else{
             Session::flash('error', 'No data found');            
             return redirect()->route('billing_officer_arrears');

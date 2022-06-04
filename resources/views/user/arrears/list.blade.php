@@ -75,6 +75,7 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" style="left: -21px;">
                                       <a href="{{ route('billing_officer_arrears_arrear_details', array($application->id)) }}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>Arrear Details</a>
+                                      <a href="{{ route('billing_officer_arrears_multiple_arrear', array($application->id)) }}" class="dropdown-item delete_desig"><i class="fa fa-plus"></i>Add New</a>
                                     </div>
                                 </div>
                             </div>

@@ -415,6 +415,10 @@ Route::post('billing-officers/arrears/pensioner-details/', [ArrearsController::c
 Route::post('billing-officers/arrears/submission/', [ArrearsController::class, 'arrear_submission'])->name('billing_officer_arrear_submission');
 // Pensioner Arrear Details
 Route::get('billing-officers/update-pension-record/arrears/arrear-details/{pID}', [ArrearsController::class, 'arrear_data_details'])->name('billing_officer_arrears_arrear_details');
+// Add multiple arrear details
+Route::get('billing-officers/update-pension-record/arrears/multiple-arrear/{pID}', [ArrearsController::class, 'add_multiple'])->name('billing_officer_arrears_multiple_arrear');
+// Multiple Form Submission
+Route::post('billing-officers/arrears/multiple/submission/', [ArrearsController::class, 'multiple_arrear_submission'])->name('billing_officer_multiple_arrear_submission');
 
 // Income details according to PPO number
 Route::post('pension-unit/update-pension-record/total-income-value/details/', [PensionerRecordUpdateController::class, 'get_data_from_ppo_no'])->name('pension_unit_get_data_from_ppo_no');

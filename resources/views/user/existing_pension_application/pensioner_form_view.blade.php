@@ -9,7 +9,7 @@
     }
 </style>
 <div class="content-wrapper">
-    <nav aria-label="breadcrumb" role="navigation">
+    <nav aria-label="breadcrumb" role="navigation" class="bg-white">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
             <li class="breadcrumb-item active" aria-current="page">View Details</li> 
@@ -63,8 +63,14 @@
                                             <tr>
                                                 <th>Aadhaar No.</th>
                                                 <td>{{ $pensionerDetails->aadhar_no ? $pensionerDetails->aadhar_no : 'NA' }}</td>
+                                                <th>PAN</th>
+                                                <td>{{ $pensionerDetails->pan_no ? $pensionerDetails->pan_no : 'NA' }}</td>
+                                            </tr>
+                                            <tr>
                                                 <th>Employee Code</th>
                                                 <td>{{ $pensionerDetails->employee_code ? $pensionerDetails->employee_code : 'NA' }}</td>
+                                                <th></th>
+                                                <td></td>
                                             </tr>
                                             <tr>
                                                 <th>Gender</th>

@@ -2609,8 +2609,8 @@ DROP TABLE IF EXISTS `optcl_arrear`;
 
 CREATE TABLE `optcl_arrear` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `application_type` int(11) DEFAULT NULL,
-  `pensioner_type` int(11) DEFAULT NULL,
+  `application_type` int(11) DEFAULT NULL COMMENT 'optcl_application_type',
+  `pensioner_type` int(11) DEFAULT NULL COMMENT 'optcl_pension_type_master',
   `application_id` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -2619,12 +2619,14 @@ CREATE TABLE `optcl_arrear` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_arrear` */
 
 insert  into `optcl_arrear`(`id`,`application_type`,`pensioner_type`,`application_id`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
-(1,2,1,30,69,'2022-05-30 20:23:47',NULL,NULL,1,0);
+(1,2,1,30,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(2,2,1,30,69,'2022-06-02 16:29:56',NULL,NULL,1,0),
+(3,2,1,30,69,'2022-06-02 17:03:22',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_arrear_section` */
 
@@ -2642,12 +2644,17 @@ CREATE TABLE `optcl_arrear_section` (
   `status` tinyint(1) DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_arrear_section` */
 
 insert  into `optcl_arrear_section`(`id`,`arraer_id`,`from_date`,`to_date`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
-(1,1,'2021-06-09','2022-05-30',NULL,NULL,NULL,NULL,NULL,NULL);
+(1,1,'2021-06-09','2022-05-30',NULL,NULL,NULL,NULL,NULL,NULL),
+(2,2,'2021-11-24','2022-06-02',NULL,NULL,NULL,NULL,NULL,NULL),
+(3,3,'2021-03-11','2022-06-02',NULL,NULL,NULL,NULL,NULL,NULL),
+(4,3,'2021-11-25','2022-06-02',NULL,NULL,NULL,NULL,NULL,NULL),
+(5,3,'2022-06-02','2022-06-02',NULL,NULL,NULL,NULL,NULL,NULL),
+(6,3,'2022-02-02','2022-06-02',NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `optcl_arrear_section_list` */
 
@@ -2681,7 +2688,7 @@ CREATE TABLE `optcl_arrear_section_list` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_arrear_section_list` */
 
@@ -2697,7 +2704,45 @@ insert  into `optcl_arrear_section_list`(`id`,`arrear_id`,`arrear_section_id`,`y
 (9,1,1,2022,2,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,NULL,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
 (10,1,1,2022,3,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,NULL,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
 (11,1,1,2022,4,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,NULL,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
-(12,1,1,2022,5,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,NULL,69,'2022-05-30 20:23:47',NULL,NULL,1,0);
+(12,1,1,2022,5,40.00,20000.00,50000.00,70000.00,0.00,0.00,70000.00,50.00,25000.00,50000.00,75000.00,0.00,0.00,75000.00,NULL,69,'2022-05-30 20:23:47',NULL,NULL,1,0),
+(13,2,2,2021,11,40.00,16000.00,40000.00,56000.00,0.00,0.00,56000.00,60.00,33600.00,56000.00,89600.00,0.00,0.00,89600.00,33600.00,69,'2022-06-02 16:29:56',NULL,NULL,1,0),
+(14,2,2,2021,12,40.00,16000.00,40000.00,56000.00,0.00,0.00,56000.00,60.00,33600.00,56000.00,89600.00,0.00,0.00,89600.00,33600.00,69,'2022-06-02 16:29:56',NULL,NULL,1,0),
+(15,2,2,2022,1,40.00,16000.00,40000.00,56000.00,0.00,0.00,56000.00,60.00,33600.00,56000.00,89600.00,0.00,0.00,89600.00,33600.00,69,'2022-06-02 16:29:56',NULL,NULL,1,0),
+(16,2,2,2022,2,40.00,16000.00,40000.00,56000.00,0.00,0.00,56000.00,60.00,33600.00,56000.00,89600.00,0.00,0.00,89600.00,33600.00,69,'2022-06-02 16:29:56',NULL,NULL,1,0),
+(17,2,2,2022,3,40.00,16000.00,40000.00,56000.00,0.00,0.00,56000.00,60.00,33600.00,56000.00,89600.00,0.00,0.00,89600.00,33600.00,69,'2022-06-02 16:29:56',NULL,NULL,1,0),
+(18,2,2,2022,4,40.00,16000.00,40000.00,56000.00,0.00,0.00,56000.00,60.00,33600.00,56000.00,89600.00,0.00,0.00,89600.00,33600.00,69,'2022-06-02 16:29:56',NULL,NULL,1,0),
+(19,2,2,2022,5,40.00,16000.00,40000.00,56000.00,0.00,0.00,56000.00,60.00,33600.00,56000.00,89600.00,0.00,0.00,89600.00,33600.00,69,'2022-06-02 16:29:56',NULL,NULL,1,0),
+(20,2,2,2022,6,40.00,16000.00,40000.00,56000.00,0.00,0.00,56000.00,60.00,33600.00,56000.00,89600.00,0.00,0.00,89600.00,33600.00,69,'2022-06-02 16:29:56',NULL,NULL,1,0),
+(21,3,3,2021,3,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(22,3,3,2021,4,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(23,3,3,2021,5,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(24,3,3,2021,6,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(25,3,3,2021,7,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(26,3,3,2021,8,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(27,3,3,2021,9,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(28,3,3,2021,10,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(29,3,3,2021,11,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(30,3,3,2021,12,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(31,3,3,2022,1,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(32,3,3,2022,2,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(33,3,3,2022,3,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(34,3,3,2022,4,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(35,3,3,2022,5,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(36,3,3,2022,6,20.00,12000.00,60000.00,72000.00,0.00,0.00,72000.00,24.00,13440.00,56000.00,69440.00,0.00,0.00,69440.00,-2560.00,69,'2022-06-02 17:03:22',NULL,NULL,1,0),
+(37,3,4,2021,11,32.00,13440.00,42000.00,55440.00,0.00,0.00,55440.00,60.00,27000.00,45000.00,72000.00,0.00,0.00,72000.00,16560.00,69,'2022-06-02 17:13:35',NULL,NULL,1,0),
+(38,3,4,2021,12,32.00,13440.00,42000.00,55440.00,0.00,0.00,55440.00,60.00,27000.00,45000.00,72000.00,0.00,0.00,72000.00,16560.00,69,'2022-06-02 17:13:35',NULL,NULL,1,0),
+(39,3,4,2022,1,32.00,13440.00,42000.00,55440.00,0.00,0.00,55440.00,60.00,27000.00,45000.00,72000.00,0.00,0.00,72000.00,16560.00,69,'2022-06-02 17:13:35',NULL,NULL,1,0),
+(40,3,4,2022,2,32.00,13440.00,42000.00,55440.00,0.00,0.00,55440.00,60.00,27000.00,45000.00,72000.00,0.00,0.00,72000.00,16560.00,69,'2022-06-02 17:13:35',NULL,NULL,1,0),
+(41,3,4,2022,3,32.00,13440.00,42000.00,55440.00,0.00,0.00,55440.00,60.00,27000.00,45000.00,72000.00,0.00,0.00,72000.00,16560.00,69,'2022-06-02 17:13:35',NULL,NULL,1,0),
+(42,3,4,2022,4,32.00,13440.00,42000.00,55440.00,0.00,0.00,55440.00,60.00,27000.00,45000.00,72000.00,0.00,0.00,72000.00,16560.00,69,'2022-06-02 17:13:35',NULL,NULL,1,0),
+(43,3,4,2022,5,32.00,13440.00,42000.00,55440.00,0.00,0.00,55440.00,60.00,27000.00,45000.00,72000.00,0.00,0.00,72000.00,16560.00,69,'2022-06-02 17:13:35',NULL,NULL,1,0),
+(44,3,4,2022,6,32.00,13440.00,42000.00,55440.00,0.00,0.00,55440.00,60.00,27000.00,45000.00,72000.00,0.00,0.00,72000.00,16560.00,69,'2022-06-02 17:13:35',NULL,NULL,1,0),
+(45,3,5,2022,6,12.00,3840.00,32000.00,35840.00,0.00,0.00,35840.00,32.00,17920.00,56000.00,73920.00,0.00,0.00,73920.00,38080.00,69,'2022-06-02 17:15:56',NULL,NULL,1,0),
+(46,3,6,2022,2,12.00,7200.00,60000.00,67200.00,0.00,0.00,67200.00,0.00,0.00,56000.00,56000.00,0.00,0.00,56000.00,-11200.00,69,'2022-06-02 17:17:37',NULL,NULL,1,0),
+(47,3,6,2022,3,12.00,7200.00,60000.00,67200.00,0.00,0.00,67200.00,0.00,0.00,56000.00,56000.00,0.00,0.00,56000.00,-11200.00,69,'2022-06-02 17:17:37',NULL,NULL,1,0),
+(48,3,6,2022,4,12.00,7200.00,60000.00,67200.00,0.00,0.00,67200.00,0.00,0.00,56000.00,56000.00,0.00,0.00,56000.00,-11200.00,69,'2022-06-02 17:17:37',NULL,NULL,1,0),
+(49,3,6,2022,5,12.00,7200.00,60000.00,67200.00,0.00,0.00,67200.00,0.00,0.00,56000.00,56000.00,0.00,0.00,56000.00,-11200.00,69,'2022-06-02 17:17:37',NULL,NULL,1,0),
+(50,3,6,2022,6,12.00,7200.00,60000.00,67200.00,0.00,0.00,67200.00,0.00,0.00,56000.00,56000.00,0.00,0.00,56000.00,-11200.00,69,'2022-06-02 17:17:37',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_bank_branch_master` */
 
@@ -4280,6 +4325,270 @@ insert  into `optcl_bank_type_master`(`id`,`bank_type`,`status`,`created_by`,`cr
 (2,'Corporate',1,1,'2021-09-25 12:30:29',NULL,NULL,0),
 (3,'Co-operative',1,1,'2021-09-25 12:30:31',NULL,NULL,0);
 
+/*Table structure for table `optcl_beneficiary_account_details` */
+
+DROP TABLE IF EXISTS `optcl_beneficiary_account_details`;
+
+CREATE TABLE `optcl_beneficiary_account_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `beneficiary_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
+  `bank_branch_id` int(11) DEFAULT NULL COMMENT 'optcl_bank_branch_master',
+  `bank_name` varchar(50) DEFAULT NULL,
+  `branch_name` varchar(50) DEFAULT NULL,
+  `ifsc_code` varchar(50) DEFAULT NULL,
+  `account_number` varchar(30) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_beneficiary_account_details` */
+
+/*Table structure for table `optcl_beneficiary_account_history` */
+
+DROP TABLE IF EXISTS `optcl_beneficiary_account_history`;
+
+CREATE TABLE `optcl_beneficiary_account_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `beneficiary_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
+  `bank_branch_id` int(11) DEFAULT NULL COMMENT 'optcl_bank_branch_master',
+  `bank_name` varchar(50) DEFAULT NULL,
+  `branch_name` varchar(50) DEFAULT NULL,
+  `ifsc_code` varchar(50) DEFAULT NULL,
+  `account_number` varchar(30) DEFAULT NULL,
+  `effective_from` date DEFAULT NULL,
+  `effective_to` date DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_beneficiary_account_history` */
+
+/*Table structure for table `optcl_beneficiary_arrear_details` */
+
+DROP TABLE IF EXISTS `optcl_beneficiary_arrear_details`;
+
+CREATE TABLE `optcl_beneficiary_arrear_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `beneficiary_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
+  `arrear_id` int(11) DEFAULT NULL COMMENT 'optcl_arrear',
+  `arrear_amount` double DEFAULT NULL,
+  `is_bill_generated` tinyint(1) DEFAULT 0 COMMENT '1 - When arrear bill generated/0  - At the time of arrear update',
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `upated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_beneficiary_arrear_details` */
+
+/*Table structure for table `optcl_beneficiary_arrear_history` */
+
+DROP TABLE IF EXISTS `optcl_beneficiary_arrear_history`;
+
+CREATE TABLE `optcl_beneficiary_arrear_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `beneficiary_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
+  `arrear_id` int(11) DEFAULT NULL COMMENT 'optcl_arrear',
+  `arrear_amount` double(18,2) DEFAULT NULL,
+  `is_bill_generated` tinyint(1) DEFAULT 0 COMMENT '1 - When arrear bill generated/0  - At the time of arrear update',
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_beneficiary_arrear_history` */
+
+/*Table structure for table `optcl_beneficiary_details` */
+
+DROP TABLE IF EXISTS `optcl_beneficiary_details`;
+
+CREATE TABLE `optcl_beneficiary_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `application_type` int(11) DEFAULT NULL COMMENT 'optcl_application_type',
+  `pensioner_type` int(11) DEFAULT NULL COMMENT 'optcl_pension_type_master',
+  `application_id` int(11) DEFAULT NULL,
+  `pensioner_name` varchar(150) DEFAULT NULL,
+  `pensioner_aadhaar` varchar(20) DEFAULT NULL,
+  `pensioner_pan` varchar(15) DEFAULT NULL,
+  `pensioner_mobile` varchar(20) DEFAULT NULL,
+  `pension_unit_id` int(11) DEFAULT NULL,
+  `ppo_no` varchar(20) DEFAULT NULL,
+  `date_of_retirement` date DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `date_of_death` date DEFAULT NULL,
+  `is_dead` tinyint(1) DEFAULT NULL,
+  `life_certificate_status` tinyint(1) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_beneficiary_details` */
+
+/*Table structure for table `optcl_beneficiary_details_history` */
+
+DROP TABLE IF EXISTS `optcl_beneficiary_details_history`;
+
+CREATE TABLE `optcl_beneficiary_details_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `beneficiary_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
+  `pensioner_name` varchar(150) DEFAULT NULL,
+  `pensioner_aadhaar` varchar(20) DEFAULT NULL,
+  `pensioner_pan` varchar(15) DEFAULT NULL,
+  `pensioner_mobile` varchar(20) DEFAULT NULL,
+  `pension_unit_id` int(11) DEFAULT NULL,
+  `ppo_no` varchar(20) DEFAULT NULL,
+  `date_of_retirement` date DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `date_of_death` date DEFAULT NULL,
+  `is_dead` tinyint(1) DEFAULT NULL,
+  `life_certificate_status` tinyint(1) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_beneficiary_details_history` */
+
+/*Table structure for table `optcl_beneficiary_documents` */
+
+DROP TABLE IF EXISTS `optcl_beneficiary_documents`;
+
+CREATE TABLE `optcl_beneficiary_documents` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `beneficiary_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
+  `sanction_order_file_path` text DEFAULT NULL,
+  `gratuity_sanction_order_file_path` text DEFAULT NULL,
+  `ppo_order_file_path` text DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_beneficiary_documents` */
+
+/*Table structure for table `optcl_beneficiary_pension_amount_details` */
+
+DROP TABLE IF EXISTS `optcl_beneficiary_pension_amount_details`;
+
+CREATE TABLE `optcl_beneficiary_pension_amount_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `beneficiary_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
+  `pension_amount` double(18,2) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_beneficiary_pension_amount_details` */
+
+/*Table structure for table `optcl_beneficiary_pension_amount_history` */
+
+DROP TABLE IF EXISTS `optcl_beneficiary_pension_amount_history`;
+
+CREATE TABLE `optcl_beneficiary_pension_amount_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `beneficiary_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
+  `basic_amount` double(18,2) DEFAULT NULL,
+  `basic_amount_effective_from` date DEFAULT NULL,
+  `basic_amount_effective_to` date DEFAULT NULL,
+  `additional_pension_amount` double(18,2) DEFAULT NULL,
+  `additional_pension_effective_from` date DEFAULT NULL,
+  `additional_pension_effective_to` date DEFAULT NULL,
+  `enhanced_pension_amount` double(18,2) DEFAULT NULL,
+  `enhanced_pension_effective_from` date DEFAULT NULL,
+  `enhanced_pension_effective_to` date DEFAULT NULL,
+  `normal_pension_amount` double(18,2) DEFAULT NULL,
+  `normal_pension_effective_from` date DEFAULT NULL,
+  `normal_pension_effective_to` date DEFAULT NULL,
+  `gross_pension_amount` double(18,2) DEFAULT NULL,
+  `gross_pension_effective_from` date DEFAULT NULL,
+  `gross_pension_effective_to` date DEFAULT NULL,
+  `total_income` double(18,2) DEFAULT NULL,
+  `total_income_effective_from` date DEFAULT NULL,
+  `total_income_effective_to` date DEFAULT NULL,
+  `taxable_amount` double(18,2) DEFAULT NULL,
+  `taxable_amount_effective_from` date DEFAULT NULL,
+  `taxable_amount_effective_to` date DEFAULT NULL,
+  `pension_amount` double(18,2) DEFAULT NULL,
+  `pension_amount_effective_from` date DEFAULT NULL,
+  `pension_amount_effectiveto` date DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_beneficiary_pension_amount_history` */
+
+/*Table structure for table `optcl_beneficiary_ti_details` */
+
+DROP TABLE IF EXISTS `optcl_beneficiary_ti_details`;
+
+CREATE TABLE `optcl_beneficiary_ti_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `beneficiary_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
+  `changed_ti_id` int(11) DEFAULT NULL COMMENT 'optcl_ti_category_master',
+  `ti_percentage` double(4,2) DEFAULT NULL,
+  `ti_amount` double(18,2) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_beneficiary_ti_details` */
+
+/*Table structure for table `optcl_beneficiary_ti_history` */
+
+DROP TABLE IF EXISTS `optcl_beneficiary_ti_history`;
+
+CREATE TABLE `optcl_beneficiary_ti_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `beneficiary_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
+  `changed_ti_id` int(11) DEFAULT NULL COMMENT 'optcl_ti_category_master',
+  `ti_percentage` double(4,2) DEFAULT NULL,
+  `ti_amount` double(18,2) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_beneficiary_ti_history` */
+
 /*Table structure for table `optcl_calculation_rule_master` */
 
 DROP TABLE IF EXISTS `optcl_calculation_rule_master`;
@@ -5823,6 +6132,7 @@ CREATE TABLE `optcl_existing_user` (
   `nominee_name` varchar(100) DEFAULT NULL,
   `nominee_mobile` varchar(15) DEFAULT NULL,
   `nominee_aadhar` varchar(20) DEFAULT NULL,
+  `pan_no` varchar(20) DEFAULT NULL,
   `nominee_dob` date DEFAULT NULL,
   `designation_id` int(11) DEFAULT NULL,
   `gender_id` int(11) DEFAULT NULL,
@@ -5855,33 +6165,33 @@ CREATE TABLE `optcl_existing_user` (
 
 /*Data for the table `optcl_existing_user` */
 
-insert  into `optcl_existing_user`(`id`,`application_type`,`pensioner_type`,`tax_type_id`,`user_id`,`pension_unit_id`,`old_ppo_no`,`old_ppo_attachment`,`new_ppo_no`,`category_ti_id`,`ti_amount`,`ti_percentage`,`pensioner_name`,`aadhar_no`,`mobile_number`,`employee_code`,`bank_branch_id`,`acc_number`,`relation_type`,`relation_current_status`,`relation_pension_closing_date`,`nominee_name`,`nominee_mobile`,`nominee_aadhar`,`nominee_dob`,`designation_id`,`gender_id`,`date_of_birth`,`date_of_retirement`,`date_of_death`,`basic_amount`,`basic_effective_date`,`additional_pension_amount`,`additional_pension_effective_date`,`enhanced_pension_amount`,`enhanced_pension_effective_date`,`enhanced_pension_end_date`,`normal_pension_amount`,`normal_pension_effective_date`,`gross_pension_amount`,`total_income`,`is_taxable_amount_generated`,`taxable_amount`,`application_status_id`,`is_life_certificate_submitted`,`created_by`,`created_at`,`modified_by`,`modified_at`,`status`,`deleted`) values 
-(1,2,1,1,17,1,'dfgdfgfdgdfb','uploads/documents/1644665275-1315765131.jpg',NULL,2,2240.00,'4','sdfdfdfsdf','343433443443','43535345345',12345,400,'45698712',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,1,17,'2022-02-12 16:59:00',NULL,NULL,1,0),
-(2,2,1,1,10,NULL,'123456/123456','public/uploads/documents/1645183562-143806495.pdf','4319/02/2022',2,2240.00,'4','PENSIONER NAME','798645312456','7978642133',NULL,400,'7984653120',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,2,'1990-12-31','2022-02-18',NULL,56000.00,'2022-02-18',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,NULL,1,10,'2022-02-18 16:56:02',NULL,NULL,1,0),
-(3,2,1,1,10,NULL,'123456/1234','public/uploads/documents/1645188434-1626790392.pdf','7843/02/2022',2,3000.00,'4','PENSIONER NAME',NULL,'7894652130',NULL,400,'978465132',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1990-12-31','2022-02-18',NULL,75000.00,'2022-02-18',NULL,NULL,NULL,NULL,NULL,NULL,NULL,78000.00,NULL,0,NULL,NULL,1,10,'2022-02-18 18:17:14',NULL,NULL,1,0),
-(5,2,2,1,17,1,'1234/1234','public/uploads/documents/1645278038-1384916481.pdf','2515/02/2022',2,2240.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'879645213465',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1990-12-01','2022-03-12',NULL,56000.00,'2022-02-19',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,NULL,1,17,'2022-02-19 19:10:38',NULL,NULL,1,0),
-(6,2,1,1,17,1,'78945/45612','public/uploads/documents/1645278471-1991252381.pdf','875/02/2022',2,2240.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'79846321321',2,4,NULL,'Test pensioner','9786451320','798465321123','2022-02-19',1,1,'1990-12-01','2022-02-01','2022-02-19',56000.00,'2022-02-19',NULL,NULL,28000.00,NULL,'2022-02-19',16800.00,'2022-02-19',30240.00,NULL,0,NULL,NULL,1,17,'2022-02-19 19:17:51',NULL,NULL,1,0),
-(9,2,2,1,17,1,'789654/12345','public/uploads/documents/1645451226-1354481699.pdf','8810/02/2022',2,3120.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'7896451321',3,6,NULL,'Pensioner name','9784651320','798789789789','2022-02-21',1,2,'1954-06-15','2015-07-16','2022-02-21',78000.00,'2022-02-21',NULL,NULL,NULL,NULL,'2022-02-21',23400.00,'2022-02-22',26520.00,NULL,0,NULL,NULL,1,17,'2022-02-21 19:17:06',NULL,NULL,1,0),
-(11,2,2,1,17,1,'74578/55698','public/uploads/documents/1645456224-1724125053.pdf','6618/02/2022',2,2240.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'6547981324',2,4,NULL,'Son Name','3126457864','465564564231','2022-02-21',1,1,'1969-01-06','2022-02-21','2000-02-08',56000.00,'2022-02-21',NULL,NULL,NULL,NULL,'2022-02-21',16800.00,'2022-02-21',19040.00,NULL,0,NULL,51,1,17,'2022-02-21 20:40:24',NULL,NULL,1,0),
-(12,2,1,1,17,1,'78965/45632','public/uploads/documents/1645609228-1844250123.pdf','5835/02/2022',2,3440.00,'4','GOPALA MOHANTY',NULL,NULL,NULL,399,'97846513132',NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1990-12-01','2022-02-23',NULL,86000.00,'2022-02-23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,89440.00,NULL,0,NULL,50,1,17,'2022-02-23 15:10:28',NULL,NULL,1,0),
-(13,2,1,1,17,1,'789/789','public/uploads/documents/1645619879-1827631835.pdf','5481/02/2022',2,2240.00,'4','RAJESH BEHERA',NULL,NULL,NULL,400,'5868955563',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1990-12-01','2022-02-23',NULL,56000.00,'2022-02-23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,NULL,1,17,'2022-02-23 18:07:59',NULL,NULL,1,0),
-(14,2,1,1,17,1,'741258/4656','public/uploads/documents/1646198114-1657598580.pdf','7864/03/2022',2,2240.00,'4','TESTING','444444444444','7896541233',NULL,399,'89797887987',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,2,'1990-12-01','2022-04-09',NULL,56000.00,'2022-03-02',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,NULL,1,17,'2022-03-02 10:45:14',NULL,NULL,1,0),
-(15,2,2,1,17,1,'3225/7/7777','public/uploads/documents/1648537551-1770535245.pdf','6365/03/2022',2,1360.00,'4','TEST NAME',NULL,NULL,NULL,399,'1233212133',2,4,NULL,'test name','9779854621','978798798897','2022-03-29',1,1,'1990-12-31','2022-03-29','2022-03-29',34000.00,'2022-03-30',NULL,NULL,17000.00,NULL,'2022-03-29',10200.00,'2022-03-29',18360.00,NULL,0,NULL,NULL,1,17,'2022-03-29 12:35:51',NULL,NULL,1,0),
-(16,2,1,1,17,1,'9874/5/4654','public/uploads/documents/1648553913-1912620280.pdf','03/2022/00001',2,2240.00,'4','PENSIONER NAME',NULL,NULL,NULL,399,'978645312645',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1977-09-25','2026-07-23',NULL,56000.00,'2026-07-24',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,NULL,1,17,'2022-03-29 17:08:33',NULL,NULL,1,0),
-(17,2,2,1,17,1,'9784/5/6547','public/uploads/documents/1648561160-1260438184.pdf','03/2022/00002',2,2240.00,'4','USER NAME','798978978798','3124659789',79898,399,'6459789789787',2,4,NULL,'User Name','7986459789','789887879465','2022-03-29',1,1,'1970-10-27','2022-03-29','2022-03-29',56000.00,'2022-03-30',NULL,NULL,28000.00,NULL,'2022-03-29',16800.00,'2022-03-29',30240.00,NULL,0,NULL,51,1,17,'2022-03-29 19:09:20',NULL,NULL,1,0),
-(18,2,1,1,17,1,'9784/8/9784','public/uploads/documents/1648618801-1226992382.pdf','03/2022/00003',2,2600.00,'4','TEST USER',NULL,NULL,NULL,400,'978456231564',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1973-05-21','2022-12-31',NULL,65000.00,'2023-01-01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,67600.00,NULL,0,NULL,51,1,17,'2022-03-30 11:10:01',NULL,NULL,1,0),
-(19,2,2,1,17,1,'9999/7/7001','public/uploads/documents/1648795274-1846934264.pdf','04/2022/00004',2,400.00,'4','SOUMY RANJAN SAHOO','222233330221','9797979701',50002,927,'98800008999',1,1,NULL,'Test name','9090889898','766565666755','2021-01-01',14,1,'1959-01-01','2021-05-30','2021-01-01',10000.00,'2021-05-31',NULL,NULL,NULL,NULL,'2023-02-01',3000.00,'2023-03-01',3400.00,NULL,0,NULL,51,1,17,'2022-04-01 12:11:14',NULL,NULL,1,0),
-(20,2,1,1,17,1,'4234/7/5464','public/uploads/documents/1648804905-1325983206.pdf','04/2022/00005',2,2240.00,'4','ASDASDAD',NULL,NULL,NULL,401,'75756565656',NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1990-12-31','2022-04-08',NULL,56000.00,'2022-04-09',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,50,1,17,'2022-04-01 14:51:45',NULL,NULL,1,0),
-(21,2,1,1,17,1,'9999/8/7000','public/uploads/documents/1648876757-1470026466.pdf','04/2022/00006',2,400.00,'4','SOUMYA SAHOO A','222233330111','9898989802',40001,927,'9890000898',NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1961-04-18','2021-04-30',NULL,10000.00,'2021-05-01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,10400.00,NULL,0,NULL,54,1,17,'2022-04-02 10:49:17',NULL,NULL,1,0),
-(22,2,1,1,17,1,'9999/8/7000','public/uploads/documents/1648877237-1262558869.pdf','04/2022/00007',2,400.00,'4','SOUMYA SAHOO B','222233330111','9898989801',40001,515,'9890000898',NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1961-04-18','2021-04-30',NULL,10000.00,'2021-05-01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,10400.00,NULL,0,NULL,51,1,17,'2022-04-02 10:57:17',NULL,NULL,1,0),
-(23,2,2,1,17,1,'9999/7/7002','public/uploads/documents/1648880656-1136840787.pdf','04/2022/00008',2,400.00,'4','SARAT SAMAL','222233330222','9797979702',50003,927,'98800008901',1,1,NULL,'santilata shoo','9889858888','654354444145','2021-01-02',2,1,'1961-04-18','2021-04-30','2021-11-02',10000.00,'2021-05-01',NULL,NULL,NULL,NULL,'2021-12-01',3000.00,'2022-04-30',3400.00,NULL,0,NULL,51,1,17,'2022-04-02 11:54:16',NULL,NULL,1,0),
-(24,2,1,1,17,1,'9999/8/9999','public/uploads/documents/1649068783-1484194352.pdf','04/2022/00009',3,800.00,'8','TESFRFFRCC VGV','756867667666','9999999997',66766,399,'5768576565454',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1910-01-01','2022-04-20',NULL,10000.00,'2022-04-21',10000.00,NULL,NULL,NULL,NULL,NULL,NULL,20800.00,NULL,0,NULL,51,1,17,'2022-04-04 16:09:43',NULL,NULL,1,0),
-(25,2,1,1,17,1,'9874/5/5647','public/uploads/documents/1649663767-1292204665.pdf','04/2022/00011',2,2000.00,'4','TEST USER',NULL,NULL,NULL,400,'8794652134',NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1990-12-31','2022-04-11',NULL,50000.00,'2022-04-12',NULL,NULL,NULL,NULL,NULL,NULL,NULL,52000.00,52000.00,0,NULL,54,1,17,'2022-04-11 13:26:07',NULL,NULL,1,0),
-(26,2,1,1,17,1,'8794/4/3214','public/uploads/documents/1649678133-131374886.pdf','04/2022/00012',2,2000.00,'4','TEST USER',NULL,NULL,NULL,399,'978564123546',NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1990-12-31','2022-04-11',NULL,50000.00,'2022-04-12',NULL,NULL,NULL,NULL,NULL,NULL,NULL,52000.00,552000.00,1,452000.00,54,1,17,'2022-04-11 17:25:33',NULL,NULL,1,0),
-(27,2,1,2,17,1,'7894/8/9874','public/uploads/documents/1649678484-189958302.pdf','04/2022/00013',2,2240.00,'4','USER TEST',NULL,NULL,NULL,400,'89764512312',NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,2,'1990-12-31','2022-04-27',NULL,56000.00,'2022-04-28',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,564480.00,1,1400000.00,54,1,17,'2022-04-11 17:31:24',NULL,NULL,1,0),
-(28,2,1,2,17,1,'9874/2/4231','public/uploads/documents/1650378699-1780678744.pdf','04/2022/00014',2,3400.00,'4','TEST USER',NULL,NULL,NULL,401,'9876543124',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1966-08-26','2022-05-07',NULL,85000.00,'2022-05-08',NULL,NULL,NULL,NULL,NULL,NULL,NULL,88400.00,1006800.00,1,955800.00,54,1,17,'2022-04-19 20:01:39',NULL,NULL,1,0),
-(29,2,1,2,17,1,'9784/4/4657','public/uploads/documents/1650972144-1603602873.pdf','04/2022/00015',2,3440.00,'4','NEW USER NAME',NULL,NULL,NULL,400,'87956412341',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,2,'1970-02-03','2022-04-26',NULL,86000.00,'2022-04-27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,89440.00,1067280.00,0,NULL,54,1,17,'2022-04-26 16:52:24',NULL,NULL,1,0),
-(30,2,1,1,17,1,'7984/8/5467','public/uploads/documents/1652268485-1332888090.pdf','2022/05/0016',2,0.00,'0','USER NAME',NULL,NULL,NULL,399,'8977897894',NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1944-06-20','2022-05-11',NULL,90000.00,'2022-03-09',NULL,NULL,NULL,NULL,NULL,NULL,NULL,90000.00,720000.00,1,663280.00,51,1,17,'2022-05-11 16:58:05',NULL,NULL,1,0);
+insert  into `optcl_existing_user`(`id`,`application_type`,`pensioner_type`,`tax_type_id`,`user_id`,`pension_unit_id`,`old_ppo_no`,`old_ppo_attachment`,`new_ppo_no`,`category_ti_id`,`ti_amount`,`ti_percentage`,`pensioner_name`,`aadhar_no`,`mobile_number`,`employee_code`,`bank_branch_id`,`acc_number`,`relation_type`,`relation_current_status`,`relation_pension_closing_date`,`nominee_name`,`nominee_mobile`,`nominee_aadhar`,`pan_no`,`nominee_dob`,`designation_id`,`gender_id`,`date_of_birth`,`date_of_retirement`,`date_of_death`,`basic_amount`,`basic_effective_date`,`additional_pension_amount`,`additional_pension_effective_date`,`enhanced_pension_amount`,`enhanced_pension_effective_date`,`enhanced_pension_end_date`,`normal_pension_amount`,`normal_pension_effective_date`,`gross_pension_amount`,`total_income`,`is_taxable_amount_generated`,`taxable_amount`,`application_status_id`,`is_life_certificate_submitted`,`created_by`,`created_at`,`modified_by`,`modified_at`,`status`,`deleted`) values 
+(1,2,1,1,17,1,'dfgdfgfdgdfb','uploads/documents/1644665275-1315765131.jpg',NULL,2,2240.00,'4','sdfdfdfsdf','343433443443','43535345345',12345,400,'45698712',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,1,17,'2022-02-12 16:59:00',NULL,NULL,1,0),
+(2,2,1,1,10,NULL,'123456/123456','public/uploads/documents/1645183562-143806495.pdf','4319/02/2022',2,2240.00,'4','PENSIONER NAME','798645312456','7978642133',NULL,400,'7984653120',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,2,'1990-12-31','2022-02-18',NULL,56000.00,'2022-02-18',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,NULL,1,10,'2022-02-18 16:56:02',NULL,NULL,1,0),
+(3,2,1,1,10,NULL,'123456/1234','public/uploads/documents/1645188434-1626790392.pdf','7843/02/2022',2,3000.00,'4','PENSIONER NAME',NULL,'7894652130',NULL,400,'978465132',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1990-12-31','2022-02-18',NULL,75000.00,'2022-02-18',NULL,NULL,NULL,NULL,NULL,NULL,NULL,78000.00,NULL,0,NULL,NULL,1,10,'2022-02-18 18:17:14',NULL,NULL,1,0),
+(5,2,2,1,17,1,'1234/1234','public/uploads/documents/1645278038-1384916481.pdf','2515/02/2022',2,2240.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'879645213465',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1990-12-01','2022-03-12',NULL,56000.00,'2022-02-19',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,NULL,1,17,'2022-02-19 19:10:38',NULL,NULL,1,0),
+(6,2,1,1,17,1,'78945/45612','public/uploads/documents/1645278471-1991252381.pdf','875/02/2022',2,2240.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'79846321321',2,4,NULL,'Test pensioner','9786451320','798465321123',NULL,'2022-02-19',1,1,'1990-12-01','2022-02-01','2022-02-19',56000.00,'2022-02-19',NULL,NULL,28000.00,NULL,'2022-02-19',16800.00,'2022-02-19',30240.00,NULL,0,NULL,NULL,1,17,'2022-02-19 19:17:51',NULL,NULL,1,0),
+(9,2,2,1,17,1,'789654/12345','public/uploads/documents/1645451226-1354481699.pdf','8810/02/2022',2,3120.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'7896451321',3,6,NULL,'Pensioner name','9784651320','798789789789',NULL,'2022-02-21',1,2,'1954-06-15','2015-07-16','2022-02-21',78000.00,'2022-02-21',NULL,NULL,NULL,NULL,'2022-02-21',23400.00,'2022-02-22',26520.00,NULL,0,NULL,NULL,1,17,'2022-02-21 19:17:06',NULL,NULL,1,0),
+(11,2,2,1,17,1,'74578/55698','public/uploads/documents/1645456224-1724125053.pdf','6618/02/2022',2,2240.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'6547981324',2,4,NULL,'Son Name','3126457864','465564564231',NULL,'2022-02-21',1,1,'1969-01-06','2022-02-21','2000-02-08',56000.00,'2022-02-21',NULL,NULL,NULL,NULL,'2022-02-21',16800.00,'2022-02-21',19040.00,NULL,0,NULL,51,1,17,'2022-02-21 20:40:24',NULL,NULL,1,0),
+(12,2,1,1,17,1,'78965/45632','public/uploads/documents/1645609228-1844250123.pdf','5835/02/2022',2,3440.00,'4','GOPALA MOHANTY',NULL,NULL,NULL,399,'97846513132',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1990-12-01','2022-02-23',NULL,86000.00,'2022-02-23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,89440.00,NULL,0,NULL,50,1,17,'2022-02-23 15:10:28',NULL,NULL,1,0),
+(13,2,1,1,17,1,'789/789','public/uploads/documents/1645619879-1827631835.pdf','5481/02/2022',2,2240.00,'4','RAJESH BEHERA',NULL,NULL,NULL,400,'5868955563',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1990-12-01','2022-02-23',NULL,56000.00,'2022-02-23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,NULL,1,17,'2022-02-23 18:07:59',NULL,NULL,1,0),
+(14,2,1,1,17,1,'741258/4656','public/uploads/documents/1646198114-1657598580.pdf','7864/03/2022',2,2240.00,'4','TESTING','444444444444','7896541233',NULL,399,'89797887987',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,2,'1990-12-01','2022-04-09',NULL,56000.00,'2022-03-02',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,NULL,1,17,'2022-03-02 10:45:14',NULL,NULL,1,0),
+(15,2,2,1,17,1,'3225/7/7777','public/uploads/documents/1648537551-1770535245.pdf','6365/03/2022',2,1360.00,'4','TEST NAME',NULL,NULL,NULL,399,'1233212133',2,4,NULL,'test name','9779854621','978798798897',NULL,'2022-03-29',1,1,'1990-12-31','2022-03-29','2022-03-29',34000.00,'2022-03-30',NULL,NULL,17000.00,NULL,'2022-03-29',10200.00,'2022-03-29',18360.00,NULL,0,NULL,NULL,1,17,'2022-03-29 12:35:51',NULL,NULL,1,0),
+(16,2,1,1,17,1,'9874/5/4654','public/uploads/documents/1648553913-1912620280.pdf','03/2022/00001',2,2240.00,'4','PENSIONER NAME',NULL,NULL,NULL,399,'978645312645',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1977-09-25','2026-07-23',NULL,56000.00,'2026-07-24',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,NULL,1,17,'2022-03-29 17:08:33',NULL,NULL,1,0),
+(17,2,2,1,17,1,'9784/5/6547','public/uploads/documents/1648561160-1260438184.pdf','03/2022/00002',2,2240.00,'4','USER NAME','798978978798','3124659789',79898,399,'6459789789787',2,4,NULL,'User Name','7986459789','789887879465',NULL,'2022-03-29',1,1,'1970-10-27','2022-03-29','2022-03-29',56000.00,'2022-03-30',NULL,NULL,28000.00,NULL,'2022-03-29',16800.00,'2022-03-29',30240.00,NULL,0,NULL,51,1,17,'2022-03-29 19:09:20',NULL,NULL,1,0),
+(18,2,1,1,17,1,'9784/8/9784','public/uploads/documents/1648618801-1226992382.pdf','03/2022/00003',2,2600.00,'4','TEST USER',NULL,NULL,NULL,400,'978456231564',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1973-05-21','2022-12-31',NULL,65000.00,'2023-01-01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,67600.00,NULL,0,NULL,51,1,17,'2022-03-30 11:10:01',NULL,NULL,1,0),
+(19,2,2,1,17,1,'9999/7/7001','public/uploads/documents/1648795274-1846934264.pdf','04/2022/00004',2,400.00,'4','SOUMY RANJAN SAHOO','222233330221','9797979701',50002,927,'98800008999',1,1,NULL,'Test name','9090889898','766565666755',NULL,'2021-01-01',14,1,'1959-01-01','2021-05-30','2021-01-01',10000.00,'2021-05-31',NULL,NULL,NULL,NULL,'2023-02-01',3000.00,'2023-03-01',3400.00,NULL,0,NULL,51,1,17,'2022-04-01 12:11:14',NULL,NULL,1,0),
+(20,2,1,1,17,1,'4234/7/5464','public/uploads/documents/1648804905-1325983206.pdf','04/2022/00005',2,2240.00,'4','ASDASDAD',NULL,NULL,NULL,401,'75756565656',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1990-12-31','2022-04-08',NULL,56000.00,'2022-04-09',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,NULL,0,NULL,50,1,17,'2022-04-01 14:51:45',NULL,NULL,1,0),
+(21,2,1,1,17,1,'9999/8/7000','public/uploads/documents/1648876757-1470026466.pdf','04/2022/00006',2,400.00,'4','SOUMYA SAHOO A','222233330111','9898989802',40001,927,'9890000898',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1961-04-18','2021-04-30',NULL,10000.00,'2021-05-01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,10400.00,NULL,0,NULL,54,1,17,'2022-04-02 10:49:17',NULL,NULL,1,0),
+(22,2,1,1,17,1,'9999/8/7000','public/uploads/documents/1648877237-1262558869.pdf','04/2022/00007',2,400.00,'4','SOUMYA SAHOO B','222233330111','9898989801',40001,515,'9890000898',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1961-04-18','2021-04-30',NULL,10000.00,'2021-05-01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,10400.00,NULL,0,NULL,51,1,17,'2022-04-02 10:57:17',NULL,NULL,1,0),
+(23,2,2,1,17,1,'9999/7/7002','public/uploads/documents/1648880656-1136840787.pdf','04/2022/00008',2,400.00,'4','SARAT SAMAL','222233330222','9797979702',50003,927,'98800008901',1,1,NULL,'santilata shoo','9889858888','654354444145',NULL,'2021-01-02',2,1,'1961-04-18','2021-04-30','2021-11-02',10000.00,'2021-05-01',NULL,NULL,NULL,NULL,'2021-12-01',3000.00,'2022-04-30',3400.00,NULL,0,NULL,51,1,17,'2022-04-02 11:54:16',NULL,NULL,1,0),
+(24,2,1,1,17,1,'9999/8/9999','public/uploads/documents/1649068783-1484194352.pdf','04/2022/00009',3,800.00,'8','TESFRFFRCC VGV','756867667666','9999999997',66766,399,'5768576565454',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1910-01-01','2022-04-20',NULL,10000.00,'2022-04-21',10000.00,NULL,NULL,NULL,NULL,NULL,NULL,20800.00,NULL,0,NULL,51,1,17,'2022-04-04 16:09:43',NULL,NULL,1,0),
+(25,2,1,1,17,1,'9874/5/5647','public/uploads/documents/1649663767-1292204665.pdf','04/2022/00011',2,2000.00,'4','TEST USER',NULL,NULL,NULL,400,'8794652134',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1990-12-31','2022-04-11',NULL,50000.00,'2022-04-12',NULL,NULL,NULL,NULL,NULL,NULL,NULL,52000.00,52000.00,0,NULL,54,1,17,'2022-04-11 13:26:07',NULL,NULL,1,0),
+(26,2,1,1,17,1,'8794/4/3214','public/uploads/documents/1649678133-131374886.pdf','04/2022/00012',2,2000.00,'4','TEST USER',NULL,NULL,NULL,399,'978564123546',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1990-12-31','2022-04-11',NULL,50000.00,'2022-04-12',NULL,NULL,NULL,NULL,NULL,NULL,NULL,52000.00,552000.00,1,452000.00,54,1,17,'2022-04-11 17:25:33',NULL,NULL,1,0),
+(27,2,1,2,17,1,'7894/8/9874','public/uploads/documents/1649678484-189958302.pdf','04/2022/00013',2,2240.00,'4','USER TEST',NULL,NULL,NULL,400,'89764512312',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,2,'1990-12-31','2022-04-27',NULL,56000.00,'2022-04-28',NULL,NULL,NULL,NULL,NULL,NULL,NULL,58240.00,564480.00,1,1400000.00,54,1,17,'2022-04-11 17:31:24',NULL,NULL,1,0),
+(28,2,1,2,17,1,'9874/2/4231','public/uploads/documents/1650378699-1780678744.pdf','04/2022/00014',2,3400.00,'4','TEST USER',NULL,NULL,NULL,401,'9876543124',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'1966-08-26','2022-05-07',NULL,85000.00,'2022-05-08',NULL,NULL,NULL,NULL,NULL,NULL,NULL,88400.00,1006800.00,1,955800.00,54,1,17,'2022-04-19 20:01:39',NULL,NULL,1,0),
+(29,2,1,2,17,1,'9784/4/4657','public/uploads/documents/1650972144-1603602873.pdf','04/2022/00015',2,3440.00,'4','NEW USER NAME',NULL,NULL,NULL,400,'87956412341',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,2,'1970-02-03','2022-04-26',NULL,86000.00,'2022-04-27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,89440.00,1067280.00,0,NULL,54,1,17,'2022-04-26 16:52:24',NULL,NULL,1,0),
+(30,2,1,1,17,1,'7984/8/5467','public/uploads/documents/1652268485-1332888090.pdf','2022/05/0016',2,0.00,'0','USER NAME',NULL,NULL,NULL,399,'8977897894',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,'1944-06-20','2022-05-11',NULL,90000.00,'2022-03-09',NULL,NULL,NULL,NULL,NULL,NULL,NULL,90000.00,720000.00,1,663280.00,51,1,17,'2022-05-11 16:58:05',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_existing_user_commutation` */
 

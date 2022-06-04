@@ -28,11 +28,11 @@
                         <table class="table table-bordered mt-3">
                             <tr>
                                 <th width="18%">Pensioner Name</th>
-                                <td width="15%"></td>
+                                <td width="15%">{{$pensioner_details->pensioner_name}}</td>
                                 <th width="12%">PPO No.</th>
-                                <td width="20%"></td>
+                                <td width="20%">{{$pensioner_details->ppo_no}}</td>
                                 <th width="15%">Created At</th>
-                                <td></td>
+                                <td>{{date('d-m-Y h:i A', strtotime($created_at))}}</td>
                             </tr>
                         </table>
                     </div>

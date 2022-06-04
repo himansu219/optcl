@@ -326,6 +326,10 @@ class ExistingProposalController extends Controller {
         if($pesioner_type == 2 && $tax_type == ""){
             $validation['error'][] = array("id" => "tax_type-error","eValue" => "Please select tax type");
         }
+        $employee_pan = $request->employee_pan;
+        if($tax_type == ""){
+            $validation['error'][] = array("id" => "employee_pan-error","eValue" => "Please select tax type");
+        }
 
         $mobile_number = $request->mobile_number;
         $aadhaar_number = $request->aadhaar_number;
@@ -355,6 +359,7 @@ class ExistingProposalController extends Controller {
                     "ti_percentage"                     => $hidden_ti_percentage,
                     "pensioner_name"                    => $pensioner_name,
                     "aadhar_no"                         => $aadhaar_number,
+                    "pan_no"                            => $employee_pan,
                     "mobile_number"                     => $mobile_number,
                     "employee_code"                     => $employee_code,
                     "pensioner_type"                    => $pesioner_type,

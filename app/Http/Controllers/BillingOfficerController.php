@@ -23,7 +23,7 @@ class BillingOfficerController extends Controller {
 
     public function approval_list(Request $request){
         $user = Auth::user();
-        //DB::enableQueryLog();
+        DB::enableQueryLog();
         $pension_unit_id = $user->pension_unit_id;
         //dd($user);
         // Here we get list for service pensioner and family pensioner by left JOIN operation
@@ -42,7 +42,7 @@ class BillingOfficerController extends Controller {
                         $join2->on('optcl_pension_application_form.application_type', '=', 'optcl_monthly_changed_data.appliation_type');
                     })
                     ->leftJoin('optcl_application_status_master', 'optcl_application_status_master.id', '=', DB::raw('if(optcl_monthly_changed_data.appliation_type = 1, optcl_pension_application_form.application_status_id, optcl_existing_user.application_status_id)'))
-                    ->select('optcl_monthly_changed_data.*', 'optcl_pension_type_master.pension_type', 'optcl_application_type.type_name', DB::raw('if(optcl_monthly_changed_data.appliation_type = 1, optcl_pension_application_form.ppo_number, optcl_existing_user.new_ppo_no) AS new_ppo_no'), 'optcl_application_status_master.status_name')
+                    ->select('optcl_monthly_changed_data.*', 'optcl_pension_type_master.pension_type', 'optcl_application_type.type_name', DB::raw('if(optcl_monthly_changed_data.appliation_type != 1, optcl_existing_user.new_ppo_no, optcl_pension_application_form.ppo_number) AS new_ppo_no'), DB::raw('if(optcl_monthly_changed_data.appliation_type != 1, optcl_existing_user.pensioner_name, (select CONCAT(COALESCE(optcl_users.first_name, ""), " ", COALESCE(optcl_users.last_name, "")) AS full_name FROM  optcl_users where optcl_users.id = optcl_pension_application_form.user_id)) AS any_pensioner_name'), 'optcl_application_status_master.status_name')
                     ->where('optcl_monthly_changed_data.is_pension_unit_checked', 1)
                     ->where('optcl_monthly_changed_data.is_billing_officer_approved', 0)
                     ->where('optcl_monthly_changed_data.status', 1)
@@ -82,10 +82,10 @@ class BillingOfficerController extends Controller {
                 $query->orWhere('optcl_existing_user.application_status_id', 'like', '%' . $request->app_status_id . '%');
                 $query->orWhere('optcl_pension_application_form.application_status_id', 'like', '%' . $request->app_status_id. '%');
             });
-        }  
-   
+        }   
         $applications = $applications->orderBy('optcl_monthly_changed_data.id','DESC');
         $applications = $applications->paginate(10);
+        //dd(DB::getQueryLog(), $applications);
 
         $statuslist = DB::table('optcl_application_status_master')
                             ->where('status', 1)

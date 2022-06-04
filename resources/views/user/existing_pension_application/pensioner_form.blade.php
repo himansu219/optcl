@@ -9,7 +9,7 @@
     }
 </style>
 <div class="content-wrapper">
-    <nav aria-label="breadcrumb" role="navigation">
+    <nav aria-label="breadcrumb" role="navigation" class="bg-white">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
             <li class="breadcrumb-item active" aria-current="page"><a href="{{route('existing_pension_list')}}">Existing Pensioner</a></li>
@@ -103,7 +103,14 @@
                                                         <input type="text" class="form-control only_number" id="employee_code" name="employee_code" placeholder="Employee Code" minlength="5" maxlength="5">
                                                         <label id="employee_code-error" class="error text-danger" for="employee_code"></label>
                                                     </div>
-                                                </div>                                            
+                                                </div>  
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputName1">PAN<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control anns" id="employee_pan" name="employee_pan" placeholder="PAN" minlength="10" maxlength="10">
+                                                        <label id="employee_pan-error" class="error text-danger" for="employee_pan"></label>
+                                                    </div>
+                                                </div>                                          
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Gender<span class="text-danger">*</span></label>
@@ -1173,6 +1180,14 @@
            return this.optional(element) || /[0-9]{4}\b[\/]{1}[0-9]{1}\b[\/]{1}[0-9]{4}\b/i.test(value); 
         }, "Please enter valid PPO no");
 
+        $("#employee_pan").on("keyup",function(){
+            this.value = this.value.toUpperCase();
+        });
+
+        $.validator.addMethod("panNo", function (value, element) {
+            return this.optional(element) || /[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(value);
+        }, "Invalid PAN no");
+
         $("#pension_form").validate({
             onkeyup:false,
             rules: {
@@ -1215,6 +1230,22 @@
                     maxlength: 12,
                     remote:{
                         url:'{{ route("validate_aadhar_number") }}',
+                        type:"post",
+                        data:{
+                            '_token': function() {
+                               return '{{ csrf_token() }}';
+                            }
+                        }
+                    },
+                },
+                "employee_pan":{
+                    required: {depends:function(){
+                        $(this).val($.trim($(this).val()));
+                        return true; }
+                    },
+                    panNo: true,
+                    remote: {
+                        url:'{{ route("validate_pan") }}',
                         type:"post",
                         data:{
                             '_token': function() {
@@ -1453,6 +1484,10 @@
                 "aadhaar_number":{
                     minlength: 'Please enter at least 12 digits',
                     remote: 'Aadhaar No already exists',
+                },
+                "employee_pan":{
+                    required: 'Please enter pan no',
+                    remote: 'PAN no already exits',
                 },
                 "employee_code":{
                     minlength: 'Please enter at least 5 digits',

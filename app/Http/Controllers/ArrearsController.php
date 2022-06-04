@@ -236,6 +236,7 @@ class ArrearsController extends Controller
                     $results .= "</tr>";
                 }     
                 $validation['results'] = $results;
+                $validation['application_id'] = $array_id;
                 Session::flash('success','Data saved successfully');
                 DB::commit();         
             }catch (\Throwable $e) {
@@ -254,12 +255,191 @@ class ArrearsController extends Controller
                         ->where('deleted', 0)
                         ->first();
         if($cr_data){
+            $application_type = $cr_data->application_type;
+            $pensioner_type = $cr_data->pensioner_type;
+            $application_id = $cr_data->application_id;
+            $created_at = $cr_data->created_at;
+            if($application_type == 1){
+                //$pensioner_details = DB::table('optcl_arrear')
+            }else{
+                $pensioner_details = DB::table('optcl_existing_user')
+                                            ->select('optcl_existing_user.new_ppo_no AS ppo_no', 'optcl_existing_user.pensioner_name')
+                                            ->where('id', $application_id)
+                                            ->where('status', 1)->where('deleted', 0)
+                                            ->first();
+            }
+
             $section_list = DB::table('optcl_arrear_section_list')->where('arrear_id', $appID)->where('status', 1)->where('status', 1)->get();
-            return view('user.arrears.arrear_listing', compact('section_list'));
+            return view('user.arrears.arrear_listing', compact('section_list', 'pensioner_details', 'created_at'));
         }else{
             Session::flash('error', 'No data found');            
             return redirect()->route('billing_officer_arrears');
         }
+    }
+
+    public function add_multiple($appID){
+        $cr_data = DB::table('optcl_arrear')
+                        ->where('id', $appID)
+                        ->where('status', 1)
+                        ->where('deleted', 0)
+                        ->first();
+        if($cr_data){
+            $application_type = $cr_data->application_type;
+            $pensioner_type = $cr_data->pensioner_type;
+            $application_id = $cr_data->application_id;
+            $created_at = $cr_data->created_at;
+            if($application_type == 1){
+                //$pensioner_details = DB::table('optcl_arrear')
+            }else{
+                $pensioner_details = DB::table('optcl_existing_user')
+                                            ->select('optcl_existing_user.new_ppo_no AS ppo_no', 'optcl_existing_user.pensioner_name')
+                                            ->where('id', $application_id)
+                                            ->where('status', 1)->where('deleted', 0)
+                                            ->first();
+            }
+
+            return view('user.arrears.add_multiple', compact('pensioner_details', 'cr_data'));
+        }else{
+            Session::flash('error', 'No data found');            
+            return redirect()->route('billing_officer_arrears');
+        }
+    }
+
+    // Form Submission
+    public function multiple_arrear_submission(Request $request){
+        $validation = [];
+        $arrear_ppo_no = $request->arrear_ppo_no;
+        if($arrear_ppo_no == ""){
+            $validation['error'][] = array("id" => "arrear_ppo_no-error","eValue" => "Please enter PPO no");
+        }
+        $arrear_pensioner_name = $request->arrear_pensioner_name;
+        if($arrear_pensioner_name == ""){
+            $validation['error'][] = array("id" => "arrear_pensioner_name-error","eValue" => "Please enter pensioner name");
+        }
+        $arraer_from_date = $request->arraer_from_date;
+        if($arraer_from_date == ""){
+            $validation['error'][] = array("id" => "arraer_from_date-error","eValue" => "Please select from date");
+        }
+        $arrear_to_date = $request->arrear_to_date;
+        if($arrear_to_date == ""){
+            $validation['error'][] = array("id" => "arrear_to_date-error","eValue" => "Please select to date");
+        }
+        $due_arrear_ti_percentage = $request->due_arrear_ti_percentage;
+        if($due_arrear_ti_percentage == ""){
+            $validation['error'][] = array("id" => "due_arrear_ti_percentage-error","eValue" => "Please enter TI percentage");
+        }
+        $due_arrear_basic_pension = $request->due_arrear_basic_pension;
+        if($due_arrear_basic_pension == ""){
+            $validation['error'][] = array("id" => "due_arrear_basic_pension-error","eValue" => "Please enter basic pension");
+        }
+        $due_arrear_additional_pension_amount = $request->due_arrear_additional_pension_amount;
+        if($due_arrear_additional_pension_amount == ""){
+            $validation['error'][] = array("id" => "due_arrear_additional_pension_amount-error","eValue" => "PPlease enter additional pension");
+        }
+        $due_arrear_commutation_amount = $request->due_arrear_commutation_amount;
+        if($due_arrear_commutation_amount == ""){
+            $validation['error'][] = array("id" => "due_arrear_commutation_amount-error","eValue" => "Please enter commutation");
+        }
+        $drawn_ti_percentage = $request->drawn_ti_percentage;
+        if($drawn_ti_percentage == ""){
+            $validation['error'][] = array("id" => "drawn_ti_percentage-error","eValue" => "Please enter TI percentage");
+        }
+        $drawn_besic_pension = $request->drawn_besic_pension;
+        if($drawn_besic_pension == ""){
+            $validation['error'][] = array("id" => "drawn_besic_pension-error","eValue" => "Please enter basic pension");
+        }
+        $drawn_additional_pension = $request->drawn_additional_pension;
+        if($drawn_additional_pension == ""){
+            $validation['error'][] = array("id" => "drawn_additional_pension-error","eValue" => "Please enter additional pension");
+        }
+        $drawn_commutation = $request->drawn_commutation;
+        if($drawn_commutation == ""){
+            $validation['error'][] = array("id" => "drawn_commutation-error","eValue" => "Please enter commutation");
+        }
+
+        // Check PPO number with other details
+        /* ---------Code---------- */
+        $application_id = $request->application_id;
+        $application_type = $request->application_type;
+        $pensioner_type = $request->pensioner_type;
+        if(!isset($validation['error'])){
+            try{
+                DB::beginTransaction();
+                // Arrear Data
+                
+                $array_id = $request->arrear_id;
+                // Arrear Section Data
+                $arrear_section_data = [
+                    "arraer_id"  => $array_id,
+                    "from_date"  => date('Y-m-d', strtotime(str_replace("/", "-", $arraer_from_date))),
+                    "to_date"  => date('Y-m-d', strtotime(str_replace("/", "-", $arrear_to_date))),
+                ];
+                $array_section_id = DB::table('optcl_arrear_section')->insertGetId($arrear_section_data);
+                // Arrear Section Listing
+                // Drawn Details
+                $drawn_total_besic_amount = $drawn_besic_pension + $drawn_additional_pension;
+                $drawn_ti_amount = ($drawn_total_besic_amount/100) * $drawn_ti_percentage;
+                $drawn_gross_pension = $drawn_total_besic_amount + $drawn_ti_amount;
+                $drawn_net_pension = ($drawn_total_besic_amount + $drawn_ti_amount) - $drawn_commutation;
+                // Due Details
+                $due_total_besic_amount = $due_arrear_basic_pension + $due_arrear_additional_pension_amount;
+                $due_ti_amount = ($due_total_besic_amount/100) * $due_arrear_ti_percentage;
+                $due_gross_pension = $due_total_besic_amount + $due_ti_amount;
+                $due_net_pension = ($due_total_besic_amount + $due_ti_amount) - $due_arrear_commutation_amount;
+                
+                $from_year = date('Y', strtotime(str_replace("/", "-", $arraer_from_date)));
+                $from_month = date('m', strtotime(str_replace("/", "-", $arraer_from_date)));
+                $to_year = date('Y', strtotime(str_replace("/", "-", $arrear_to_date)));
+                $to_month = date('m', strtotime(str_replace("/", "-", $arrear_to_date)));
+                for($year = $from_year; $year <= $to_year; $year++){
+                    if($year == $from_year){
+                        $month_value = $from_month;
+                    }else{
+                        $month_value = 1;
+                    }
+                    if($year == $to_year){
+                        $month_max = $to_month;
+                    }else{
+                        $month_max = 12;
+                    }
+                    for($month = $month_value; $month <= $month_max; $month++){   
+                        $rest_pension = $due_net_pension - $drawn_net_pension;                     
+                        $arrear_section_listing = [
+                            "arrear_id" => $array_id,
+                            "arrear_section_id" => $array_section_id,
+                            "year_value" => $year,
+                            "month_value" => $month,
+                            "drawn_ti_percentage" => $drawn_ti_percentage,
+                            "drawn_ti_amount" => $drawn_ti_amount,
+                            "drawn_basic_amount" => $drawn_besic_pension,
+                            "drawn_gross_pension" => $drawn_gross_pension,
+                            "drawn_additional_amount" => $drawn_additional_pension,
+                            "drawn_comm_amount" => $drawn_commutation,
+                            "drawn_net_pension" => $drawn_net_pension,
+                            "due_ti_percentage" => $due_arrear_ti_percentage,
+                            "due_ti_amount" => $due_ti_amount,
+                            "due_basic_amount" => $due_arrear_basic_pension,
+                            "due_gross_amount" => $due_gross_pension,
+                            "due_additional_amount" => $due_arrear_additional_pension_amount,
+                            "due_comm_amount" => $due_arrear_commutation_amount,
+                            "due_net_pension" => $due_net_pension,
+                            "rest_pension"=> $rest_pension,
+                            "created_by" => Auth::user()->id,
+                            "created_at" => $this->current_date,
+                        ];
+                        DB::table('optcl_arrear_section_list')->insert($arrear_section_listing);
+                    }
+                }
+                $validation['application_id'] = $array_id;
+                
+                Session::flash('success','Data saved successfully');
+                DB::commit();         
+            }catch (\Throwable $e) {
+                DB::rollback();
+                throw $e;
+            } 
+        }
+        echo json_encode($validation);
     }
 
 }

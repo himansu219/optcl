@@ -66,9 +66,12 @@
                 <table id="sampleTable" class="table table-striped">
                   <thead>
                     <tr>
-                      <th><input type="checkbox" name="" id="all_application_ids"></th> 
+                      <th><!-- <input type="checkbox" name="" id="all_application_ids"> -->
+                        Sl No.
+                      </th> 
                       <th>Pensioner Type</th>
                       <th>Application Type</th>
+                      <th>Pensioner Name</th>
                       <th>PPO No</th>
                       <th>Status</th>
                       <th>Created At</th>
@@ -80,29 +83,55 @@
                       @foreach($applications as $key => $application)
                         <tr>
                           <td>
-                            {{--
-                              {{ montly-changed-id_application-id_pernsioner-type_application-type }}
-                              --}}
-                            <input type="checkbox" name="" class="application_ids" value="{{ $application->id.'_'.$application->application_id.'_'.$application->pensioner_type.'_'.$application->appliation_type }}">
+                          {{ $applications->firstItem() + $key }}
+                            {{-- <input type="checkbox" name="" class="application_ids" value="{{ $application->id.'_'.$application->application_id.'_'.$application->pensioner_type.'_'.$application->appliation_type }}">--}}
                           </td>
                           <td>{{ $application->type_name }}</td>
                           <td>{{ $application->pension_type }}</td>
+                          <td>{{ $application->any_pensioner_name }}</td>
                           <td>{{ $application->new_ppo_no }}</td>
                           <td>{{ $application->status_name }}</td>
                           <td>{{ \Carbon\Carbon::parse($application->created_at)->format('d-m-Y  h:i A') }}</td>
-                          <td>
-                            @if($application->appliation_type == '2')
-                              <a href="{{route('get_existing_pensioner_details', array($application->application_id))}}"><i class="fa fa-eye"></i></a>
-                            @else
-                              @if($application->pensioner_type == '1')
-                                <!-- Service Pensioner -->
-                                <a href="{{route('billing_officer_sp_application_view', array($application->application_id))}}"><i class="fa fa-eye"></i></a>
-                              @else
-                                <!-- Family Pensioner -->
-                                <a href="{{route('billing_officer_fp_application_view', array($application->application_id))}}"><i class="fa fa-eye"></i></a>
-                              @endif
-                            @endif
-                          </td>
+                          <td class="text-center">
+                            <div class="list-icons">
+                                <div class="dropdown">
+                                    <a href="#" class="list-icons-item text-black" data-toggle="dropdown">
+                                        <i class="fa fa-bars"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" style="left: -21px;">
+                                    @if($application->is_changed_request == 0)
+                                      @if($application->appliation_type == '2')
+                                        <!-- Existing Application -->
+                                        <a href="{{route('get_existing_pensioner_details', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
+                                        <a href="{{route('get_existing_pensioner_details', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                      @else
+                                        <!-- New Application -->
+                                        @if($application->pensioner_type == '1')
+                                        <!-- Service Pensioner -->
+                                          <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
+                                          <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                        @else
+                                            <!-- Family Pensioner -->
+                                            <a href="{{route('billing_officer_fp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
+                                            <a href="{{route('billing_officer_fp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                        @endif
+                                      @endif
+                                    @else
+                                      <!-- Change Request Application -->
+                                      @if($application->cr_type_id == 1)
+                                        <!-- Service Pensioner -->
+                                        <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
+                                        <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                      @elseif($application->cr_type_id == 2)
+
+                                      @else
+                                      
+                                      @endif
+                                    @endif
+                                    </div>
+                                </div>
+                            </div>
+                          </td>                          
                         </tr>
                       @endforeach
                     @else

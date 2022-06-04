@@ -28,21 +28,22 @@
                     <!-- <h4 class="card-title">Pension Proposal List</h4>            -->
                     <form class="forms-sample" id="arrear_form_id" method="post" autocomplete="off">
                       @csrf
-                      <input type="hidden" id="application_id" name="application_id">
-                      <input type="hidden" id="application_type" name="application_type">
-                      <input type="hidden" id="pensioner_type" name="pensioner_type">
+                      <input type="hidden" id="application_id" name="application_id" value="{{$cr_data->application_id}}">
+                      <input type="hidden" id="application_type" name="application_type" value="{{$cr_data->application_type}}">
+                      <input type="hidden" id="pensioner_type" name="pensioner_type" value="{{$cr_data->pensioner_type}}">
+                      <input type="hidden" id="arrear_id" name="arrear_id" value="{{$cr_data->id}}">
                       <div class="row">
                         <div class="col-md-3">
                           <div class="form-group">
                               <label for="exampleInputEmail3">PPO No.<span class="span-red">*</span></label>
-                              <input type="text" class="form-control ppo_number_format" id="arrear_ppo_no" name="arrear_ppo_no" maxlength="12">
+                              <input type="text" class="form-control ppo_number_format" id="arrear_ppo_no" name="arrear_ppo_no" maxlength="12" value="{{$pensioner_details->ppo_no}}" readonly>
                               <label id="arrear_ppo_no-error" class="error mt-2 text-danger" for="arrear_ppo_no"></label>
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
                               <label for="exampleInputEmail3">Pensioner Name<span class="span-red">*</span></label>
-                              <input type="text" class="form-control" id="arrear_pensioner_name" name="arrear_pensioner_name" readonly>
+                              <input type="text" class="form-control" id="arrear_pensioner_name" name="arrear_pensioner_name" readonly value="{{$pensioner_details->pensioner_name}}">
                               <label id="arrear_pensioner_name-error" class="error mt-2 text-danger" for="arrear_pensioner_name"></label>
                           </div>
                         </div>
@@ -259,7 +260,7 @@
                   //$("#logid").prop('disabled',true);
                   $.ajax({
                       type:'POST',
-                      url:'{{ route("billing_officer_arrear_submission") }}',
+                      url:'{{ route("billing_officer_multiple_arrear_submission") }}',
                       data: formData,
                       dataType: 'JSON',
                       processData: false,
@@ -279,12 +280,10 @@
                               }
                           }else{
                             // Success
-                            //$("#sampleTable").append(response['results']);
-                            //location.reload();
                             var application_id = response['application_id'];
                             swal({
                               title: "Are you sure?",
-                              text: "Do you want to add new arrear data?",
+                              text: "Do you want to save the change?",
                               icon: "warning",
                               buttons: true,
                               dangerMode: true,

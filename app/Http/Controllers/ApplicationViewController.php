@@ -18,15 +18,21 @@ class ApplicationViewController extends Controller
     }
 
     public function sp_application_details($id) {
-        //Update Notification
+        // Update Notification
         DB::table('optcl_user_notification')
             ->where(['user_id' => Auth::user()->id])
             ->update(['view_status' => 1]);
+        // Get application details
+        $application_details = DB::table('optcl_monthly_changed_data')
+                                        ->where('id', $id)
+                                        ->where('status', 1)
+                                        ->where('deleted', 0)->first();
+        $application_id = $application_details->application_id;
 
     	$application = DB::table('optcl_pension_application_form as a')
                         ->select('a.id', 'a.application_no', 'a.application_status_id', 'a.pension_type_id', 'a.employee_id', 'a.employee_code', 'a.employee_aadhaar_no', 'a.created_at', 'b.status_name', 'a.recovery_attachment')
                         ->join('optcl_application_status_master as b', 'b.id', '=', 'a.application_status_id')
-                        ->where('a.id', $id)->first();
+                        ->where('a.id', $application_id)->first();
 
         $proposal = DB::table('optcl_employee_master as em')
                             ->join('optcl_employee_designation_master as ud','ud.id','=','em.designation_id')
@@ -71,16 +77,16 @@ class ApplicationViewController extends Controller
         $statusHistory = DB::table('optcl_application_status_history AS sh')
                                ->join('optcl_application_status_master AS sm','sm.id','=','sh.status_id')
                                ->select('sm.status_name','sh.created_at','sh.remarks')
-                               ->where('sh.application_id', $id)
+                               ->where('sh.application_id', $application_id)
                                ->where('sh.status', 1)
                                ->where('sh.deleted', 0)
                                ->where('sm.status', 1)
                                ->where('sm.deleted', 0)
                                ->get();
 
-        $add_recovery = DB::table('optcl_employee_add_recovery')->where('status', 1)->where('deleted', 0)->where('application_id', $id)->get();
+        $add_recovery = DB::table('optcl_employee_add_recovery')->where('status', 1)->where('deleted', 0)->where('application_id', $application_id)->get();
 
-        $service_form = DB::table('optcl_employee_pension_service_form')->where('status', 1)->where('deleted', 0)->where('application_id', $id)->first();
+        $service_form = DB::table('optcl_employee_pension_service_form')->where('status', 1)->where('deleted', 0)->where('application_id', $application_id)->first();
         if(!empty($service_form)){
             $organisation_details = DB::table('optcl_nominee_pension_service_offices')->where('status', 1)->where('deleted', 0)->where('service_pension_form_id', $service_form->id)->get();
         }else{
@@ -95,11 +101,17 @@ class ApplicationViewController extends Controller
         DB::table('optcl_user_notification')
             ->where(['user_id' => Auth::user()->id,'application_type' => 'family'])
             ->update(['view_status' => 1]);
+        // Get application details
+        $application_details = DB::table('optcl_monthly_changed_data')
+                                        ->where('id', $id)
+                                        ->where('status', 1)
+                                        ->where('deleted', 0)->first();
+        $application_id = $application_details->application_id;
 
     	$application = DB::table('optcl_pension_application_form as a')
                         ->select('a.id', 'a.application_no', 'a.application_status_id', 'a.pension_type_id', 'a.employee_id', 'a.employee_code', 'a.employee_aadhaar_no', 'a.created_at', 'b.status_name', 'a.recovery_attachment')
                         ->join('optcl_application_status_master as b', 'b.id', '=', 'a.application_status_id')
-                        ->where('a.id', $id)->first();
+                        ->where('a.id', $application_id)->first();
 
         $proposal = DB::table('optcl_nominee_master as em')
                             ->join('optcl_employee_designation_master as ud','ud.id','=','em.designation_id')
@@ -142,16 +154,16 @@ class ApplicationViewController extends Controller
         $statusHistory = DB::table('optcl_application_status_history AS sh')
                                ->join('optcl_application_status_master AS sm','sm.id','=','sh.status_id')
                                ->select('sm.status_name','sh.created_at','sh.remarks')
-                               ->where('sh.application_id', $id)
+                               ->where('sh.application_id', $application_id)
                                ->where('sh.status', 1)
                                ->where('sh.deleted', 0)
                                ->where('sm.status', 1)
                                ->where('sm.deleted', 0)
                                ->get();
 
-        $add_recovery = DB::table('optcl_nominee_add_recovery')->where('status', 1)->where('deleted', 0)->where('application_id', $id)->get();
+        $add_recovery = DB::table('optcl_nominee_add_recovery')->where('status', 1)->where('deleted', 0)->where('application_id', $application_id)->get();
 
-        $service_form = DB::table('optcl_nominee_pension_service_form')->where('status', 1)->where('deleted', 0)->where('application_id', $id)->first();
+        $service_form = DB::table('optcl_nominee_pension_service_form')->where('status', 1)->where('deleted', 0)->where('application_id', $application_id)->first();
         if(!empty($service_form)){
             $organisation_details = DB::table('optcl_nominee_pension_service_offices')->where('status', 1)->where('deleted', 0)->where('service_pension_form_id', $service_form->id)->get();
         }else{

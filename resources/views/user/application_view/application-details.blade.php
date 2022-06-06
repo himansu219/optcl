@@ -45,7 +45,6 @@
             <input type="hidden" name="return_remark_value" id="return_remark_value">
             <div class="card">
                 <div class="card-body">
-                    <form action="" id="changed_request_approval" method="post">
                     <h4 class="card-title">Application Details
                         <!-- <a href="javascript:;" class="btn btn-danger float-right marg-left-col">Returned</a> -->
                         <!-- <a href="javascript:;" class="btn btn-success float-right">Approve</a> -->
@@ -58,14 +57,8 @@
                         <!-- <a href="{{--route('calculate_pensionar_benefits', $application->id)--}}" class="btn btn-success float-right mr-2">Calculation Pension</a> -->
                         @endif
                         
-                            @csrf
-                            <input type="hidden" name="monthly_changed_data_id" value="">
-                            <input type="hidden" name="application_type" value="">
-                            <input type="hidden" name="pensioner_type" value="">
-                            <input type="hidden" name="application_id" value="">
-                            <button type="submit" id="approve-btn" class="btn btn-success float-right">Approve</button>                        
+                            <button type="button" id="approve-btn" class="btn btn-success float-right">Approve</button>                        
                     </h4>
-                    </form>
                     <div class="accordion" id="accordion" role="tablist">
                         <div class="card">
                             <div class="card-body">
@@ -2069,14 +2062,16 @@
 </div>
 
 <div class="modal fade" id="application_remark" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
-    <form action="{{ route('unit_head_applications_submission') }}" method="post" id="application_return_remark" accept-charset="utf-8">
+    <form action="{{ route('billing_officer_application_single_approval_submission') }}" method="post" id="application_approval_remark" accept-charset="utf-8">
         @csrf
-        <input type="hidden" name="application_id" id="return_application_id" value="{{ $application->id }}">
-        <input type="hidden" name="application_status" id="return_application_status">
+        <input type="hidden" name="monthly_changed_data_id" value="{{$application_details->id}}">
+        <input type="hidden" name="application_type" value="{{$application_details->appliation_type}}">
+        <input type="hidden" name="pensioner_type" value="{{$application_details->pensioner_type}}">
+        <input type="hidden" name="application_id" value="{{$application_details->application_id}}">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Return</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Approval</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -2104,9 +2099,7 @@
     $(document).ready(function() {
 
         $('#approve-btn').on('click', function() {
-            $('.field_value').val(1);
-            $('#application_status').val(1);
-            $('#application-form').submit();           
+            $('#application_remark').modal('show');       
         });
 
         $('#return-btn').on('click', function() {
@@ -2115,7 +2108,7 @@
             $('#application_remark').modal('show');
         });
 
-        $("#application_return_remark").validate({
+        $("#application_approval_remark").validate({
             rules: {
                 remarks: {
                     required: true,
@@ -2128,13 +2121,13 @@
               },
             submitHandler: function(form, event) { 
                     event.preventDefault();
-
+                    alert();
                     $('.field_value').val(0);
                     $('#application_status').val(0);
                     var remark_value = $('#remarks').val();
                     $('#return_remark_value').val(remark_value);
                     $('#application_remark').modal('hide');
-                    $('#application-form').submit();
+                    form.submit();
               },
               errorPlacement: function(label, element) {
                 label.addClass('text-danger');

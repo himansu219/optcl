@@ -4424,6 +4424,7 @@ CREATE TABLE `optcl_beneficiary_details` (
   `pensioner_aadhaar` varchar(20) DEFAULT NULL,
   `pensioner_pan` varchar(15) DEFAULT NULL,
   `pensioner_mobile` varchar(20) DEFAULT NULL,
+  `optcl_unit_id` int(11) DEFAULT NULL,
   `pension_unit_id` int(11) DEFAULT NULL,
   `ppo_no` varchar(20) DEFAULT NULL,
   `date_of_retirement` date DEFAULT NULL,

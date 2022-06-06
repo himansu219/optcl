@@ -93,7 +93,7 @@ class ApplicationViewController extends Controller
             $organisation_details = array();    
         }
 
-    	return view('user.application_view.application-details', compact('application', 'proposal', 'employee_documents', 'employee_nominees', 'statusHistory', 'add_recovery', 'service_form', 'organisation_details'));
+    	return view('user.application_view.application-details', compact('application', 'proposal', 'employee_documents', 'employee_nominees', 'statusHistory', 'add_recovery', 'service_form', 'organisation_details', 'application_details'));
     }
 
     public function fp_application_details($id) {

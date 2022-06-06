@@ -58,7 +58,7 @@
         <div class="card-body">
             <h4 class="card-title">Application List                
                 <a href="{{ route('billing_officer_application_history') }}" class="btn btn-success float-right">Approved History</a>   
-                <a href="javascript:void(0)" class="btn btn-success float-right mr-2" id="assigned_to">Approve</a>                 
+                <!-- <a href="javascript:void(0)" class="btn btn-success float-right mr-2" id="assigned_to">Approve</a>                  -->
             </h4>
 
             <div class="row">

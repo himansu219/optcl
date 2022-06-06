@@ -238,6 +238,144 @@ class BillingOfficerController extends Controller {
         }
     }
 
+    public function monthly_changed_data_approval_service_pensioner(Request $request) {
+        try {
+            DB::beginTransaction();
+            $user = Auth::user();            
+            
+                //dd($application_id);
+                /* 
+                   (montly-changed-id)_(application-id)_(pernsioner-type)_(application-type)
+                */
+                $remarks = $request->remarks;
+                $montly_changed_id = $request->monthly_changed_data_id;
+                $application_id = $request->application_id;
+                $pernsioner_type = $request->pensioner_type;
+                $application_type = $request->application_type;
+                // Check the application and pension type by which we can get the pensioner details according to type id
+                $monthly_changed_data = DB::table('optcl_monthly_changed_data')
+                                                ->where('id', $montly_changed_id)
+                                                ->first();
+                if($monthly_changed_data){
+                    // Application status update
+                    //DB::table('optcl_pension_application_form')->where('id', $application_id)->update(['application_status_id' => 51]);
+                    // Monthly changed data update
+                    //DB::table('optcl_monthly_changed_data')->where('id', $montly_changed_id)->update(['is_billing_officer_approved' => 1]);
+                    // Get Beneficiary Details from User Table
+                    $application_details = DB::table('optcl_pension_application_form')
+                                                ->where('id', $application_id)
+                                                ->where('status', 1)->where('deleted', 0)
+                                                ->first();
+                    $user_id = $application_details->user_id;
+                    $user_details = DB::table('optcl_users')
+                                        ->select('optcl_users.aadhaar_no', 'optcl_users.mobile', 'optcl_users.email_id', 'optcl_users.optcl_unit_id', 'optcl_users.optcl_unit_id', DB::raw('CONCAT(COALESCE(optcl_users.first_name, ""), " ", COALESCE(optcl_users.last_name, "")) AS full_name'))
+                                        ->where('id', $user_id)
+                                        ->where('status', 1)->where('deleted', 0)
+                                        ->first();
+                    $full_name = $user_details->full_name;
+                    // Service Pensioner PAN Details
+                    $employee_personal_details = DB::table('optcl_employee_personal_details AS ep')
+                                                    ->select('ep.*', 'bbm.branch_name', 'bbm.ifsc_code','bbm.address','bm.bank_name')
+                                                    ->join('optcl_bank_branch_master AS bbm', 'bbm.id', '=', 'ep.bank_branch_id')
+                                                    ->join('optcl_bank_master AS bm', 'bm.id', '=', 'bbm.bank_id')
+                                                    ->where('ep.id', $application_id)
+                                                    ->where('ep.status', 1)->where('ep.deleted', 0)
+                                                    ->first();
+                    $emp_pan = $employee_personal_details->pan_no;
+                    $savings_bank_account_no = $employee_personal_details->savings_bank_account_no;
+                    $bank_branch_id = $employee_personal_details->bank_branch_id;
+                    $branch_name = $employee_personal_details->branch_name;
+                    $ifsc_code = $employee_personal_details->ifsc_code;
+                    $address = $employee_personal_details->address;
+                    $bank_name = $employee_personal_details->bank_name;
+                    // Service Pensioner Retirement Date                    
+                    $retirementDetails = DB::table('optcl_employee_master')
+                                        ->where('id', $application_details->employee_id)
+                                        ->where('status', 1)->where('deleted', 0)
+                                        ->first();
+                    
+                    //dd($user_details);
+                    // Beneficiary Details Storage
+                    $bData = [
+                        "application_type" => $monthly_changed_data->appliation_type,
+                        "pensioner_type" => $monthly_changed_data->pensioner_type,
+                        "application_id" => $monthly_changed_data->application_id,
+                        "pensioner_name" => $user_details->full_name,
+                        "pensioner_aadhaar" => $user_details->aadhaar_no,
+                        "pensioner_pan" => $employee_personal_details->pan_no,
+                        "pensioner_mobile" => $user_details->mobile,
+                        "optcl_unit_id" => $user_details->optcl_unit_id,
+                        "pension_unit_id" => $monthly_changed_data->pension_unit_id,
+                        "ppo_no" => $application_details->ppo_number,
+                        "date_of_retirement" => $retirementDetails->date_of_retirement,
+                        //"date_of_death" => ,
+                        'created_at'        => $this->current_date,
+                        'created_by'        => $user->id,
+                    ];
+                    $beneficiary_id = DB::table('optcl_employee_master')->insertGetId($bData);
+                    // Beneficiary Details History Storage
+                    $bHisData = [
+                        "beneficiary_id" => $beneficiary_id,
+                        "application_type" => $monthly_changed_data->appliation_type,
+                        "pensioner_type" => $monthly_changed_data->pensioner_type,
+                        "application_id" => $monthly_changed_data->application_id,
+                        "pensioner_name" => $user_details->full_name,
+                        "pensioner_aadhaar" => $user_details->aadhaar_no,
+                        "pensioner_pan" => $panDetails->pan_no,
+                        "pensioner_mobile" => $user_details->mobile,
+                        "optcl_unit_id" => $user_details->optcl_unit_id,
+                        "pension_unit_id" => $monthly_changed_data->pension_unit_id,
+                        "ppo_no" => $application_details->ppo_number,
+                        "date_of_retirement" => $retirementDetails->date_of_retirement,
+                        //"date_of_death" => ,
+                        'created_at'        => $this->current_date,
+                        'created_by'        => $user->id,
+                    ];
+                    $beneficiary_id = DB::table('optcl_beneficiary_details_history')->insertGetId($bData);
+
+                    dd($bData);
+                }
+                /* DB::table('optcl_application_status_history')->insert([
+                    'is_new'            => 0,
+                    'user_id'           => $user->id,
+                    'application_id'    => $application_id,
+                    'status_id'         => 51,
+                    'remarks'           => $remarks,
+                    'created_at'        => $this->current_date,
+                    'created_by'        => $user->id,
+                ]); */
+
+                /* // Notification Area
+                $appDetails = DB::table('optcl_pension_application_form')->where('id', $application_id)->first();
+                $pension_user_id = $appDetails->user_id;
+                // Pensioner
+                $message = "Application assigned by Sanctioning Authority. Please check the application details.";
+                Util::insert_notification($appDetails->user_id, $appDetails->id, $message);
+                // Dealing Assistant
+                $message = "Application assigned by Sanctioning Authority with application no ".$appDetails->application_no.". Please check the application details.";
+                $optcl_unit_id = DB::table('optcl_users')->where('designation_id', 1)->where('id', $appDetails->user_id)->value('optcl_unit_id');
+                $n_user_id = DB::table('optcl_users')->where('designation_id', 2)->where('optcl_unit_id', $optcl_unit_id)->value('id');
+                Util::insert_notification($n_user_id, $appDetails->id, $message);
+                // Finance Executive
+                $n_user_id = DB::table('optcl_users')->where('designation_id', 3)->where('optcl_unit_id', $optcl_unit_id)->value('id');
+                Util::insert_notification($n_user_id, $appDetails->id, $message);
+                // Unit Head
+                $n_user_id = DB::table('optcl_users')->where('designation_id', 4)->where('optcl_unit_id', $optcl_unit_id)->value('id');
+                Util::insert_notification($n_user_id, $appDetails->id, $message);
+                // HR wing Dealing Assistant
+                Util::insert_notification($dealing_assistant_list, $appDetails->id, $message); */
+           
+            
+            DB::commit();
+            Session::flash('success', 'Application(s) is/are approved successfully');
+            return redirect()->back();
+        } catch (Exception $e) {
+            DB::rollback();
+            Session::flash('error','Something went wrong!');
+            return redirect()->back();
+        }
+    }
+
     public function list(Request $request){
         $user = Auth::user();
         //DB::enableQueryLog();

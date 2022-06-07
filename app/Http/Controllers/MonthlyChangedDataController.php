@@ -84,7 +84,7 @@ class MonthlyChangedDataController extends Controller {
 
         $applications = $applications->orderBy('optcl_monthly_changed_data.id','DESC');
         $applications = $applications->paginate(10);
-        dd($applications);
+        //dd($applications);
         // Status List
         $statuslist = DB::table('optcl_application_status_master')
                             ->where('status', 1)

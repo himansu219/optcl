@@ -2240,7 +2240,7 @@ CREATE TABLE `optcl_application_status_history` (
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=242 DEFAULT CHARSET=utf8;
 
 /*Data for the table `optcl_application_status_history` */
 
@@ -2478,7 +2478,8 @@ insert  into `optcl_application_status_history`(`id`,`is_new`,`user_id`,`applica
 (237,0,17,30,50,'test forward',1,17,'2022-05-20 11:25:31',NULL,NULL,0),
 (238,0,69,30,51,'test',1,69,'2022-05-20 11:28:36',NULL,NULL,0),
 (239,0,17,30,50,'test',1,17,'2022-05-21 13:20:15',NULL,NULL,0),
-(240,0,69,30,51,'test',1,69,'2022-05-21 13:22:03',NULL,NULL,0);
+(240,0,69,30,51,'test',1,69,'2022-05-21 13:22:03',NULL,NULL,0),
+(241,1,70,16,1,NULL,1,70,'2022-06-07 20:12:03',NULL,NULL,0);
 
 /*Table structure for table `optcl_application_status_master` */
 
@@ -4540,7 +4541,7 @@ CREATE TABLE `optcl_beneficiary_pension_amount_history` (
   `taxable_amount_effective_to` date DEFAULT NULL,
   `pension_amount` double(18,2) DEFAULT NULL,
   `pension_amount_effective_from` date DEFAULT NULL,
-  `pension_amount_effectiveto` date DEFAULT NULL,
+  `pension_amount_effective_to` date DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `status` tinyint(1) DEFAULT 1,
@@ -7691,7 +7692,7 @@ CREATE TABLE `optcl_nominee_employee_document_details` (
 /*Data for the table `optcl_nominee_employee_document_details` */
 
 insert  into `optcl_nominee_employee_document_details`(`id`,`nominee_master_id`,`nominee_id`,`attested_copy_death_certificate`,`identification_document_applicatnt`,`undertaking_for_recovery`,`attested_copy_pension_payment_order`,`power_of_attorney`,`attested_copy_legal_heir_certificate`,`created_by`,`created_at`,`modified_by`,`modified_at`,`status`,`deleted`) values 
-(1,1,NULL,'uploads/documents/nominee/1642660631-1504311439.jpg','uploads/documents/nominee/1642660637-1728926082.jpg','uploads/documents/nominee/1642660643-1877064191.jpg','uploads/documents/nominee/1642660649-1914342161.jpg','uploads/documents/nominee/1642660655-193456897.jpg','uploads/documents/nominee/1642660661-136212148.jpg',65,'2022-01-25 10:53:39',65,'2022-01-25 10:53:39',1,0),
+(1,1,NULL,'uploads/documents/nominee/1642660631-1504311439.jpg','uploads/documents/nominee/1642660637-1728926082.jpg','uploads/documents/nominee/1642660643-1877064191.jpg','uploads/documents/nominee/1642660649-1914342161.jpg','uploads/documents/nominee/1642660655-193456897.jpg','uploads/documents/nominee/1642660661-136212148.jpg',70,'2022-06-07 20:11:54',70,'2022-06-07 20:11:54',1,0),
 (2,2,NULL,'uploads/documents/nominee/1643116220-1173883695.jpg','uploads/documents/nominee/1643116225-1891593056.jpg','uploads/documents/nominee/1643116233-1516525626.jpg','uploads/documents/nominee/1643116241-1612429588.jpg','uploads/documents/nominee/1643116249-1823031586.jpg','uploads/documents/nominee/1643116256-1777268020.jpg',66,'2022-01-25 18:41:00',66,'2022-01-25 18:41:00',1,0),
 (3,3,NULL,'uploads/documents/nominee/1643811999-1858842102.jpg','uploads/documents/nominee/1643812004-1981299374.jpg','uploads/documents/nominee/1643812010-1748619075.jpg','uploads/documents/nominee/1643812016-1817463852.jpg','uploads/documents/nominee/1643812021-1225988420.jpg','uploads/documents/nominee/1643812027-1290253760.jpg',67,'2022-02-02 19:57:10',67,'2022-02-02 19:57:10',1,0);
 
@@ -7744,7 +7745,7 @@ CREATE TABLE `optcl_nominee_family_pensioner_form` (
 /*Data for the table `optcl_nominee_family_pensioner_form` */
 
 insert  into `optcl_nominee_family_pensioner_form`(`id`,`nominee_master_id`,`nominee_id`,`employee_code`,`full_name`,`ppo_no`,`dod`,`death_certificate`,`applicant_name`,`relationship_id`,`is_employment_status`,`particular_of_employment`,`is_pension_status`,`particular_of_pension`,`postal_addr_at`,`postal_addr_post`,`postal_addr_pincode`,`postal_addr_country_id`,`postal_addr_state_id`,`postal_addr_district_id`,`saving_bank_ac_no`,`bank_id`,`bank_branch_id`,`basic_pay_of_pensioner_time_of_retirement`,`pension_unit_id`,`is_civil_service_amount_received`,`civil_service_name`,`pension_gratuity_received_amount`,`is_family_pension_received_by_family_members`,`admissible_form_any_other_source_to_the_retired_employee`,`family_member_relation_id`,`family_member_name`,`status`,`created_by`,`created_at`,`modified_by`,`modified_at`,`deleted`) values 
-(1,1,NULL,42600,'JAYANTA KUMAR SENAPATI','NA','2022-01-29','uploads/pensioner_death_certificate/1642578347-1598981065.png','Gopal mohanty',4,0,'sdfsfsdfsdf',0,NULL,'aaaa','aaaaaaa','444444',1,27,1,74125896301,1,399,NULL,1,1,'fsfsdf',45000.00,1,'test value',2,'Samita Sethi',1,65,'2022-01-25 10:53:29',62,'2022-01-19 15:54:46',0),
+(1,1,NULL,42600,'JAYANTA KUMAR SENAPATI','NA','2022-01-29','uploads/pensioner_death_certificate/1642578347-1598981065.png','sfsdf xvcxcvxcv',4,0,'sdfsfsdfsdf',0,NULL,'aaaa','aaaaaaa','444444',1,27,1,74125896301,1,399,NULL,1,1,'fsfsdf',45000.00,1,'test value',2,'Samita Sethi',1,70,'2022-06-07 20:11:38',62,'2022-01-19 15:54:46',0),
 (2,2,NULL,42611,'JAYANTA KUMAR SENAPATI 3','NA','2022-01-19','uploads/pensioner_death_certificate/1643116106-1598447306.png','Gopala Behera',2,0,NULL,0,NULL,'aaaaaaa','aaaaa','222222',1,27,1,5454545454,1,399,NULL,1,0,NULL,NULL,0,NULL,NULL,NULL,1,66,'2022-01-25 18:38:39',NULL,NULL,0),
 (3,3,NULL,42619,'JAYANTA KUMAR SENAPATI','3410/02/2022','2021-12-01','uploads/pensioner_death_certificate/1643811894-1334188990.png','Nominee Name',2,0,NULL,0,NULL,'sdfsdfsf','dfsdfsdf','345345',1,27,1,345345354545,1,399,NULL,1,0,NULL,NULL,0,NULL,NULL,NULL,1,67,'2022-02-02 19:54:54',NULL,NULL,0);
 
@@ -7879,7 +7880,7 @@ CREATE TABLE `optcl_nominee_master` (
 /*Data for the table `optcl_nominee_master` */
 
 insert  into `optcl_nominee_master`(`id`,`nominee_id`,`application_no`,`employee_code`,`aadhaar_no`,`employee_name`,`designation_id`,`date_of_birth`,`father_name`,`gender_id`,`marital_status_id`,`husband_name`,`religion_id`,`pf_account_type_id`,`pf_account_no`,`optcl_unit_id`,`date_of_joining`,`date_of_retirement`,`status`,`created_by`,`created_at`,`modified_by`,`modified_at`,`deleted`) values 
-(1,NULL,'OPTCL-00001-2022','42600','999999999102','BRAJABANDHU SAMAL',14,'1961-04-18','Test Father A',1,1,'',1,1,88102,1,'1982-08-21','2021-04-30',1,44,'2022-01-13 17:18:43',65,'2022-01-25 10:53:18',0),
+(1,NULL,'OPTCL-00001-2022','42600','999999999102','BRAJABANDHU SAMAL',14,'1961-04-18','Test Father A',1,1,NULL,1,1,88102,1,'1982-08-21','2021-04-30',1,44,'2022-01-13 17:18:43',70,'2022-06-07 20:08:56',0),
 (2,NULL,'OPTCL-00002-2022','42611','999999999104','GHANASYAMA SAHOO',14,'1961-04-18','Test father name',1,1,'',1,1,88105,1,'1982-08-21','2021-04-30',1,66,'2022-01-25 18:37:09',NULL,NULL,0),
 (3,NULL,'OPTCL-00003-2022','42619','874654987984','APPLICANT NMAE',1,'1969-01-05','Applicant Father',1,2,'',1,1,54657,1,'1989-02-07','2022-03-12',1,67,'2022-02-02 19:29:06',NULL,NULL,0);
 
@@ -8593,7 +8594,7 @@ CREATE TABLE `optcl_pension_application_form` (
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 /*Data for the table `optcl_pension_application_form` */
 
@@ -8612,7 +8613,8 @@ insert  into `optcl_pension_application_form`(`id`,`application_type`,`pension_t
 (12,1,2,0,67,3,42619,798765467987,'202200012','SNOD202200012','uploads/documents/1643812188-1977831638.pdf',0,0,'public/uploads/family_pension/sanction_order/sanction_order_202200012.pdf','public/uploads/family_pension/gratuity_sanction_order/gratuity_sanction_order_202200012.pdf','public/uploads/ppo_order/ppo_order_202200012.pdf',0,'04/2022/00010',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,49,1,0,NULL,1,67,'2022-02-02 19:57:20',NULL,NULL,0),
 (13,1,1,0,29,8,42618,123456789948,'202200013',NULL,'uploads/documents/1643957912-1226051406.pdf',0,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,17,1,0,NULL,1,29,'2022-02-04 11:16:01',NULL,NULL,0),
 (14,1,1,0,27,9,42617,123456789947,'202200014',NULL,'uploads/documents/1643959606-1755926978.pdf',0,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10,1,0,NULL,1,27,'2022-02-04 12:54:23',NULL,NULL,0),
-(15,1,1,0,13,10,38906,75757575757575,'202200015',NULL,'uploads/documents/1644305859-1432773003.pdf',0,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10,1,0,NULL,1,13,'2022-02-08 12:15:27',NULL,NULL,0);
+(15,1,1,0,13,10,38906,75757575757575,'202200015',NULL,'uploads/documents/1644305859-1432773003.pdf',0,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10,1,0,NULL,1,13,'2022-02-08 12:15:27',NULL,NULL,0),
+(16,1,2,0,70,1,42600,345345345349,'202200016',NULL,NULL,0,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,1,1,0,NULL,1,70,'2022-06-07 20:12:03',NULL,NULL,0);
 
 /*Table structure for table `optcl_pension_calculation_history` */
 
@@ -9705,7 +9707,7 @@ CREATE TABLE `optcl_user_notification` (
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=513 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=514 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_user_notification` */
 
@@ -10215,7 +10217,8 @@ insert  into `optcl_user_notification`(`id`,`user_id`,`application_id`,`applicat
 (509,19,11,'service','PPO Order has been generated for the Application No. - 202200011 by Pension Section (Approver), Please check the application details',0,0,'2022-04-05 16:17:35',NULL,1,0),
 (510,23,11,'service','PPO Order has been generated for the Application No. - 202200011 by Pension Section (Approver), Please check the application details',0,0,'2022-04-05 16:17:35',NULL,1,0),
 (511,31,11,'service','PPO Order has been generated for the Application No. - 202200011 by Pension Section (Approver), Please check the application details',0,0,'2022-04-05 16:17:35',NULL,1,0),
-(512,32,11,'service','PPO Order has been generated for the Application No. - 202200011 by Pension Section (Approver), Please check the application details',0,0,'2022-04-05 16:17:35',NULL,1,0);
+(512,32,11,'service','PPO Order has been generated for the Application No. - 202200011 by Pension Section (Approver), Please check the application details',0,0,'2022-04-05 16:17:35',NULL,1,0),
+(513,10,16,'service','One application for family has been submitted with application no 202200016. Please check the family pension application details.',0,0,'2022-06-07 20:12:03',NULL,1,0);
 
 /*Table structure for table `optcl_user_otp_verifications` */
 
@@ -10236,7 +10239,7 @@ CREATE TABLE `optcl_user_otp_verifications` (
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `delete` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_user_otp_verifications` */
 
@@ -10257,7 +10260,8 @@ insert  into `optcl_user_otp_verifications`(`id`,`user_id`,`otp`,`otp_type`,`otp
 (14,66,987654,'nominee_register',0,'2022-01-25 18:35:45','2022-01-25 19:05:45',1,NULL,NULL,NULL,1,0),
 (15,67,987654,'nominee_register',0,'2022-02-02 19:27:18','2022-02-02 19:57:18',1,NULL,NULL,NULL,1,0),
 (16,10,987654,'forgot_password',0,'2022-03-10 19:37:13','2022-03-10 20:07:13',0,NULL,NULL,NULL,1,0),
-(17,1,987654,'forgot_password',0,'2022-03-10 13:05:47','2022-03-10 13:35:47',0,NULL,NULL,NULL,1,0);
+(17,1,987654,'forgot_password',0,'2022-03-10 13:05:47','2022-03-10 13:35:47',0,NULL,NULL,NULL,1,0),
+(18,70,987654,'nominee_register',0,'2022-06-07 20:04:09','2022-06-07 20:34:09',1,NULL,NULL,NULL,1,0);
 
 /*Table structure for table `optcl_user_role_master` */
 
@@ -10349,7 +10353,7 @@ CREATE TABLE `optcl_users` (
   KEY `mobile` (`mobile`),
   KEY `status` (`status`),
   KEY `is_verified` (`is_verified`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='table to store application level users.';
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='table to store application level users.';
 
 /*Data for the table `optcl_users` */
 
@@ -10417,7 +10421,8 @@ insert  into `optcl_users`(`id`,`first_name`,`last_name`,`user_type`,`system_use
 (66,'Gopala Behera',NULL,2,NULL,0,NULL,'Gopala Behera',42611,1,1,'754875869586','7777777721',NULL,'$2y$10$.e9KCCRhNocj8mZy7z1hO.7GoFrrkCddM18dTQivMKHPnAdXvL.Cq',NULL,NULL,NULL,NULL,0,1,NULL,NULL,NULL,'2022-01-25 18:36:13',0,NULL,NULL,0,0),
 (67,'Nominee Name',NULL,2,NULL,0,NULL,'Nominee Name',42619,1,1,'798765467987','7777777722',NULL,'$2y$10$xB1DjKskn/QPdWRpWiNGTumpHILxHHSO0Obe1qNFsoRrftl2FswK2',NULL,NULL,NULL,NULL,0,1,NULL,NULL,NULL,'2022-02-02 19:27:44',0,NULL,NULL,0,0),
 (68,'Applicant One',NULL,1,NULL,0,1,'42650',42650,1,1,'123654789101','1234567810',NULL,'$2y$10$hmxwivQpgUn1D2Asz13EvO.hQqfpVfkruyQFPmIBGPlKkEjCSkvH2',NULL,NULL,NULL,NULL,0,1,10,'2022-02-14 12:58:22',NULL,NULL,0,NULL,NULL,0,1),
-(69,'Billing','Officer',4,5,0,11,NULL,NULL,NULL,NULL,'123456789201','8882929502',NULL,'$2y$10$qyGcxc0tDyRHwUOlQ2EhU.L9pMXL28I4ys/xGFZsuvoU1yw00bFEW',NULL,NULL,NULL,NULL,0,1,NULL,NULL,NULL,NULL,0,NULL,NULL,1,0);
+(69,'Billing','Officer',4,5,0,11,NULL,NULL,NULL,NULL,'123456789201','8882929502',NULL,'$2y$10$qyGcxc0tDyRHwUOlQ2EhU.L9pMXL28I4ys/xGFZsuvoU1yw00bFEW',NULL,NULL,NULL,NULL,0,1,NULL,NULL,NULL,NULL,0,NULL,NULL,1,0),
+(70,'sfsdf xvcxcvxcv',NULL,2,NULL,0,NULL,'42600',42600,1,1,'345345345349','8882020102',NULL,'$2y$10$K90.9x0eFxlG/zbFF1UfoeWbxYIGFGbDwMX8ygbk0ekf4mqKJpS1u',NULL,NULL,NULL,NULL,0,1,NULL,NULL,NULL,'2022-06-07 20:04:32',0,NULL,NULL,0,0);
 
 /*Table structure for table `optcl_users_otp_history` */
 
@@ -10430,7 +10435,7 @@ CREATE TABLE `optcl_users_otp_history` (
   `otp_type` varchar(150) NOT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_users_otp_history` */
 
@@ -10487,7 +10492,8 @@ insert  into `optcl_users_otp_history`(`id`,`user_id`,`otp_value`,`otp_type`,`cr
 (50,1,987654,'forgot_password','2022-03-10 12:15:40'),
 (51,1,987654,'forgot_password','2022-03-10 12:32:34'),
 (52,1,987654,'forgot_password','2022-03-10 13:05:47'),
-(53,10,987654,'forgot_password','2022-03-10 19:37:13');
+(53,10,987654,'forgot_password','2022-03-10 19:37:13'),
+(54,70,987654,'nominee_register','2022-06-07 20:04:09');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

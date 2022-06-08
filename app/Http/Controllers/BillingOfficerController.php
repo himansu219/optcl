@@ -487,6 +487,14 @@ class BillingOfficerController extends Controller {
         }
     }
 
+    public function monthly_changed_data_service_pensioner_approve_details($approvalID) {
+        return redirect()->route('billing_officer_sp_application_view', array($approvalID));
+    }
+
+    public function monthly_changed_data_family_pensioner_approve_details($approvalID) {
+        return redirect()->route('billing_officer_sp_application_view', array($approvalID));
+    }
+
     public function monthly_changed_data_approval_family_pensioner(Request $request) {
         // This is only for Family Pensioner (New User)
         try {
@@ -554,7 +562,7 @@ class BillingOfficerController extends Controller {
                     $address = $employee_personal_details->address;
                     $bank_name = $employee_personal_details->bank_name;
                     // Service Pensioner Retirement Date                    
-                    $retirementDetails = DB::table('optcl_employee_master')
+                    $retirementDetails = DB::table('optcl_nominee_master')
                                         ->where('id', $application_details->employee_id)
                                         ->where('status', 1)->where('deleted', 0)
                                         ->first();
@@ -563,7 +571,7 @@ class BillingOfficerController extends Controller {
                     // Pension Calculation Details
                     $pension_amount_details = DB::table('optcl_net_pension_details')
                                         ->where('application_type', 1)
-                                        ->where('pension_type', 1)
+                                        ->where('pension_type', 2)
                                         ->where('id', $application_id)
                                         ->where('status', 1)->where('deleted', 0)
                                         ->first();

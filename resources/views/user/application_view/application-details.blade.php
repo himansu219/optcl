@@ -2121,7 +2121,6 @@
               },
             submitHandler: function(form, event) { 
                     event.preventDefault();
-                    alert();
                     $('.field_value').val(0);
                     $('#application_status').val(0);
                     var remark_value = $('#remarks').val();

@@ -1014,11 +1014,16 @@ Route::post('billing-officer/application/save-net-amount-details', 'App\Http\Con
 Route::any('billing-officer/application/approval/list', 'App\Http\Controllers\BillingOfficerController@approval_list')->name('billing_officer_approval_list_list');
 // Billing Officer Multiple Application Approval
 Route::post('billing-officer/application/approval/submission', 'App\Http\Controllers\BillingOfficerController@multiple_application_assignment')->name('billing_officer_application_approval_submission');
-// Billing Officer Single Application Approval
+// Billing Officer Single Application Approval Service Pensioner
 Route::post('billing-officer/application/single/approval/submission', 'App\Http\Controllers\BillingOfficerController@monthly_changed_data_approval_service_pensioner')->name('billing_officer_application_single_approval_submission');
+// Billing Officer Single Application Approval Family Pensioner
+Route::post('billing-officer/application/single/approval/family-pensioner/submission', 'App\Http\Controllers\BillingOfficerController@monthly_changed_data_approval_family_pensioner')->name('billing_officer_application_single_approval_family_pension_submission');
+// Billing Ifficer Service Pensioner Approval Details
+Route::get('billing-officer/application/single/approval/family-pensioner/{appID}', 'App\Http\Controllers\BillingOfficerController@show_net_pension')->name('net_pension_calculation_sheet');
 Route::any('billing-officer/application/history', 'App\Http\Controllers\BillingOfficerController@history')->name('billing_officer_application_history');
 Route::get('billing-officer/application/net-pension-calculation/{appID}', 'App\Http\Controllers\BillingOfficerController@show_net_pension')->name('net_pension_calculation_sheet');
 Route::get('billing-officer/application/net-pension-calculation-view/{appID}', 'App\Http\Controllers\BillingOfficerController@show_net_pension_view')->name('net_pension_calculation_sheet_view');
+
 // Generate Bill
 Route::post('billing-officer/application/submit-net-pension-calculation/', 'App\Http\Controllers\GenerateBillController@generate_bill_sheet')->name('generate_bill_sheet');
 

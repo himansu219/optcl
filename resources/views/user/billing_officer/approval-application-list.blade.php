@@ -3,7 +3,7 @@
 @section('section_content')
 
 <div class="content-wrapper">
-  <nav aria-label="breadcrumb" role="navigation">
+  <nav aria-label="breadcrumb" role="navigation" class="bg-white">
       <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
           <li class="breadcrumb-item active" aria-current="page">Monthly Changed Data</li>

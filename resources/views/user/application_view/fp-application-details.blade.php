@@ -51,7 +51,7 @@
     }
 </style>
 <div class="content-wrapper">
-    <nav aria-label="breadcrumb" role="navigation">
+    <nav aria-label="breadcrumb" role="navigation" class="bg-white">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="{{route('monthly_changed_data_list')}}">Monthly Changed Data</a></li>
@@ -72,12 +72,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Application Details
-                        <!-- <a href="javascript:;" class="btn btn-danger float-right marg-left-col">Returned</a> -->
-                        <!-- <a href="javascript:;" class="btn btn-success float-right">Approve</a> -->
-                        @if(in_array($application->application_status_id, [19,27]))
-                            <button type="button" id="return-btn" class="btn btn-danger float-right marg-left-col">Return</button>
-                            <button type="button" id="approve-btn" class="btn btn-success float-right">Approve</button>
-                        @endif
+                        <button type="button" id="approve-btn" class="btn btn-success float-right">Approve</button>
                     </h4>
                     <div class="accordion" id="accordion" role="tablist">
                         <div class="card">
@@ -1957,7 +1952,75 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="application_remark" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+    <form action="{{ route('billing_officer_application_single_approval_family_pension_submission') }}" method="post" id="application_approval_remark" accept-charset="utf-8">
+        @csrf
+        <input type="hidden" name="monthly_changed_data_id" value="{{$application_details->id}}">
+        <input type="hidden" name="application_type" value="{{$application_details->appliation_type}}">
+        <input type="hidden" name="pensioner_type" value="{{$application_details->pensioner_type}}">
+        <input type="hidden" name="application_id" value="{{$application_details->application_id}}">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Approval</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Remark<span class="text-danger">*</span></label>
+                                <textarea name="remarks" id="remarks" placeholder="Enter Remark" class="form-control remark_textarea" rows="6" required maxlength="500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="proposalReturned" class="btn btn-raised btn-success">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>        
+</div>
+
 @endsection
 @section('page-script')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#approve-btn').on('click', function() {
+            $('#application_remark').modal('show');       
+        });
 
+        $("#application_approval_remark").validate({
+            rules: {
+                remarks: {
+                    required: true,
+                },
+            },
+            messages: {
+                remarks: {
+                    required: 'Please enter remark',
+                },
+              },
+            submitHandler: function(form, event) { 
+                    event.preventDefault();
+                    $('.field_value').val(0);
+                    $('#application_status').val(0);
+                    var remark_value = $('#remarks').val();
+                    $('#return_remark_value').val(remark_value);
+                    $('#application_remark').modal('hide');
+                    form.submit();
+              },
+              errorPlacement: function(label, element) {
+                label.addClass('text-danger');
+                label.insertAfter(element);
+              },
+              highlight: function(element, errorClass) {
+                //$(element).parent().addClass('has-danger')
+                $(element).addClass('form-control-danger')
+              }
+        });
+    });
+</script>
 @endsection

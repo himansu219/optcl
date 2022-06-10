@@ -28,6 +28,50 @@ class Util {
         DB::table('optcl_ppo_no_list')->where('id', $lastInsertedID)->update(['ppo_no' => $generated_ppo_number]);
         return $generated_ppo_number;
     }
+
+    public static function monthly_changed_data_storage($ppo_no, $cr_type_id, $cr_id){
+        // Update Monthly Changed Data
+        $ppo_details = DB::table('optcl_ppo_no_list')
+                            ->where('ppo_no', $ppo_no)
+                            ->where('status', 1)
+                            ->where('deleted', 0)
+                            ->first();
+        if($ppo_details){
+            $application_type = $ppo_details->application_type;
+            $pensioner_type = $ppo_details->pensioner_type;
+            $application_id = $ppo_details->application_id;
+            $monthly_changed_data_revised_pension = [
+                'appliation_type' => $application_type,
+                'pensioner_type' => $pensioner_type,
+                'is_changed_request' => 1,
+                'cr_type_id' => $cr_type_id,
+                'cr_id' => $cr_id,
+                'application_id' => $application_id,
+                'pension_unit_id' => Auth::user()->pension_unit_id,
+                'created_by' => Auth::user()->id,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+            $monthly_changed_data_id = DB::table('optcl_monthly_changed_data')->insertGetId($monthly_changed_data_revised_pension);
+            // Mothers Changed Data Mapping
+            if($application_type == 1 && $pensioner_type == 1){
+            $application_pensioner_type_id = 1;
+            }else if($application_type == 1 && $pensioner_type == 2){
+            $application_pensioner_type_id = 2;
+            }else if($application_type == 2 && $pensioner_type == 1){
+            $application_pensioner_type_id = 3;
+            }else{
+            $application_pensioner_type_id = 4;
+            }
+            $monthlyChangedMappingData = [
+                "monthly_changed_data_id"   => $monthly_changed_data_id,
+                "application_pensioner_type_id"   => $application_pensioner_type_id,
+                "application_id"    => $application_id,
+                "created_by"        => Auth::user()->id,
+                "created_at"        => date('Y-m-d H:i:s'),
+            ];
+            DB::table('optcl_application_monthly_changed_data_mapping')->insert($monthlyChangedMappingData);
+        }
+    }
     
     public static function get_nominee_document_details($nominee_master_id, $document_id) {
         return DB::table('optcl_nominee_pension_application_document')

@@ -9,6 +9,7 @@ use App\Models\PensionerDesignation;
 use App\Models\Pensionform;
 use App\Models\PensionDocument;
 use App\Models\PersonalDetails;
+use App\Models\AdminUser;
 use App\Libraries\Util;
 use Session;
 use Auth;
@@ -323,12 +324,12 @@ class ExistingProposalController extends Controller {
         }
 
         $tax_type = $request->tax_type;
-        if($pesioner_type == 2 && $tax_type == ""){
+        if($pesioner_type != 2 && $tax_type == ""){
             $validation['error'][] = array("id" => "tax_type-error","eValue" => "Please select tax type");
         }
         $employee_pan = $request->employee_pan;
-        if($tax_type == ""){
-            $validation['error'][] = array("id" => "employee_pan-error","eValue" => "Please select tax type");
+        if($employee_pan == ""){
+            $validation['error'][] = array("id" => "employee_pan-error","eValue" => "Please enter PAN");
         }
 
         $mobile_number = $request->mobile_number;
@@ -348,9 +349,25 @@ class ExistingProposalController extends Controller {
         if(!isset($validation['error'])){
             DB::beginTransaction();
             try{
+                // Create User
+                $pension_unit_id = Auth::user()->pension_unit_id;
+                $optcl_users_tbl = new AdminUser;
+                $optcl_users_tbl->employee_code = $employee_code;
+                $optcl_users_tbl->first_name    = $pensioner_name;
+                $optcl_users_tbl->user_type     = $pesioner_type;
+                $optcl_users_tbl->username      = $employee_code;
+                $optcl_users_tbl->aadhaar_no    = $aadhaar_number;
+                $optcl_users_tbl->mobile        = $mobile_number;
+                $optcl_users_tbl->pension_unit_id        = $pension_unit_id;
+                //$optcl_users_tbl->password      = bcrypt('Secret@123');
+                $optcl_users_tbl->status        = 1;
+                $optcl_users_tbl->deleted       = 1;
+                $optcl_users_tbl->save();
+                $user_id = $optcl_users_tbl->id;
+                
                 $data = [
-                    "user_id"                           => Auth::user()->id,
-                    "pension_unit_id"                   => Auth::user()->pension_unit_id,
+                    "user_id"                           => $user_id,
+                    "pension_unit_id"                   => $pension_unit_id,
                     "tax_type_id"                       => $tax_type,
                     "old_ppo_no"                        => $old_ppo_no,
                     "old_ppo_attachment"                => 'public/'.$upload_path.$filename,
@@ -701,42 +718,49 @@ class ExistingProposalController extends Controller {
     }
 
     public function pensioner_details($penID){
-        //DB::enableQueryLog();
-        $pensionerDetails = DB::table('optcl_existing_user')
-                                ->join('optcl_tax_master', 'optcl_tax_master.id', '=', 'optcl_existing_user.tax_type_id')
-                                ->join('optcl_pension_type_master', 'optcl_pension_type_master.id', '=', 'optcl_existing_user.pensioner_type')
-                                ->join('optcl_pension_unit_master', 'optcl_pension_unit_master.id', '=', 'optcl_existing_user.pension_unit_id')
-                                ->join('optcl_employee_gender_master', 'optcl_employee_gender_master.id', '=', 'optcl_existing_user.gender_id')
-                                ->join('optcl_employee_designation_master', 'optcl_employee_designation_master.id', '=', 'optcl_existing_user.designation_id')
-                                ->join('optcl_ti_category_master', 'optcl_ti_category_master.id', '=', 'optcl_existing_user.category_ti_id')
-                                ->join('optcl_bank_branch_master', 'optcl_bank_branch_master.id', '=', 'optcl_existing_user.bank_branch_id')
-                                ->join('optcl_bank_master', 'optcl_bank_master.id', '=', 'optcl_bank_branch_master.bank_id')
-                                ->leftJoin('optcl_relation_master', 'optcl_relation_master.id', '=', 'optcl_existing_user.relation_type')
-                                ->leftJoin('optcl_relation_status_master', 'optcl_relation_status_master.id', '=', 'optcl_existing_user.relation_current_status')
-                                ->select('optcl_existing_user.*', 'optcl_tax_master.type_name', 'optcl_pension_unit_master.pension_unit_name', 'optcl_pension_type_master.pension_type', 'optcl_employee_gender_master.gender_name', 'optcl_employee_designation_master.designation_name', 'optcl_ti_category_master.category_name','optcl_bank_branch_master.branch_name','optcl_bank_branch_master.ifsc_code','optcl_bank_branch_master.micr_code','optcl_bank_master.bank_name', 'optcl_relation_master.relation_name', 'optcl_relation_status_master.relation_status_name')
-                                ->where('optcl_existing_user.id', $penID)
-                                ->where('optcl_existing_user.status', 1)
-                                ->where('optcl_existing_user.deleted', 0)
-                                ->first();
-        //dd(DB::getQueryLog(), $pensionerDetails);
-        if($pensionerDetails){
-            //dd(123);
-            $religions = Religion::where('status', 1)->where('deleted', 0)->get();
-            $office_last_served = OfficeLastServed::where('status', 1)->where('deleted', 0)->get();
-            $pensioner_designation = PensionerDesignation::where('status', 1)->where('deleted', 0)->get();     
-            $mstatus = DB::table('optcl_marital_status_master')->where('status', 1)->where('deleted', 0)->get();
-            $genders = DB::table('optcl_employee_gender_master')->where('status', 1)->where('deleted', 0)->get();
-            $account_types = DB::table('optcl_pf_account_type_master')->where('status', 1)->where('deleted', 0)->get();
-            $banks = DB::table('optcl_bank_master')->where('status', 1)->where('deleted', 0)->get();
-            $category_ti = DB::table('optcl_ti_category_master')->where('status', 1)->where('deleted', 0)->get();
-            $relations = DB::table('optcl_relation_master')->where('status', 1)->where('deleted', 0)->get();
-            $commutation_list = DB::table('optcl_existing_user_commutation')->where('existing_user_id', $pensionerDetails->id)->where('status', 1)->where('deleted', 0)->get();
-            //dd(123);
-            return view('user.existing_pension_application.pensioner_form_view', compact('pensionerDetails', 'office_last_served','pensioner_designation', 'mstatus', 'genders','account_types', 'banks', 'category_ti','relations', 'commutation_list'));
-        }else{
-            return redirect()->route('existing_pension_list');
-        }
         
+        $monthly_data = DB::table('optcl_monthly_changed_data')->where('id',$penID)->where('status', 1)->where('deleted', 0)->first();
+        if($monthly_data){
+            // dd($monthly_data->application_id);
+            // DB::enableQueryLog();
+            $pensionerDetails = DB::table('optcl_existing_user')
+                                    ->leftJoin('optcl_tax_master', 'optcl_tax_master.id', '=', 'optcl_existing_user.tax_type_id')
+                                    ->join('optcl_pension_type_master', 'optcl_pension_type_master.id', '=', 'optcl_existing_user.pensioner_type')
+                                    ->join('optcl_pension_unit_master', 'optcl_pension_unit_master.id', '=', 'optcl_existing_user.pension_unit_id')
+                                    ->join('optcl_employee_gender_master', 'optcl_employee_gender_master.id', '=', 'optcl_existing_user.gender_id')
+                                    ->join('optcl_employee_designation_master', 'optcl_employee_designation_master.id', '=', 'optcl_existing_user.designation_id')
+                                    ->join('optcl_ti_category_master', 'optcl_ti_category_master.id', '=', 'optcl_existing_user.category_ti_id')
+                                    ->join('optcl_bank_branch_master', 'optcl_bank_branch_master.id', '=', 'optcl_existing_user.bank_branch_id')
+                                    ->join('optcl_bank_master', 'optcl_bank_master.id', '=', 'optcl_bank_branch_master.bank_id')
+                                    ->leftJoin('optcl_relation_master', 'optcl_relation_master.id', '=', 'optcl_existing_user.relation_type')
+                                    ->leftJoin('optcl_relation_status_master', 'optcl_relation_status_master.id', '=', 'optcl_existing_user.relation_current_status')
+                                    ->select('optcl_existing_user.*', 'optcl_tax_master.type_name', 'optcl_pension_unit_master.pension_unit_name', 'optcl_pension_type_master.pension_type', 'optcl_employee_gender_master.gender_name', 'optcl_employee_designation_master.designation_name', 'optcl_ti_category_master.category_name','optcl_bank_branch_master.branch_name','optcl_bank_branch_master.ifsc_code','optcl_bank_branch_master.micr_code','optcl_bank_master.bank_name', 'optcl_relation_master.relation_name', 'optcl_relation_status_master.relation_status_name')
+                                    ->where('optcl_existing_user.id', $monthly_data->application_id)
+                                    ->where('optcl_existing_user.status', 1)
+                                    ->where('optcl_existing_user.deleted', 0)
+                                    ->first();
+            //dd(DB::getQueryLog(), $pensionerDetails);
+            if($pensionerDetails){
+                //dd(123);
+                $religions = Religion::where('status', 1)->where('deleted', 0)->get();
+                $office_last_served = OfficeLastServed::where('status', 1)->where('deleted', 0)->get();
+                $pensioner_designation = PensionerDesignation::where('status', 1)->where('deleted', 0)->get();     
+                $mstatus = DB::table('optcl_marital_status_master')->where('status', 1)->where('deleted', 0)->get();
+                $genders = DB::table('optcl_employee_gender_master')->where('status', 1)->where('deleted', 0)->get();
+                $account_types = DB::table('optcl_pf_account_type_master')->where('status', 1)->where('deleted', 0)->get();
+                $banks = DB::table('optcl_bank_master')->where('status', 1)->where('deleted', 0)->get();
+                $category_ti = DB::table('optcl_ti_category_master')->where('status', 1)->where('deleted', 0)->get();
+                $relations = DB::table('optcl_relation_master')->where('status', 1)->where('deleted', 0)->get();
+                $commutation_list = DB::table('optcl_existing_user_commutation')->where('existing_user_id', $pensionerDetails->id)->where('status', 1)->where('deleted', 0)->get();
+                //dd(123);
+                return view('user.existing_pension_application.pensioner_form_view', compact('monthly_data','pensionerDetails', 'office_last_served','pensioner_designation', 'mstatus', 'genders','account_types', 'banks', 'category_ti','relations', 'commutation_list'));
+            }else{
+                //dd(123);
+                return redirect()->route('billing_officer_approval_list_list');
+            }
+        }else{
+            return redirect()->route('billing_officer_approval_list_list');
+        }
     }
 
     public function show_taxable_amount($appID) {

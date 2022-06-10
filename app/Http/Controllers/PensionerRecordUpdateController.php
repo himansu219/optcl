@@ -20,7 +20,7 @@ class PensionerRecordUpdateController extends Controller{
     }
 
     // update pension record listing page or index page
-    public function Index(){
+    public function index(){
         $user_id = Auth::user()->employee_code;
         $result = DB::table('optcl_employee_personal_details')
                     ->where('employee_code',$user_id)
@@ -663,6 +663,9 @@ class PensionerRecordUpdateController extends Controller{
         if($rbp_oo_no_date == ""){
             $validation['error'][] = array("id" => "rbp_oo_no_date-error","eValue" => "Please select O.O. no date");
         }
+        $application_id = $request->application_id;
+        $pensioner_type_id = $request->pensioner_type_id;
+        $application_type_id = $request->application_type_id;
         // Check PPO number with other details
             /* ---------Code---------- */
         $revision_basic_pension_changed_type_id = 2;
@@ -670,9 +673,9 @@ class PensionerRecordUpdateController extends Controller{
             try{
                 DB::beginTransaction();
                 $data = [
-                    "application_type" => $rbp_ppo_number,
-                    "pensioner_type" => $rbp_pension_emp_no,
-                    "application_id" =>  $rbp_name_pensioner,
+                    "application_type" => $application_type_id,
+                    "pensioner_type" => $pensioner_type_id,
+                    "application_id" =>  $application_id,
                     "ppo_no" => $rbp_ppo_number,
                     "pensioner_emp_no" => $rbp_pension_emp_no,
                     "pensioner_name" =>  $rbp_name_pensioner,
@@ -705,6 +708,11 @@ class PensionerRecordUpdateController extends Controller{
                     "created_at" => $this->current_date,
                 ];
                 DB::table('optcl_change_data_status_history')->insertGetId($data_2);
+                // Update Monthly Changed Data
+                /* 
+                    * After TDS submission we will moved the data to monthly changed data
+                */
+                //Util::monthly_changed_data_storage($rbp_ppo_number, 2, $data_1_id);
 
                 Session::flash('success','Data saved successfully');
                 DB::commit();         
@@ -847,12 +855,14 @@ class PensionerRecordUpdateController extends Controller{
                 echo "<br>";
                 echo "Commutation Amount - ".$commutation_total_amount;
                 echo "<br>";
-                echo "Total Amount - ". $total_income; */
+                echo "Total Amount - ". $total_income; 
+                dd($gross_amount,$commutation_total_amount); */
                 $user_type = "existing_user";
             }else{
                 // New User Details
                 $user_type = "new_user";
             }
+            //dd($total_income);
             Session::put('application_type', $application_type);
             Session::put('pensioner_type', $pensioner_type);
             Session::put('application_id', $application_id);

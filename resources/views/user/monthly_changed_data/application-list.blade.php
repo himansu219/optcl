@@ -70,8 +70,8 @@
                     <tr>
                       <th><input type="checkbox" name="" id="all_application_ids"></th> 
                       <th>Pensioner Type</th>
-                      <th>Pensioner Name</th>
                       <th>Application Type</th>
+                      <th>Pensioner Name</th>
                       <th>PPO No (New)</th>
                       <th>Status</th>
                       <th>Created At</th>
@@ -86,8 +86,12 @@
                             <input type="checkbox" name="" class="application_ids" value="{{ $application->id.'_'.$application->application_id.'_'.$application->pensioner_type.'_'.$application->appliation_type }}">
                           </td>
                           <td>{{ $application->type_name }}</td>
+                          <td>{{ $application->pension_type }} <br>
+                            @if($application->change_type != 'NA')
+                              {{ "(".$application->change_type.")" }}
+                            @endif
+                          </td>
                           <td>{{ $application->any_pensioner_name }}</td>
-                          <td>{{ $application->pension_type }}</td>
                           <td>{{ $application->new_ppo_no }}</td>
                           <td>{{ $application->status_name }}</td>
                           <td>{{ \Carbon\Carbon::parse($application->created_at)->format('d-m-Y  h:i A') }}</td>

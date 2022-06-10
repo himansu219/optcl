@@ -1486,7 +1486,7 @@
                     remote: 'Aadhaar No already exists',
                 },
                 "employee_pan":{
-                    required: 'Please enter pan no',
+                    required: 'Please enter PAN',
                     remote: 'PAN no already exits',
                 },
                 "employee_code":{

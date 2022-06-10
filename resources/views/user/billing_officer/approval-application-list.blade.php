@@ -87,7 +87,11 @@
                             {{-- <input type="checkbox" name="" class="application_ids" value="{{ $application->id.'_'.$application->application_id.'_'.$application->pensioner_type.'_'.$application->appliation_type }}">--}}
                           </td>
                           <td>{{ $application->type_name }}</td>
-                          <td>{{ $application->pension_type }}</td>
+                          <td>{{ $application->pension_type }}<br>
+                            @if($application->change_type != 'NA')
+                              {{ "(".$application->change_type.")" }}
+                            @endif
+                          </td>
                           <td>{{ $application->any_pensioner_name }}</td>
                           <td>{{ $application->new_ppo_no }}</td>
                           <td>{{ $application->status_name }}</td>
@@ -123,7 +127,8 @@
                                         <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
                                         <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
                                       @elseif($application->cr_type_id == 2)
-
+                                        <a href="{{route('billing_officer_revision_basic_pension_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
+                                        <a href="{{route('billing_officer_revision_basic_pension_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
                                       @else
                                       
                                       @endif

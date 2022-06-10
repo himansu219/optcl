@@ -1023,6 +1023,9 @@ Route::get('billing-officer/application/single/approval/family-pensioner/{appID}
 Route::any('billing-officer/application/history', 'App\Http\Controllers\BillingOfficerController@history')->name('billing_officer_application_history');
 Route::get('billing-officer/application/net-pension-calculation/{appID}', 'App\Http\Controllers\BillingOfficerController@show_net_pension')->name('net_pension_calculation_sheet');
 Route::get('billing-officer/application/net-pension-calculation-view/{appID}', 'App\Http\Controllers\BillingOfficerController@show_net_pension_view')->name('net_pension_calculation_sheet_view');
+// Revision of Basic Pension View Page Billing Officer
+Route::get('billing-officer/application/revision-basic-pension-view/{appID}', 'App\Http\Controllers\BillingOfficerController@revision_basic_pension_view_page')->name('billing_officer_revision_basic_pension_view');
+
 
 // Generate Bill
 Route::post('billing-officer/application/submit-net-pension-calculation/', 'App\Http\Controllers\GenerateBillController@generate_bill_sheet')->name('generate_bill_sheet');

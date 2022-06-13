@@ -4828,7 +4828,7 @@ CREATE TABLE `optcl_change_data_list` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_change_data_list` */
 
@@ -4862,7 +4862,8 @@ insert  into `optcl_change_data_list`(`id`,`change_data_id`,`cr_number`,`cr_appl
 (40,2,'CR202200040',11,59,17,'2022-06-10 11:27:32',NULL,NULL,1,0),
 (41,8,'CR202200041',4,59,17,'2022-06-10 16:43:24',NULL,NULL,1,0),
 (42,2,'CR202200042',12,59,17,'2022-06-10 16:53:06',NULL,NULL,1,0),
-(43,2,'CR202200043',13,59,17,'2022-06-10 16:58:33',NULL,NULL,1,0);
+(43,2,'CR202200043',13,59,17,'2022-06-10 16:58:33',NULL,NULL,1,0),
+(44,2,'CR202200044',14,59,17,'2022-06-13 15:38:11',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_change_data_master` */
 
@@ -4916,7 +4917,7 @@ CREATE TABLE `optcl_change_data_revision_basic_pension` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_change_data_revision_basic_pension` */
 
@@ -4927,7 +4928,8 @@ insert  into `optcl_change_data_revision_basic_pension`(`id`,`application_type`,
 (4,2,1,30,'2022/05/0016','NA','USER NAME',90000.00,'125632','2022-06-10',1,17,'2022-06-10 10:52:23',NULL,NULL,1,0),
 (11,2,1,30,'2022/05/0016','NA','USER NAME',12000.00,'123456','2022-06-10',0,17,'2022-06-10 11:27:32',NULL,NULL,1,0),
 (12,2,1,30,'2022/05/0016','NA','USER NAME',25000.00,'897564','2022-06-24',0,17,'2022-06-10 16:53:06',NULL,NULL,1,0),
-(13,2,1,30,'2022/05/0016','NA','USER NAME',15000.00,'789654','2022-06-17',0,17,'2022-06-10 16:58:33',NULL,NULL,1,0);
+(13,2,1,30,'2022/05/0016','NA','USER NAME',15000.00,'789654','2022-06-17',0,17,'2022-06-10 16:58:33',NULL,NULL,1,0),
+(14,2,1,30,'2022/05/0016','NA','USER NAME',30000.00,'45874587','2022-03-30',0,17,'2022-06-13 15:38:11',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_change_data_status_history` */
 
@@ -4943,7 +4945,7 @@ CREATE TABLE `optcl_change_data_status_history` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_change_data_status_history` */
 
@@ -4983,7 +4985,8 @@ insert  into `optcl_change_data_status_history`(`id`,`change_data_id`,`cr_status
 (40,2,59,11,17,'2022-06-10 11:27:32',1,0),
 (41,8,59,4,17,'2022-06-10 16:43:24',1,0),
 (42,2,59,12,17,'2022-06-10 16:53:06',1,0),
-(43,2,59,13,17,'2022-06-10 16:58:33',1,0);
+(43,2,59,13,17,'2022-06-10 16:58:33',1,0),
+(44,2,59,14,17,'2022-06-13 15:38:11',1,0);
 
 /*Table structure for table `optcl_change_data_tds_information` */
 

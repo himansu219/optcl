@@ -45,19 +45,9 @@
             <input type="hidden" name="return_remark_value" id="return_remark_value">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Application Details
-                        <!-- <a href="javascript:;" class="btn btn-danger float-right marg-left-col">Returned</a> -->
-                        <!-- <a href="javascript:;" class="btn btn-success float-right">Approve</a> -->
-                        @if(in_array($application->application_status_id, [19,27]))
-                        <!-- <button type="button" id="return-btn" class="btn btn-danger float-right ml-2">Return</button> -->
-                        <!-- <button type="button" id="approve-btn" class="btn btn-success float-right">Approve</button> -->
-                        @endif
-
-                        @if(!in_array($application->application_status_id, [1,2,3,12]))
-                        <!-- <a href="{{--route('calculate_pensionar_benefits', $application->id)--}}" class="btn btn-success float-right mr-2">Calculation Pension</a> -->
-                        @endif
-                        
-                            <button type="button" id="approve-btn" class="btn btn-success float-right">Approve</button>                        
+                    @if(Auth::user()->system_user_role == '5')
+                        <button type="button" id="approve-btn" class="btn btn-success float-right">Approve</button>
+                    @endif                     
                     </h4>
                     <div class="accordion" id="accordion" role="tablist">
                         <div class="card">

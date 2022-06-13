@@ -25,7 +25,9 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Application Details
-                    <button type="button" id="approve-btn" class="btn btn-success float-right">Approve</button>                        
+                    @if(Auth::user()->system_user_role == '5')
+                        <button type="button" id="approve-btn" class="btn btn-success float-right">Approve</button>
+                    @endif                         
                 </h4>
                 <table class="table table-bordered perticular-table-details-page body-font-size bg-white">
                     <tr>

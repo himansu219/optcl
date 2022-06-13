@@ -712,7 +712,7 @@ class PensionerRecordUpdateController extends Controller{
                 /* 
                     * After TDS submission we will moved the data to monthly changed data
                 */
-                //Util::monthly_changed_data_storage($rbp_ppo_number, 2, $data_1_id);
+                // Util::monthly_changed_data_storage($rbp_ppo_number, 2, $data_1_id);
 
                 Session::flash('success','Data saved successfully');
                 DB::commit();         
@@ -2634,6 +2634,7 @@ class PensionerRecordUpdateController extends Controller{
             try{
                 DB::beginTransaction();
                 //dd($filename);
+                dd(Session::all());
                 // TDS table update in of Revision of Besic Pension
                 if(Session::has('ppo_no') && Session::has('application_type') && Session::has('pensioner_type') && Session::has('application_id') && Session::has('gross_amount') && Session::has('total_income') && Session::has('revised_data_id')){
                     $revised_data_id = Session::get('revised_data_id');

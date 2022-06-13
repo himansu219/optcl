@@ -107,17 +107,23 @@
                                       @if($application->appliation_type == '2')
                                         <!-- Existing Application -->
                                         <a href="{{route('get_existing_pensioner_details', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
+                                        @if(Auth::user()->system_user_role == 5)
                                         <a href="{{route('get_existing_pensioner_details', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                        @endif
                                       @else
                                         <!-- New Application -->
                                         @if($application->pensioner_type == '1')
                                         <!-- Service Pensioner -->
                                           <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
-                                          <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                          @if(Auth::user()->system_user_role == '5')
+                                            <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                          @endif
                                         @else
                                             <!-- Family Pensioner -->
                                             <a href="{{route('billing_officer_fp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
-                                            <a href="{{route('billing_officer_fp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                          @if(Auth::user()->system_user_role == '5')
+                                              <a href="{{route('billing_officer_fp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                          @endif
                                         @endif
                                       @endif
                                     @else
@@ -125,12 +131,14 @@
                                       @if($application->cr_type_id == 1)
                                         <!-- Service Pensioner -->
                                         <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
-                                        <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                        @if(Auth::user()->system_user_role == '5')
+                                          <a href="{{route('billing_officer_sp_application_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                        @endif
                                       @elseif($application->cr_type_id == 2)
                                         <a href="{{route('billing_officer_revision_basic_pension_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
-                                        <a href="{{route('billing_officer_revision_basic_pension_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
-                                      @else
-                                      
+                                        @if(Auth::user()->system_user_role == '5')
+                                          <a href="{{route('billing_officer_revision_basic_pension_view', array($application->id))}}" class="dropdown-item delete_desig"><i class="fa fa-list-alt"></i>Approve Details</a>
+                                        @endif                                      
                                       @endif
                                     @endif
                                     </div>

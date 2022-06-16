@@ -55,7 +55,6 @@
             </form>
           </div>
       </div>
-
       <div class="card">
         <div class="card-body">
             <h4 class="card-title">Application List                
@@ -103,17 +102,19 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" style="left: -21px;">
                                       @if($application->appliation_type == '2')
-                                        <a href="{{route('get_existing_pensioner_details', array($application->application_id))}}" class="dropdown-item edit_desig"><i class="fa fa-eye"></i>View</a>
+                                        <a href="{{route('get_existing_pensioner_details', array($application->application_id))}}" class="dropdown-item edit_desig"><i class="fa fa-eye"></i>View Details</a>
                                       @else
                                         @if($application->pensioner_type == '1')
                                           <!-- Service Pensioner -->
-                                          <a href="{{route('pension_unit_head_sp_application_view', array($application->application_id))}}" class="dropdown-item edit_desig"><i class="fa fa-eye"></i>View</a>
+                                          <a href="{{route('pension_unit_head_sp_application_view', array($application->application_id))}}" class="dropdown-item edit_desig"><i class="fa fa-eye"></i>View Details</a>
                                         @else
                                           <!-- Family Pensioner -->
-                                          <a href="{{route('pension_unit_head_fp_application_view', array($application->application_id))}}" class="dropdown-item edit_desig"><i class="fa fa-eye"></i>View</a>
+                                          <a href="{{route('pension_unit_head_fp_application_view', array($application->application_id))}}" class="dropdown-item edit_desig"><i class="fa fa-eye"></i>View Details</a>
                                         @endif
                                       @endif
-                                      <a href="{{route('net_pension_calculation_sheet', array($application->application_id))}}" class="dropdown-item edit_desig"><i class="fa fa-calculator"></i>Net Pension</a>
+                                      @if($application->is_net_pension_calculated == '0')
+                                        <a href="{{route('net_pension_calculation_sheet', array($application->id))}}" class="dropdown-item edit_desig"><i class="fa fa-calculator"></i>Net Pension</a>
+                                      @endif
                                     </div>
                                 </div>
                             </div>

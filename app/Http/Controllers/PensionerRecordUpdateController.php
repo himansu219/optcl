@@ -840,6 +840,7 @@ class PensionerRecordUpdateController extends Controller{
                 $ti_amount = ($revised_basic_amount/100)*$ti_percentage;
                 $existing_user_id = $pension_details->id;
                 // Commutation Amount
+                DB::enableQueryLog();
                 $commutation_amount = DB::table('optcl_existing_user_commutation')
                                         ->select(DB::raw('SUM(commutation_amount) AS commutation_total_amount'))
                                         ->where('existing_user_id', $existing_user_id)
@@ -876,7 +877,7 @@ class PensionerRecordUpdateController extends Controller{
             Session::put('revised_data_id', $request_details->id);
             // Specify User Type
             Session::put('user_type', $user_type);
-
+            //dd(Session::all(), $commutation_amount, DB::getQueryLog());
             return redirect()->route('pension_unit_tds_information_form_page');
         }else{
             Session::flash('error', 'No data found');          
@@ -2513,6 +2514,7 @@ class PensionerRecordUpdateController extends Controller{
                         ->select('t.*', 'c.cr_number', 'e.pensioner_name', 's.status_name',DB::raw('IF(t.application_type = 2, e.new_ppo_no, p.ppo_number) AS my_ppo_no'))
                         ->where('t.status', 1)
                         ->where('t.deleted', 0)
+                        ->orderBy('t.id', 'DESC')
                         ->paginate(10);
         return view('user.pension_unit.update_pages.tds.list', compact('applications'));
     }
@@ -2634,7 +2636,7 @@ class PensionerRecordUpdateController extends Controller{
             try{
                 DB::beginTransaction();
                 //dd($filename);
-                dd(Session::all());
+                //dd(Session::all());
                 // TDS table update in of Revision of Besic Pension
                 if(Session::has('ppo_no') && Session::has('application_type') && Session::has('pensioner_type') && Session::has('application_id') && Session::has('gross_amount') && Session::has('total_income') && Session::has('revised_data_id')){
                     $revised_data_id = Session::get('revised_data_id');

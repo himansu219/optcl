@@ -275,6 +275,7 @@
                         <input type="hidden" name="hidden_total_tax_payable" id="hidden_total_tax_payable" value="{{ $total_tax_payable }}">
                         <input type="hidden" name="hidden_rebet_amount" id="hidden_rebet_amount" value="{{ $rebet_amount }}">
                         <input type="hidden" name="tds_value" id="tds_value" value="{{ $ded_val_month }}">
+                        <input type="hidden" name="monthly_changed_data_id" id="monthly_changed_data_id" value="{{ $mcd_details->id }}">
                         <div class="row">
                             <div class="col-md-12">
                                 <button type="submit" id="proposalReturned" class="btn btn-raised btn-success">Submit</button>

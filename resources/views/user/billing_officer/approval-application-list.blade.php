@@ -3,18 +3,18 @@
 @section('section_content')
 
 <div class="content-wrapper">
-  <nav aria-label="breadcrumb" role="navigation" class="bg-white">
-      <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Monthly Changed Data</li>
-      </ol>
-  </nav>
   @if(Session::has('error'))
       <div class="alert alert-danger">{{ Session::get('error') }}</div>
   @endif
   @if(Session::has('success'))
       <div class="alert alert-success">{{ Session::get('success') }}</div>
   @endif
+  <nav aria-label="breadcrumb" role="navigation" class="bg-white">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Monthly Changed Data</li>
+      </ol>
+  </nav>
   <div class="row">
     <div class="col-12 grid-margin">
       <div class="card">

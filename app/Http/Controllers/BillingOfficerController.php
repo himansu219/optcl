@@ -987,19 +987,20 @@ class BillingOfficerController extends Controller {
     }
     // Revision of Basic Pension View Page Billing Officer
     public function revision_basic_pension_view_page($appID) {
-        //dd($appID);
+        
         $mcd_data = DB::table('optcl_monthly_changed_data')
                         ->where('id', $appID)
                         ->where('status', 1)
                         ->where('deleted', 0)
                         ->first();
+        //dd($mcd_data);
         if($mcd_data){
             $cr_data = DB::table('optcl_change_data_list')
                             ->where('id', $mcd_data->cr_id)
                             ->where('status', 1)
                             ->where('deleted', 0)
                             ->first();
-            //dd($cr_data, $appID);
+            //dd($cr_data, $appID, $mcd_data->cr_id);
             if($cr_data){
                 $cr_application_id = $cr_data->cr_application_id;
                 $request_details = DB::table('optcl_change_data_revision_basic_pension')
@@ -1007,11 +1008,11 @@ class BillingOfficerController extends Controller {
                                                 ->where('status', 1)
                                                 ->where('deleted', 0)
                                                 ->first();
-                //dd($request_details, $cr_application_id);
+                dd($request_details, $cr_application_id, $cr_data);
                 if($request_details){
                     return view('user.application_view.revision_basic_pension_view', compact('request_details', 'appID'));
                 }else{
-                    //dd(2);
+                    dd(2);
                     Session::flash('error', 'No data found');          
                     return redirect()->route('billing_officer_approval_list_list');
                 }
@@ -1333,7 +1334,8 @@ class BillingOfficerController extends Controller {
 
     public function show_net_pension($appID) {
         //dd($appID);
-        $application_id = $appID;
+        $mcd_details = DB::table('optcl_monthly_changed_data')->where('id', $appID)->where('status', 1)->where('deleted', 0)->first();
+        $application_id = $mcd_details->application_id;
         $applicationDetails = DB::table('optcl_existing_user')
                                 ->join('optcl_pension_type_master', 'optcl_pension_type_master.id', '=', 'optcl_existing_user.pensioner_type')
                                 ->select('optcl_existing_user.*', 'optcl_pension_type_master.pension_type')
@@ -1386,7 +1388,7 @@ class BillingOfficerController extends Controller {
             $tax_calculation_details = DB::table('optcl_taxable_details_master')->where('id', 1)->first();
         }
         //dd($response);
-        return view('user.billing_officer.net-pension-details', compact('response', 'commutations', 'taxList', 'tax_calculation_details'));
+        return view('user.billing_officer.net-pension-details', compact('response', 'commutations', 'taxList', 'tax_calculation_details','mcd_details'));
     }
 
     public function show_net_pension_view($appID) {
@@ -1461,7 +1463,8 @@ class BillingOfficerController extends Controller {
         if($tds_value == ""){
             $validation['error'][] = array("id" => "tds_value-error","eValue" => "Please enter TDS amount");
         }
-        
+        $monthly_changed_data_id = $request->monthly_changed_data_id;
+
         if(!isset($validation['error'])){
             try{
                 //DB::beginTransaction();
@@ -1486,6 +1489,8 @@ class BillingOfficerController extends Controller {
                     "created_at"                    => $this->current_date,
                 ];
                 $net_pension_id = DB::table('optcl_net_pension_details')->insertGetId($pensionAmountDetails);
+                // Update monthly changed data
+                DB::table('optcl_monthly_changed_data')->where('id', $monthly_changed_data_id)->update(['is_net_pension_calculated' => 1]);
                 // Net Pension Commutation list
                 $commutations = $request->commutation_id;
                 foreach($commutations as $key=>$commutation){

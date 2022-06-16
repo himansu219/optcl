@@ -713,6 +713,90 @@
                                 <span class="menu-title highlight_link">Change Password</span>
                             </a>
                         </li>
+                    @endif                    
+
+                    @if(Auth::user()->user_type == 4 && Auth::user()->designation_id == 6)
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{ route('user_dashboard') }}">
+                              <i class="icon-menu menu-icon"></i>
+                                  <span class="menu-title highlight_link">Dashboard</span>
+                              </a>
+                          </li>
+                          <li class="nav-item"> 
+                              <a class="nav-link" href="{{ route('hr_executive_applications') }}">
+                                  <i class="icon-cup menu-icon"></i>
+                                  <span class="menu-title highlight_link">View Applications</span>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="{{route('user_change_password')}}">
+                            <i class="icon-target menu-icon"></i>
+                                <span class="menu-title highlight_link">Change Password</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if(Auth::user()->user_type == 4 && Auth::user()->designation_id == 8)
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{ route('user_dashboard') }}">
+                              <i class="icon-menu menu-icon"></i>
+                                  <span class="menu-title highlight_link">Dashboard</span>
+                              </a>
+                          </li>
+                          <li class="nav-item"> 
+                              <a class="nav-link" href="{{ route('initiator_applications') }}">
+                                  <i class="icon-cup menu-icon"></i>
+                                  <span class="menu-title highlight_link">View Applications</span>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="{{route('user_change_password')}}">
+                            <i class="icon-target menu-icon"></i>
+                                <span class="menu-title highlight_link">Change Password</span>
+                            </a>
+                        </li>
+                    @endif
+                    
+                    @if(Auth::user()->user_type == 4 && Auth::user()->designation_id == 9)
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{ route('user_dashboard') }}">
+                              <i class="icon-menu menu-icon"></i>
+                                  <span class="menu-title highlight_link">Dashboard</span>
+                              </a>
+                          </li>
+                          <li class="nav-item"> 
+                              <a class="nav-link" href="{{ route('verifier_applications') }}">
+                                  <i class="icon-cup menu-icon"></i>
+                                  <span class="menu-title highlight_link">View Applications</span>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="{{route('user_change_password')}}">
+                            <i class="icon-target menu-icon"></i>
+                                <span class="menu-title highlight_link">Change Password</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if(Auth::user()->user_type == 4 && Auth::user()->designation_id == 10)
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{ route('user_dashboard') }}">
+                              <i class="icon-menu menu-icon"></i>
+                                  <span class="menu-title highlight_link">Dashboard</span>
+                              </a>
+                          </li>
+                          <li class="nav-item"> 
+                              <a class="nav-link" href="{{ route('approver_applications') }}">
+                                  <i class="icon-cup menu-icon"></i>
+                                  <span class="menu-title highlight_link">View Applications</span>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="{{route('user_change_password')}}">
+                            <i class="icon-target menu-icon"></i>
+                                <span class="menu-title highlight_link">Change Password</span>
+                            </a>
+                        </li>
                     @endif
                     <!-- Billing Officer -->
                     @if(Auth::user()->user_type == 4 && Auth::user()->designation_id == 11)
@@ -738,6 +822,12 @@
                             <a class="nav-link" href="{{route('billing_officer_list')}}">
                                 <i class="fa fa-database menu-icon" ></i>
                                 <span class="menu-title highlight_link">Process Bill</span>
+                            </a>
+                        </li>
+                        <li class="nav-item"> 
+                            <a class="nav-link" href="{{route('pension_unit_life_certificate_list_page')}}">
+                                <i class="fa fa-database menu-icon" ></i>
+                                <span class="menu-title highlight_link">Life Certificate</span>
                             </a>
                         </li>
                         <li class="nav-item"> 
@@ -818,100 +908,13 @@
                                     <li class="nav-item"> 
                                         <a class="nav-link" href="{{ route('pension_unit_tds_information_list_page') }}">TDS Information</a>
                                     </li>
-                                    <li class="nav-item"> 
-                                        <a class="nav-link" href="{{ route('pension_unit_life_certificate_list_page') }}">Life Certificate</a>
-                                    </li>
                                 </ul>
                             </div>
                         </li>
-
-                          <li class="nav-item"> 
+                        <li class="nav-item"> 
                               <a class="nav-link" href="{{route('existing_pension_list')}}">
                                   <i class="fa fa-database menu-icon"></i>
                                   <span class="menu-title highlight_link">Existing Pensioner</span>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="{{route('user_change_password')}}">
-                            <i class="icon-target menu-icon"></i>
-                                <span class="menu-title highlight_link">Change Password</span>
-                            </a>
-                        </li>
-                    @endif
-                    @if(Auth::user()->user_type == 4 && Auth::user()->designation_id == 6)
-                          <li class="nav-item">
-                              <a class="nav-link" href="{{ route('user_dashboard') }}">
-                              <i class="icon-menu menu-icon"></i>
-                                  <span class="menu-title highlight_link">Dashboard</span>
-                              </a>
-                          </li>
-                          <li class="nav-item"> 
-                              <a class="nav-link" href="{{ route('hr_executive_applications') }}">
-                                  <i class="icon-cup menu-icon"></i>
-                                  <span class="menu-title highlight_link">View Applications</span>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="{{route('user_change_password')}}">
-                            <i class="icon-target menu-icon"></i>
-                                <span class="menu-title highlight_link">Change Password</span>
-                            </a>
-                        </li>
-                    @endif
-
-                    @if(Auth::user()->user_type == 4 && Auth::user()->designation_id == 8)
-                          <li class="nav-item">
-                              <a class="nav-link" href="{{ route('user_dashboard') }}">
-                              <i class="icon-menu menu-icon"></i>
-                                  <span class="menu-title highlight_link">Dashboard</span>
-                              </a>
-                          </li>
-                          <li class="nav-item"> 
-                              <a class="nav-link" href="{{ route('initiator_applications') }}">
-                                  <i class="icon-cup menu-icon"></i>
-                                  <span class="menu-title highlight_link">View Applications</span>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="{{route('user_change_password')}}">
-                            <i class="icon-target menu-icon"></i>
-                                <span class="menu-title highlight_link">Change Password</span>
-                            </a>
-                        </li>
-                    @endif
-                    
-                    @if(Auth::user()->user_type == 4 && Auth::user()->designation_id == 9)
-                          <li class="nav-item">
-                              <a class="nav-link" href="{{ route('user_dashboard') }}">
-                              <i class="icon-menu menu-icon"></i>
-                                  <span class="menu-title highlight_link">Dashboard</span>
-                              </a>
-                          </li>
-                          <li class="nav-item"> 
-                              <a class="nav-link" href="{{ route('verifier_applications') }}">
-                                  <i class="icon-cup menu-icon"></i>
-                                  <span class="menu-title highlight_link">View Applications</span>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="{{route('user_change_password')}}">
-                            <i class="icon-target menu-icon"></i>
-                                <span class="menu-title highlight_link">Change Password</span>
-                            </a>
-                        </li>
-                    @endif
-
-                    @if(Auth::user()->user_type == 4 && Auth::user()->designation_id == 10)
-                          <li class="nav-item">
-                              <a class="nav-link" href="{{ route('user_dashboard') }}">
-                              <i class="icon-menu menu-icon"></i>
-                                  <span class="menu-title highlight_link">Dashboard</span>
-                              </a>
-                          </li>
-                          <li class="nav-item"> 
-                              <a class="nav-link" href="{{ route('approver_applications') }}">
-                                  <i class="icon-cup menu-icon"></i>
-                                  <span class="menu-title highlight_link">View Applications</span>
                               </a>
                           </li>
                           <li class="nav-item">

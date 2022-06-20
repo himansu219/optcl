@@ -685,11 +685,11 @@ class PensionerRecordUpdateController extends Controller{
                     "created_by" => Auth::user()->id,
                     "created_at" => $this->current_date,
                 ];
-                $change_data_id = DB::table('optcl_change_data_revision_basic_pension')->insertGetId($data);
+                $cr_application_id = DB::table('optcl_change_data_revision_basic_pension')->insertGetId($data);
                 // Store in Changed Data List
                 $data_1 = [
                     "change_data_id" => $revision_basic_pension_changed_type_id,
-                    "cr_application_id" => $change_data_id,
+                    "cr_application_id" => $cr_application_id,
                     "status_id" => 59,
                     "created_by" => Auth::user()->id,
                     "created_at" => $this->current_date,
@@ -703,11 +703,11 @@ class PensionerRecordUpdateController extends Controller{
                 $data_2 = [
                     "change_data_id" => $revision_basic_pension_changed_type_id,
                     "cr_status_id" => 59,
-                    "cr_application_id" => $change_data_id,
+                    "cr_application_id" => $cr_application_id,
                     "created_by" => Auth::user()->id,
                     "created_at" => $this->current_date,
                 ];
-                DB::table('optcl_change_data_status_history')->insertGetId($data_2);
+                DB::table('optcl_change_data_status_history')->insert($data_2);
                 // Update Monthly Changed Data
                 /* 
                     * After TDS submission we will moved the data to monthly changed data

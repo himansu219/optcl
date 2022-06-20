@@ -1008,11 +1008,11 @@ class BillingOfficerController extends Controller {
                                                 ->where('status', 1)
                                                 ->where('deleted', 0)
                                                 ->first();
-                dd($request_details, $cr_application_id, $cr_data);
+                dd($request_details, $cr_data, $cr_application_id, $cr_data);
                 if($request_details){
                     return view('user.application_view.revision_basic_pension_view', compact('request_details', 'appID'));
                 }else{
-                    dd(2);
+                    //dd(2);
                     Session::flash('error', 'No data found');          
                     return redirect()->route('billing_officer_approval_list_list');
                 }

@@ -145,7 +145,7 @@
                                         <a href="{{ route('pension_unit_revision_basic_pension_edit_page', array($list->cID)) }}" class="dropdown-item edit_desig"><i class="fa fa-pencil-square-o"></i>Edit</a>
                                       @endif
                                       @if(!$list->is_taxable_amount_submitted)
-                                        <a href="{{ route('pension_unit_revision_taxable_amount_calculation_page', array($list->id)) }}" class="dropdown-item edit_desig"><i class="fa fa-calculator"></i>Taxable Income</a>
+                                        <a href="{{ route('pension_unit_revision_taxable_amount_calculation_page', array($list->cID)) }}" class="dropdown-item edit_desig"><i class="fa fa-calculator"></i>Taxable Income</a>
                                       @endif
                                       <a href="{{ route('pension_unit_revision_basic_pension_view', array($list->cID)) }}" class="dropdown-item delete_desig"><i class="fa fa-eye"></i>View Details</a>
                                     </div>

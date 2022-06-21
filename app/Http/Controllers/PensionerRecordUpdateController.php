@@ -811,76 +811,87 @@ class PensionerRecordUpdateController extends Controller{
             - Get all details required in taxable amount calculation page
             - @application_id, @application_type, @pensioner_type
         */
-        $request_details = DB::table('optcl_change_data_revision_basic_pension')
-                                        ->where('id', $appID)
+        $cr_data = DB::table('optcl_change_data_list')
+                        ->where('id', $appID)
+                        ->where('status', 1)
+                        ->where('deleted', 0)
+                        ->first();
+        if($cr_data){
+            $cr_application_id = $cr_data->cr_application_id;
+            $request_details = DB::table('optcl_change_data_revision_basic_pension')
+                                        ->where('id', $cr_application_id)
                                         ->where('status', 1)
                                         ->where('deleted', 0)
                                         ->first();
-        if($request_details){
-            $application_type = $request_details->application_type;
-            $pensioner_type = $request_details->pensioner_type;
-            $application_id = $request_details->application_id;
-            $revised_basic_amount = $request_details->pensioner_basic_amount;
-            $ppo_no = $request_details->ppo_no;
-            if($application_type == 2 && ($pensioner_type == 1 || $pensioner_type == 2)){
-                // Existing User Details
-                $pension_details = DB::table('optcl_existing_user')
-                                        ->where('id', $application_id)
-                                        ->where('status', 1)
-                                        ->where('deleted', 0)
-                                        ->first();
-                $current_date_value = date('Y-m-d');
-                $dataTI = DB::table('optcl_ti_master')
-                    ->whereDate('start_date','<=', $current_date_value)
-                    ->whereDate('end_date','>=', $current_date_value)
-                    //->whereBetween(DB::raw($current_date_value), ['start_date', 'end_date'])
-                    ->first();
-                //dd($dataTI);
-                $ti_percentage = $dataTI->da_rate;
-                $ti_amount = ($revised_basic_amount/100)*$ti_percentage;
-                $existing_user_id = $pension_details->id;
-                // Commutation Amount
-                DB::enableQueryLog();
-                $commutation_amount = DB::table('optcl_existing_user_commutation')
-                                        ->select(DB::raw('SUM(commutation_amount) AS commutation_total_amount'))
-                                        ->where('existing_user_id', $existing_user_id)
-                                        ->where('status', 1)
-                                        ->where('deleted', 0)
-                                        ->first();
-                $commutation_total_amount = $commutation_amount->commutation_total_amount;
-                $gross_amount = $revised_basic_amount + $ti_amount;
-                $total_income = (($revised_basic_amount + $ti_amount)-$commutation_total_amount)*12;
-                /* echo "Revised Pension Amount - ".$revised_basic_amount;
-                echo "<br>";
-                echo "TI Amount - ".$ti_amount;
-                echo "<br>";
-                echo "Commutation Amount - ".$commutation_total_amount;
-                echo "<br>";
-                echo "Total Amount - ". $total_income; 
-                dd($gross_amount,$commutation_total_amount); */
-                $user_type = "existing_user";
-            }else{
-                // New User Details
-                $user_type = "new_user";
-            }
-            //dd($total_income);
-            Session::put('application_type', $application_type);
-            Session::put('pensioner_type', $pensioner_type);
-            Session::put('application_id', $application_id);
-            Session::put('gross_amount', $gross_amount);
-            Session::put('total_income', $total_income);
-            Session::put('ppo_no', $ppo_no);
-            Session::put('ti_percentage', $ti_percentage);
-            Session::put('ti_amount', $ti_amount);
+            if($request_details){
+                $application_type = $request_details->application_type;
+                $pensioner_type = $request_details->pensioner_type;
+                $application_id = $request_details->application_id;
+                $revised_basic_amount = $request_details->pensioner_basic_amount;
+                $ppo_no = $request_details->ppo_no;
+                if($application_type == 2 && ($pensioner_type == 1 || $pensioner_type == 2)){
+                    // Existing User Details
+                    $pension_details = DB::table('optcl_existing_user')
+                                            ->where('id', $application_id)
+                                            ->where('status', 1)
+                                            ->where('deleted', 0)
+                                            ->first();
+                    $current_date_value = date('Y-m-d');
+                    $dataTI = DB::table('optcl_ti_master')
+                        ->whereDate('start_date','<=', $current_date_value)
+                        ->whereDate('end_date','>=', $current_date_value)
+                        //->whereBetween(DB::raw($current_date_value), ['start_date', 'end_date'])
+                        ->first();
+                    //dd($dataTI);
+                    $ti_percentage = $dataTI->da_rate;
+                    $ti_amount = ($revised_basic_amount/100)*$ti_percentage;
+                    $existing_user_id = $pension_details->id;
+                    // Commutation Amount
+                    // DB::enableQueryLog();
+                    $commutation_amount = DB::table('optcl_existing_user_commutation')
+                                            ->select(DB::raw('SUM(commutation_amount) AS commutation_total_amount'))
+                                            ->where('existing_user_id', $existing_user_id)
+                                            ->where('status', 1)
+                                            ->where('deleted', 0)
+                                            ->first();
+                    $commutation_total_amount = $commutation_amount->commutation_total_amount;
+                    $gross_amount = $revised_basic_amount + $ti_amount;
+                    $total_income = (($revised_basic_amount + $ti_amount)-$commutation_total_amount)*12;
+                    /* echo "Revised Pension Amount - ".$revised_basic_amount;
+                    echo "<br>";
+                    echo "TI Amount - ".$ti_amount;
+                    echo "<br>";
+                    echo "Commutation Amount - ".$commutation_total_amount;
+                    echo "<br>";
+                    echo "Total Amount - ". $total_income; 
+                    dd($gross_amount,$commutation_total_amount); */
+                    $user_type = "existing_user";
+                }else{
+                    // New User Details
+                    $user_type = "new_user";
+                }
+                //dd($total_income);
+                Session::put('application_type', $application_type);
+                Session::put('pensioner_type', $pensioner_type);
+                Session::put('application_id', $application_id);
+                Session::put('gross_amount', $gross_amount);
+                Session::put('total_income', $total_income);
+                Session::put('ppo_no', $ppo_no);
+                Session::put('ti_percentage', $ti_percentage);
+                Session::put('ti_amount', $ti_amount);
 
-            // For Revision of Besic Pension Table Data Update
-            Session::put('revised_data_id', $request_details->id);
-            // Specify User Type
-            Session::put('user_type', $user_type);
-            //dd(Session::all(), $commutation_amount, DB::getQueryLog());
-            return redirect()->route('pension_unit_tds_information_form_page');
+                // For Revision of Besic Pension Table Data Update
+                Session::put('revised_data_id', $request_details->id);
+                // Specify User Type
+                Session::put('user_type', $user_type);
+                //dd(Session::all(), $commutation_amount, DB::getQueryLog());
+                return redirect()->route('pension_unit_tds_information_form_page');
+            }else{
+                Session::flash('error', 'No data found');          
+                return redirect()->route('pension_unit_update_pension_record');
+            }
         }else{
-            Session::flash('error', 'No data found');          
+            Session::flash('error', 'No data found');            
             return redirect()->route('pension_unit_update_pension_record');
         }
     } 
@@ -2641,7 +2652,6 @@ class PensionerRecordUpdateController extends Controller{
                 if(Session::has('ppo_no') && Session::has('application_type') && Session::has('pensioner_type') && Session::has('application_id') && Session::has('gross_amount') && Session::has('total_income') && Session::has('revised_data_id')){
                     $revised_data_id = Session::get('revised_data_id');
                     $gross_amount = Session::get('gross_amount');
-                    $revised_data_id = Session::get('revised_data_id');
                     $application_type = Session::get('application_type');
                     $pensioner_type = Session::get('pensioner_type');
                     $total_income = Session::get('total_income');
@@ -2679,6 +2689,7 @@ class PensionerRecordUpdateController extends Controller{
                                 'pensioner_type' => $pensioner_type,
                                 'is_changed_request' => 1,
                                 'cr_type_id' => 2,
+                                'cr_id' => $revised_data_id,
                                 'application_id' => $application_id,
                                 'pension_unit_id' => Auth::user()->pension_unit_id,
                                 'created_by' => Auth::user()->id,
@@ -2710,49 +2721,49 @@ class PensionerRecordUpdateController extends Controller{
                         }
 
                     }
+                }else{
+                    $data = [
+                        "application_id" => $cr_application_id,
+                        "pensioner_type" => $pensioner_type_id,
+                        "application_type" =>  $application_type_id,
+                        "ppo_no" => $tds_info_ppo_no,
+                        "total_income" => $tds_info_total_income,
+                        "amount_80c" => $amount_80c,
+                        "amount_80d" => $amount_80d,
+                        "amount_8dd" => $amount_8dd,
+                        "amount_80e" => $amount_80e,
+                        "amount_80u" => $amount_80u,
+                        "amount_24b" => $amount_24b,
+                        "others_amount" => $others_amount,
+                        "taxable_amount" => $taxable_amount,
+                        "declaration_status" => $declaration_status,
+                        "created_by" => Auth::user()->id,
+                        "created_at" => $this->current_date,
+                    ];
+                    $change_data_id = DB::table('optcl_change_data_tds_information')->insertGetId($data);
+                    // Store in Changed Data List
+                    $data_1 = [
+                        "change_data_id" => $cr_changed_type_id,
+                        "cr_application_id" => $change_data_id,
+                        "status_id" => 59,
+                        "created_by" => Auth::user()->id,
+                        "created_at" => $this->current_date,
+                    ];
+                    $data_1_id = DB::table('optcl_change_data_list')->insertGetId($data_1);
+                    // Update Change Request Number
+                    $cr_number = 'CR'.date('Y').sprintf('%05d',$data_1_id);
+                    $update_cr_number = ['cr_number' => $cr_number];
+                    DB::table('optcl_change_data_list')->where('id', $data_1_id)->update($update_cr_number);
+                    // Status History
+                    $data_2 = [
+                        "change_data_id" => $cr_changed_type_id,
+                        "cr_status_id" => 59,
+                        "cr_application_id" => $change_data_id,
+                        "created_by" => Auth::user()->id,
+                        "created_at" => $this->current_date,
+                    ];
+                    DB::table('optcl_change_data_status_history')->insertGetId($data_2);
                 }
-
-                $data = [
-                    "application_id" => $cr_application_id,
-                    "pensioner_type" => $pensioner_type_id,
-                    "application_type" =>  $application_type_id,
-                    "ppo_no" => $tds_info_ppo_no,
-                    "total_income" => $tds_info_total_income,
-                    "amount_80c" => $amount_80c,
-                    "amount_80d" => $amount_80d,
-                    "amount_8dd" => $amount_8dd,
-                    "amount_80e" => $amount_80e,
-                    "amount_80u" => $amount_80u,
-                    "amount_24b" => $amount_24b,
-                    "others_amount" => $others_amount,
-                    "taxable_amount" => $taxable_amount,
-                    "declaration_status" => $declaration_status,
-                    "created_by" => Auth::user()->id,
-                    "created_at" => $this->current_date,
-                ];
-                $change_data_id = DB::table('optcl_change_data_tds_information')->insertGetId($data);
-                // Store in Changed Data List
-                $data_1 = [
-                    "change_data_id" => $cr_changed_type_id,
-                    "cr_application_id" => $change_data_id,
-                    "status_id" => 59,
-                    "created_by" => Auth::user()->id,
-                    "created_at" => $this->current_date,
-                ];
-                $data_1_id = DB::table('optcl_change_data_list')->insertGetId($data_1);
-                // Update Change Request Number
-                $cr_number = 'CR'.date('Y').sprintf('%05d',$data_1_id);
-                $update_cr_number = ['cr_number' => $cr_number];
-                DB::table('optcl_change_data_list')->where('id', $data_1_id)->update($update_cr_number);
-                // Status History
-                $data_2 = [
-                    "change_data_id" => $cr_changed_type_id,
-                    "cr_status_id" => 59,
-                    "cr_application_id" => $change_data_id,
-                    "created_by" => Auth::user()->id,
-                    "created_at" => $this->current_date,
-                ];
-                DB::table('optcl_change_data_status_history')->insertGetId($data_2);
 
                 Session::flash('success','Data saved successfully');
                 DB::commit();         

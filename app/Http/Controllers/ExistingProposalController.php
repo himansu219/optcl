@@ -26,6 +26,34 @@ class ExistingProposalController extends Controller {
         $ti_category_id = $request->ti_category_id;
         $basic_amount = $request->basic_amount;
         $additional_pension_amount = $request->additional_pension_amount ? $request->additional_pension_amount : 0;
+        $enhanced_pension_amount = $request->enhanced_pension_amount ? $request->enhanced_pension_amount : 0;
+        $enhanced_pension_end_date = $request->enhanced_pension_end_date ? date('Y-m-d', strtotime(str_replace("/","-", $request->enhanced_pension_end_date))) : NULL;
+        $normal_pension_amount = $request->normal_pension_amount ? $request->normal_pension_amount : 0;
+        $normal_pension_effective_date = $request->normal_pension_effective_date ? date('Y-m-d', strtotime(str_replace("/","-", $request->normal_pension_effective_date))) : 0;
+        $age_year = $request->age_year ? $request->age_year : 0;
+        $age_month = $request->age_month ? $request->age_month : 0;
+        $age_days = $request->age_days ? $request->age_days : 0;
+        $pensioner_type = $request->pesioner_type;
+
+        $current_date = date('Y-m-d');
+        // Enhanced Pensioner year to month
+        $enhanced_pension_year = 65*12;
+        // Additional Pension Amount Calculation Month
+        $additional_pension_year = 80*12;
+        // Pensioner age in month
+        $age_month = ($age_year*12)+$age_month;
+
+        if($pensioner_type == 2){
+            if($age_month < $enhanced_pension_year){
+                $calculation_amount = $enhanced_pension_amount;
+            }else{
+                $calculation_amount = $normal_pension_amount;
+            }
+        }else{
+            $calculation_amount = $basic_amount + $additional_pension_amount;
+        }
+        
+
         $categoryDetails = DB::table('optcl_ti_category_master')
                                 ->join('optcl_ti_master', 'optcl_ti_master.id', '=', 'optcl_ti_category_master.ti_master_id')
                                 ->select('optcl_ti_category_master.*', 'optcl_ti_master.da_rate')
@@ -33,9 +61,15 @@ class ExistingProposalController extends Controller {
                                 ->where('optcl_ti_category_master.status', 1)
                                 ->where('optcl_ti_category_master.deleted', 0)->first();
         //print_r($categoryDetails);
-        $da_rate = $categoryDetails->da_rate;
-        $da_amount = (($basic_amount + $additional_pension_amount)/100)*$da_rate;
-        $display_value = $da_amount." (".$da_rate."%)";
+        if($categoryDetails){
+            $da_rate = $categoryDetails->da_rate;
+            $da_amount = (($calculation_amount)/100)*$da_rate;
+            $display_value = $da_amount." (".$da_rate."%)";
+        }else{
+            $da_rate = 0;
+            $display_value = "0.00 (0%)";
+        }
+        
         echo json_encode(['da_amount' => $da_amount, 'da_percentage' => $da_rate, 'display_value' => $display_value]);
     }
     public function pension_list(Request $request){
@@ -50,8 +84,12 @@ class ExistingProposalController extends Controller {
                     ->select('optcl_existing_user.*', 'optcl_pension_type_master.pension_type', 'optcl_existing_user.pensioner_type', 'optcl_application_status_master.status_name')
                     ->where('optcl_existing_user.pension_unit_id', $pension_unit_id)
                     ->where('optcl_existing_user.status', 1)
-                    ->where('optcl_existing_user.is_taxable_amount_generated', 0)
-                    ->where('optcl_existing_user.deleted', 0);
+                    //->where('optcl_existing_user.is_taxable_amount_generated', 0)
+                    ->where('optcl_existing_user.deleted', 0)
+                    ->where(function($queryCond){
+                        return $queryCond->orWhere('optcl_existing_user.is_taxable_amount_generated', 1)
+                                        ->orWhere('optcl_existing_user.is_taxable_amount_generated', 0);
+                    });
 
         // Old/New PPO No.
         if(!empty($request->application_no)) {
@@ -324,8 +362,10 @@ class ExistingProposalController extends Controller {
         }
 
         $tax_type = $request->tax_type;
-        if($pesioner_type != 2 && $tax_type == ""){
+        if($pesioner_type == 1 && $tax_type == ""){
             $validation['error'][] = array("id" => "tax_type-error","eValue" => "Please select tax type");
+        }else{
+            $tax_type = "2";
         }
         $employee_pan = $request->employee_pan;
         if($employee_pan == ""){
@@ -368,7 +408,7 @@ class ExistingProposalController extends Controller {
                 $data = [
                     "user_id"                           => $user_id,
                     "pension_unit_id"                   => $pension_unit_id,
-                    "tax_type_id"                       => $tax_type,
+                    "tax_type_id"                       => $tax_type,  // Tax Type
                     "old_ppo_no"                        => $old_ppo_no,
                     "old_ppo_attachment"                => 'public/'.$upload_path.$filename,
                     "category_ti_id"                    => $ti_category_id,
@@ -423,6 +463,29 @@ class ExistingProposalController extends Controller {
                         "created_at"            => $this->current_date,
                     ];
                     DB::table('optcl_existing_user_commutation')->insert($commutation_data);
+                }
+                // Taxable value value calculation in case of Family Pensioner
+                if($pesioner_type == 2){
+                    $data = [
+                        "appliation_type"        => 2,
+                        "pensioner_type"         => $pesioner_type,
+                        "application_id"         => $existingInsertedID,
+                        "total_income"           => $total_income_amount,
+                        "standard_deduction"     => 0,
+                        "amount_80c"             => 0,
+                        "amount_80d"             => 0,
+                        "amount_80dd"            => 0,
+                        "amount_80u"             => 0,
+                        "amount_24b"             => 0,
+                        "amount_others"          => 0,   
+                        "taxable_amount"         => $total_income_amount,
+                        "created_by"             => Auth::user()->id,
+                        "created_at"             => $this->current_date,
+                    ];                
+                    DB::table('optcl_taxable_amount_calculation_details')->insert($data);
+                    // Update taxable amount on optcl_existing_user
+                    $updateTaxableAmount = ['is_taxable_amount_generated' => 1,'taxable_amount' => $total_income_amount];
+                    DB::table('optcl_existing_user')->where('id', $existingInsertedID)->update($updateTaxableAmount);
                 }
                 // History
                 DB::table('optcl_application_status_history')->insert([

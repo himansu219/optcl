@@ -95,7 +95,7 @@ class BillingOfficerController extends Controller {
         $statuslist = DB::table('optcl_application_status_master')
                             ->where('status', 1)
                             ->where('deleted', 0)->get();
-
+        
         return view('user.billing_officer.approval-application-list', compact('applications', 'request', 'statuslist'));
     }
 
@@ -1155,6 +1155,7 @@ class BillingOfficerController extends Controller {
                                 ->select('optcl_existing_user.*', 'optcl_pension_type_master.pension_type')
                                 ->where('optcl_existing_user.id', '=', $application_id)
                                 ->first();
+        //dd($applicationDetails);
         $response = [];
         $commutations = [];
         $taxList = [];

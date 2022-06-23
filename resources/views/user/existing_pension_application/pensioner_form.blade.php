@@ -842,13 +842,29 @@
             var ti_category_id = $("#ti_category_id").val();
             var basic_amount = $("#basic_pension_amount").val();
             var additional_pension_amount = $("#additional_pension_amount").val();
+            var enhanced_pension_amount = $("#enhanced_pension_amount").val();
+            var enhanced_pension_end_date = $("#enhanced_pension_end_date").val();
+            var normal_pension_amount = $("#normal_pension_amount").val();
+            var normal_pension_effective_date = $("#normal_pension_effective_date").val();
+            var pesioner_type = $("#pesioner_type").val();
+            var age_year = $("#age_year").val();
+            var age_month = $("#age_month").val();
+            var age_days = $("#age_days").val();
             if(basic_amount != ""){
                 $('.page-loader').addClass('d-flex');
                 $.post('{{ route("category_ta_percentage_amount") }}',{
                     "_token": "{{ csrf_token() }}",
-                    "ti_category_id":ti_category_id,
-                    "basic_amount":basic_amount,
-                    "additional_pension_amount":additional_pension_amount,
+                    "ti_category_id": ti_category_id,
+                    "basic_amount": basic_amount,
+                    "additional_pension_amount": additional_pension_amount,
+                    "enhanced_pension_amount": enhanced_pension_amount,
+                    "enhanced_pension_end_date": enhanced_pension_end_date,
+                    "normal_pension_amount": normal_pension_amount,
+                    "normal_pension_effective_date": normal_pension_effective_date,
+                    "pesioner_type": pesioner_type,
+                    "age_year": age_year,
+                    "age_month": age_month,
+                    "age_days": age_days,
                 },function(response){
                     $('.page-loader').removeClass('d-flex');
                     var resObj = JSON.parse(response);

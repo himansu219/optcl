@@ -19,8 +19,10 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Application Details                        
-                        <button type="button" id="approve-btn" class="btn btn-success float-right">Approve</button>                        
+                    <h4 class="card-title">Application Details  
+                        @if(Auth::user()->system_user_role == '5')                      
+                            <button type="button" id="approve-btn" class="btn btn-success float-right">Approve</button>  
+                        @endif                      
                     </h4>  
                 <table class="table table-bordered perticular-table-details-page">                
                     @if($pensionerDetails->pensioner_type == 1)
@@ -76,7 +78,7 @@
                     @if($pensionerDetails->pensioner_type == 2)
                     <tr>
                         <th>Date of Death</th>
-                        <td>{{ $pensionerDetails->date_of_death }}</td>
+                        <td>{{ $pensionerDetails->date_of_death ? date('d/m/Y', strtotime($pensionerDetails->date_of_death)) : 'NA' }}</td>
                         <th></th>
                         <td></td>
                     </tr>
@@ -98,7 +100,7 @@
                         <th>Enhanced Pension Amount</th>
                         <td>{{ $pensionerDetails->enhanced_pension_amount ? $pensionerDetails->enhanced_pension_amount:"0" }}</td>
                         <th>End Date</th>
-                        <td>{{ $pensionerDetails->enhanced_pension_end_date }}</td>
+                        <td>{{ $pensionerDetails->enhanced_pension_end_date ? date('d/m/Y', strtotime($pensionerDetails->enhanced_pension_end_date)) : 'NA' }}</td>
                     </tr>
                     <tr>
                         <th>Normal Pension Amount</th>

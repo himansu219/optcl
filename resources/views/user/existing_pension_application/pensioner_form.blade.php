@@ -57,7 +57,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="exampleInputPassword4">PPO No<span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control ppo_number_format" id="old_ppo_no" name="old_ppo_no"  placeholder="Enter PPO No" minlength="11" maxlength="11">
+                                                        <input type="text" class="form-control anns" id="old_ppo_no" name="old_ppo_no"  placeholder="Enter PPO No">
                                                         <label id="old_ppo_no-error" class="error text-danger" for="old_ppo_no"></label>
                                                     </div>
                                                 </div>
@@ -448,6 +448,7 @@
                                                     <div class="form-group">
                                                         <label class="">Total Income Amount<span class="text-danger">*</span></label>
                                                         <div id="" class="input-group">
+                                                            <input type="hidden" name="total_income_month" id="total_income_month">
                                                             <input type="text" class="form-control" id="total_income_amount" name="total_income_amount" placeholder="Total Income Amount" readonly>
                                                         </div>
                                                         <label id="total_income_amount-error" class="error text-danger" for="total_income_amount"></label>
@@ -665,9 +666,11 @@
                 $("#total_income_amount").val('');
             }else{
                 var gross_sal_value = isNaN(gross_sal) ? 0 : gross_sal;
-                var total_income_value = (gross_sal_value - total_commutation)*12;
-                //console.log(total_data);
-                $("#total_income_amount").val(total_income_value);
+                var total_inclome_month = parseFloat(gross_sal_value) - parseFloat(total_commutation);
+                var total_annual_income = parseFloat(total_inclome_month)*12;
+                //console.log(total_data);                
+                $("#total_income_month").val(total_inclome_month);
+                $("#total_income_amount").val(total_annual_income);
             }
             console.log('test');
         }
@@ -1223,7 +1226,6 @@
                 },
                 "old_ppo_no": {
                     required: true,
-                    ppo_format: true,
                 },
                 "attached_ppo_certificate":{
                     required: true,
@@ -1485,7 +1487,6 @@
                 },
                 "old_ppo_no": {
                     required: 'Please enter PPO no',
-                    minlength: 'Please enter at least 11 characters'
                 },
                 "attached_ppo_certificate":{
                     required: 'Please upload PPO file',

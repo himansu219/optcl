@@ -365,7 +365,7 @@ class ExistingProposalController extends Controller {
         if($pesioner_type == 1 && $tax_type == ""){
             $validation['error'][] = array("id" => "tax_type-error","eValue" => "Please select tax type");
         }else{
-            $tax_type = "2";
+            $tax_type = "1";
         }
         $employee_pan = $request->employee_pan;
         if($employee_pan == ""){
@@ -375,6 +375,7 @@ class ExistingProposalController extends Controller {
         $mobile_number = $request->mobile_number;
         $aadhaar_number = $request->aadhaar_number;
         $employee_code = $request->employee_code;
+        $total_income_month = $request->total_income_month;
 
         $upload_path = 'uploads/documents/';
         $ppo_attachment_path = NULL;
@@ -443,7 +444,8 @@ class ExistingProposalController extends Controller {
                     "normal_pension_effective_date"     => !empty($normal_pension_effective_date) ? date('Y-m-d', strtotime($normal_pension_effective_date)) : NULL,
                     "gross_pension_amount"              => $gross_pension,
                     "total_income"                      => $total_income_amount,
-                    "application_status_id"              => 54,
+                    "total_income_month"                => $total_income_month,
+                    "application_status_id"             => 54,
                     "created_by"                        => Auth::user()->id,
                     "created_at"                        => $this->current_date,
                 ];                
@@ -783,8 +785,9 @@ class ExistingProposalController extends Controller {
     public function pensioner_details($penID){
         
         $monthly_data = DB::table('optcl_monthly_changed_data')->where('id',$penID)->where('status', 1)->where('deleted', 0)->first();
+        //dd($monthly_data);
         if($monthly_data){
-            // dd($monthly_data->application_id);
+            
             // DB::enableQueryLog();
             $pensionerDetails = DB::table('optcl_existing_user')
                                     ->leftJoin('optcl_tax_master', 'optcl_tax_master.id', '=', 'optcl_existing_user.tax_type_id')

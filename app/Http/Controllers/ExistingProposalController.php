@@ -784,7 +784,7 @@ class ExistingProposalController extends Controller {
 
     public function pensioner_details($penID){
         
-        $monthly_data = DB::table('optcl_monthly_changed_data')->where('id',$penID)->where('status', 1)->where('deleted', 0)->first();
+        $monthly_data = DB::table('optcl_monthly_changed_data')->where('application_id',$penID)->where('status', 1)->where('deleted', 0)->first();
         //dd($monthly_data);
         if($monthly_data){
             

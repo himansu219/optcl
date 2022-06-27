@@ -19,8 +19,8 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Application Details  
-                        @if(Auth::user()->system_user_role == '5')                      
+                    <h4 class="card-title">Application Details
+                        @if(Auth::user()->system_user_role == '5' && $monthly_data->is_billing_officer_approved == 0)                      
                             <button type="button" id="approve-btn" class="btn btn-success float-right">Approve</button>  
                         @endif                      
                     </h4>  

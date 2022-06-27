@@ -2257,7 +2257,7 @@ CREATE TABLE `optcl_application_status_history` (
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=259 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=262 DEFAULT CHARSET=utf8;
 
 /*Data for the table `optcl_application_status_history` */
 
@@ -2513,7 +2513,10 @@ insert  into `optcl_application_status_history`(`id`,`is_new`,`user_id`,`applica
 (255,0,17,41,54,NULL,1,17,'2022-06-24 13:06:24',NULL,NULL,0),
 (256,0,17,42,54,NULL,1,17,'2022-06-24 15:06:40',NULL,NULL,0),
 (257,0,17,43,54,NULL,1,17,'2022-06-24 16:19:46',NULL,NULL,0),
-(258,0,17,43,50,'test',1,17,'2022-06-24 16:24:46',NULL,NULL,0);
+(258,0,17,43,50,'test',1,17,'2022-06-24 16:24:46',NULL,NULL,0),
+(259,0,69,43,51,'dfsdf',1,69,'2022-06-27 13:29:20',NULL,NULL,0),
+(260,0,69,43,51,'test',1,69,'2022-06-27 13:31:12',NULL,NULL,0),
+(261,0,69,43,51,'test',1,69,'2022-06-27 15:04:46',NULL,NULL,0);
 
 /*Table structure for table `optcl_application_status_master` */
 
@@ -4379,9 +4382,14 @@ CREATE TABLE `optcl_beneficiary_account_details` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_beneficiary_account_details` */
+
+insert  into `optcl_beneficiary_account_details`(`id`,`beneficiary_id`,`bank_branch_id`,`bank_name`,`branch_name`,`ifsc_code`,`account_number`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
+(1,6,400,'State Bank of India','ASKA','SBIN0000012','78946521341',69,'2022-06-27 13:29:20',NULL,NULL,1,0),
+(2,7,400,'State Bank of India','ASKA','SBIN0000012','78946521341',69,'2022-06-27 13:31:12',NULL,NULL,1,0),
+(3,8,400,'State Bank of India','ASKA','SBIN0000012','78946521341',69,'2022-06-27 15:04:46',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_beneficiary_account_history` */
 
@@ -4402,9 +4410,14 @@ CREATE TABLE `optcl_beneficiary_account_history` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_beneficiary_account_history` */
+
+insert  into `optcl_beneficiary_account_history`(`id`,`beneficiary_id`,`bank_branch_id`,`bank_name`,`branch_name`,`ifsc_code`,`account_number`,`effective_from`,`effective_to`,`created_by`,`created_at`,`status`,`deleted`) values 
+(1,6,400,'State Bank of India','ASKA','SBIN0000012','78946521341','2022-06-27',NULL,69,'2022-06-27 13:29:20',1,0),
+(2,7,400,'State Bank of India','ASKA','SBIN0000012','78946521341','2022-06-27',NULL,69,'2022-06-27 13:31:12',1,0),
+(3,8,400,'State Bank of India','ASKA','SBIN0000012','78946521341','2022-06-27',NULL,69,'2022-06-27 15:04:46',1,0);
 
 /*Table structure for table `optcl_beneficiary_arrear_details` */
 
@@ -4465,8 +4478,8 @@ CREATE TABLE `optcl_beneficiary_details` (
   `date_of_retirement` date DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `date_of_death` date DEFAULT NULL,
-  `is_dead` tinyint(1) DEFAULT NULL,
-  `life_certificate_status` tinyint(1) DEFAULT NULL,
+  `is_dead` tinyint(1) DEFAULT 0,
+  `life_certificate_status` tinyint(1) DEFAULT 0,
   `created_by` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -4474,9 +4487,14 @@ CREATE TABLE `optcl_beneficiary_details` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_beneficiary_details` */
+
+insert  into `optcl_beneficiary_details`(`id`,`application_type`,`pensioner_type`,`application_id`,`pensioner_name`,`pensioner_aadhaar`,`pensioner_pan`,`pensioner_mobile`,`optcl_unit_id`,`pension_unit_id`,`ppo_no`,`date_of_retirement`,`date_of_birth`,`date_of_death`,`is_dead`,`life_certificate_status`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
+(6,2,2,43,'PENSIONER NAME',NULL,'ABCDE1234R',NULL,NULL,1,'2022/06/0026','2026-08-21',NULL,NULL,0,0,69,'2022-06-27 13:29:20',NULL,NULL,1,0),
+(7,2,2,43,'PENSIONER NAME',NULL,'ABCDE1234R',NULL,NULL,1,'2022/06/0026','2026-08-21',NULL,NULL,0,0,69,'2022-06-27 13:31:12',NULL,NULL,1,0),
+(8,2,2,43,'PENSIONER NAME',NULL,'ABCDE1234R',NULL,NULL,1,'2022/06/0026','2026-08-21',NULL,NULL,0,0,69,'2022-06-27 15:04:46',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_beneficiary_details_history` */
 
@@ -4490,6 +4508,7 @@ CREATE TABLE `optcl_beneficiary_details_history` (
   `pensioner_pan` varchar(15) DEFAULT NULL,
   `pensioner_mobile` varchar(20) DEFAULT NULL,
   `pension_unit_id` int(11) DEFAULT NULL,
+  `optcl_unit_id` int(11) DEFAULT NULL,
   `ppo_no` varchar(20) DEFAULT NULL,
   `date_of_retirement` date DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
@@ -4501,9 +4520,14 @@ CREATE TABLE `optcl_beneficiary_details_history` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_beneficiary_details_history` */
+
+insert  into `optcl_beneficiary_details_history`(`id`,`beneficiary_id`,`pensioner_name`,`pensioner_aadhaar`,`pensioner_pan`,`pensioner_mobile`,`pension_unit_id`,`optcl_unit_id`,`ppo_no`,`date_of_retirement`,`date_of_birth`,`date_of_death`,`is_dead`,`life_certificate_status`,`created_by`,`created_at`,`status`,`deleted`) values 
+(1,6,'PENSIONER NAME',NULL,'ABCDE1234R',NULL,1,NULL,'2022/06/0026','2026-08-21',NULL,NULL,NULL,NULL,69,'2022-06-27 13:29:20',1,0),
+(2,7,'PENSIONER NAME',NULL,'ABCDE1234R',NULL,1,NULL,'2022/06/0026','2026-08-21',NULL,NULL,NULL,NULL,69,'2022-06-27 13:31:12',1,0),
+(3,8,'PENSIONER NAME',NULL,'ABCDE1234R',NULL,1,NULL,'2022/06/0026','2026-08-21',NULL,NULL,NULL,NULL,69,'2022-06-27 15:04:46',1,0);
 
 /*Table structure for table `optcl_beneficiary_documents` */
 
@@ -4541,9 +4565,14 @@ CREATE TABLE `optcl_beneficiary_pension_amount_details` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_beneficiary_pension_amount_details` */
+
+insert  into `optcl_beneficiary_pension_amount_details`(`id`,`beneficiary_id`,`pension_amount`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
+(1,6,49898.32,69,'2022-06-27 13:29:20',NULL,NULL,1,0),
+(2,7,49898.32,69,'2022-06-27 13:31:12',NULL,NULL,1,0),
+(3,8,49898.32,69,'2022-06-27 15:04:46',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_beneficiary_pension_amount_history` */
 
@@ -4581,9 +4610,14 @@ CREATE TABLE `optcl_beneficiary_pension_amount_history` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_beneficiary_pension_amount_history` */
+
+insert  into `optcl_beneficiary_pension_amount_history`(`id`,`beneficiary_id`,`basic_amount`,`basic_amount_effective_from`,`basic_amount_effective_to`,`additional_pension_amount`,`additional_pension_effective_from`,`additional_pension_effective_to`,`enhanced_pension_amount`,`enhanced_pension_effective_from`,`enhanced_pension_effective_to`,`normal_pension_amount`,`normal_pension_effective_from`,`normal_pension_effective_to`,`gross_pension_amount`,`gross_pension_effective_from`,`gross_pension_effective_to`,`total_income`,`total_income_effective_from`,`total_income_effective_to`,`taxable_amount`,`taxable_amount_effective_from`,`taxable_amount_effective_to`,`pension_amount`,`pension_amount_effective_from`,`pension_amount_effective_to`,`created_by`,`created_at`,`status`,`deleted`) values 
+(1,6,96000.00,'2026-08-22',NULL,NULL,NULL,NULL,48000.00,NULL,NULL,28800.00,'2031-03-14',NULL,49920.00,'2022-06-27',NULL,599040.00,'2022-06-27',NULL,22404.00,'2022-06-27',NULL,49898.32,'2022-06-27',NULL,69,'2022-06-27 13:29:20',1,0),
+(2,7,96000.00,'2026-08-22',NULL,NULL,NULL,NULL,48000.00,NULL,NULL,28800.00,'2031-03-14',NULL,49920.00,'2022-06-27',NULL,599040.00,'2022-06-27',NULL,22404.00,'2022-06-27',NULL,49898.32,'2022-06-27',NULL,69,'2022-06-27 13:31:12',1,0),
+(3,8,96000.00,'2026-08-22',NULL,NULL,NULL,NULL,48000.00,NULL,NULL,28800.00,'2031-03-14',NULL,49920.00,'2022-06-27',NULL,599040.00,'2022-06-27',NULL,22404.00,'2022-06-27',NULL,49898.32,'2022-06-27',NULL,69,'2022-06-27 15:04:46',1,0);
 
 /*Table structure for table `optcl_beneficiary_ti_details` */
 
@@ -4624,6 +4658,74 @@ CREATE TABLE `optcl_beneficiary_ti_history` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_beneficiary_ti_history` */
+
+/*Table structure for table `optcl_bill_bank_wise` */
+
+DROP TABLE IF EXISTS `optcl_bill_bank_wise`;
+
+CREATE TABLE `optcl_bill_bank_wise` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bill_gen_id` int(11) DEFAULT NULL COMMENT 'optcl_bill_generation',
+  `no_of_ben` int(11) DEFAULT NULL,
+  `is_bill_downloaded` tinyint(1) DEFAULT 0,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_bill_bank_wise` */
+
+/*Table structure for table `optcl_bill_ben_details` */
+
+DROP TABLE IF EXISTS `optcl_bill_ben_details`;
+
+CREATE TABLE `optcl_bill_ben_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ben_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
+  `bill_bank_id` int(11) DEFAULT NULL COMMENT 'optcl_bill_bank_wise',
+  `bank_name` varchar(100) DEFAULT NULL,
+  `branch_name` varchar(100) DEFAULT NULL,
+  `ifsc_code` varchar(30) DEFAULT NULL,
+  `branch_address` text DEFAULT NULL,
+  `ben_name` varchar(150) DEFAULT NULL,
+  `ben_address` text DEFAULT NULL,
+  `ben_ppo_no` varchar(25) DEFAULT NULL,
+  `ben_acc_no` varchar(25) DEFAULT NULL,
+  `pension_amount` double(18,2) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_bill_ben_details` */
+
+/*Table structure for table `optcl_bill_generation` */
+
+DROP TABLE IF EXISTS `optcl_bill_generation`;
+
+CREATE TABLE `optcl_bill_generation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bill_no` varchar(30) DEFAULT NULL,
+  `year_value` varchar(5) DEFAULT NULL,
+  `month_value` int(4) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `optcl_bill_generation` */
 
 /*Table structure for table `optcl_calculation_rule_master` */
 
@@ -6280,7 +6382,7 @@ insert  into `optcl_existing_user`(`id`,`application_type`,`pensioner_type`,`tax
 (40,2,2,2,79,1,'8974/4/8794','public/uploads/documents/1656050118-1129955018.pdf','2022/06/0023',2,1580.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'7894687854',1,1,NULL,'FP name','6548792135','222222222222','ABCDE1234X','1989-02-14',2,1,'1971-01-01','2032-11-25','2022-06-24',79000.00,'2032-11-26',NULL,NULL,39500.00,NULL,'2037-10-27',23700.00,'2042-06-17',41080.00,NULL,492960.00,1,492960.00,54,1,17,'2022-06-24 11:25:18',NULL,NULL,1,0),
 (41,2,2,1,80,1,'abcd1234','public/uploads/documents/1656056184-12608532.pdf','2022/06/0024',2,1780.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'8794651234',1,1,NULL,'test name','8795462134','879879654564','ABCDE1234K','1989-01-02',3,1,'1969-01-06','2031-12-31','2022-06-24',89000.00,'2032-01-01',NULL,NULL,44500.00,NULL,'2037-01-01',26700.00,'2037-02-02',46280.00,NULL,555360.00,1,555360.00,54,1,17,'2022-06-24 13:06:24',NULL,NULL,1,0),
 (42,2,2,1,81,1,'qweqw21212','public/uploads/documents/1656063400-1474779116.pdf','2022/06/0025',2,1960.00,'4','TEST',NULL,NULL,NULL,400,'78954621345',1,1,NULL,'test pensioner','9878778987','879456798789','QWEWQ3322R','1969-01-22',3,1,'1959-01-05','2019-12-30','2022-06-24',98000.00,'2019-12-31',NULL,NULL,49000.00,NULL,'2024-12-31',29400.00,'2025-01-01',50960.00,NULL,611520.00,1,611520.00,54,1,17,'2022-06-24 15:06:40',NULL,NULL,1,0),
-(43,2,2,1,84,1,'abcde1234','public/uploads/documents/1656067786-1387736120.pdf','2022/06/0026',2,1920.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'78946521341',1,1,NULL,'test one','3213213212','213123123123','ABCDE1234R','1989-01-02',2,1,'1966-01-02','2026-08-21','2022-06-24',96000.00,'2026-08-22',NULL,NULL,48000.00,NULL,'2031-03-13',28800.00,'2031-03-14',49920.00,49920.00,599040.00,1,599040.00,50,1,17,'2022-06-24 16:19:46',NULL,NULL,1,0);
+(43,2,2,1,84,1,'abcde1234','public/uploads/documents/1656067786-1387736120.pdf','2022/06/0026',2,1920.00,'4','PENSIONER NAME',NULL,NULL,NULL,400,'78946521341',1,1,NULL,'test one','3213213212','213123123123','ABCDE1234R','1989-01-02',2,1,'1966-01-02','2026-08-21','2022-06-24',96000.00,'2026-08-22',NULL,NULL,48000.00,NULL,'2031-03-13',28800.00,'2031-03-14',49920.00,49920.00,599040.00,1,599040.00,51,1,17,'2022-06-24 16:19:46',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_existing_user_commutation` */
 
@@ -6464,7 +6566,7 @@ insert  into `optcl_monthly_changed_data`(`id`,`appliation_type`,`pensioner_type
 (42,2,2,0,NULL,NULL,40,1,0,0,0,17,'2022-06-24 11:25:18',NULL,NULL,1,0),
 (43,2,2,0,NULL,NULL,41,1,0,0,0,17,'2022-06-24 13:06:24',NULL,NULL,1,0),
 (44,2,2,0,NULL,NULL,42,1,0,0,0,17,'2022-06-24 15:06:40',NULL,NULL,1,0),
-(45,2,2,0,NULL,NULL,43,1,1,0,1,17,'2022-06-24 16:19:46',NULL,NULL,1,0);
+(45,2,2,0,NULL,NULL,43,1,1,1,1,17,'2022-06-24 16:19:46',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_net_pension_commutation_list` */
 

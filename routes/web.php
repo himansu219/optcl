@@ -1012,6 +1012,7 @@ Route::get('billing-officer/application/list', 'App\Http\Controllers\BillingOffi
 Route::post('billing-officer/application/net-amount-details', 'App\Http\Controllers\BillingOfficerController@get_net_amount_details')->name('get_net_amount_details');
 Route::post('billing-officer/application/save-net-amount-details', 'App\Http\Controllers\BillingOfficerController@save_net_pension')->name('save_net_amount_details');
 Route::any('billing-officer/application/approval/list', 'App\Http\Controllers\BillingOfficerController@approval_list')->name('billing_officer_approval_list_list');
+Route::post('billing-officer/application/generate-bill', 'App\Http\Controllers\BillingOfficerController@generate_bill')->name('generate_bill');
 // Billing Officer Multiple Application Approval
 Route::post('billing-officer/application/approval/submission', 'App\Http\Controllers\BillingOfficerController@multiple_application_assignment')->name('billing_officer_application_approval_submission');
 // Billing Officer Single Application Approval Service Pensioner

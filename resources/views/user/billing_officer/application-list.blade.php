@@ -20,38 +20,35 @@
       <div class="card">
         <div class="card-body">
             <h4 class="card-title">Filter</h4>
-            <form class="forms-sample" id="filter_applications" method="post" action="" autocomplete="off">
+            <form class="forms-sample" id="beneficiary_bill_generation" method="post" action="{{route('generate_bill')}}" autocomplete="off">
                 @csrf
                 <div class="row">
                   <div class="col-md-3">
-                    <label>Old/New PPO No.</label>
-                    <input type="text" name="application_no" class="form-control" id="application_no" value="{{ !empty($request->application_no) ? $request->application_no : '' }}" >
-                  </div>
-
-                  <div class="col-md-3">
-                    <label>Employee Code</label>
-                    <input type="text" name="employee_code" class="form-control" id="employee_code" value="{{ !empty($request->employee_code) ? $request->employee_code : '' }}" maxlength="5">
-                  </div>
-
-                  <div class="col-md-3">
-                    <label>Aadhaar/ Mobile No.</label>
-                    <input type="text" name="employee_aadhaar_no" class="form-control only_number" maxlength="12" id="employee_aadhaar_no" value="{{ !empty($request->employee_aadhaar_no) ? $request->employee_aadhaar_no : '' }}">
-                  </div>
-
-                  <div class="col-md-3">
-                    <label>Status</label>
-                    <select class="js-example-basic-single form-control" id="app_status_id" name="app_status_id">
-                        <option value="">Select Status</option>
-                        @foreach($statuslist as $statuslist_value)
-                            <option value="{{$statuslist_value->id}}" {{ old('app_status_id') == $statuslist_value->id ? "selected" : "" }}>{{$statuslist_value->status_name}}</option>
-                        @endforeach
+                    <label>Years</label>
+                    <select class="js-example-basic-single form-control" id="year_id" name="year_id">
+                        <option value="{{date('Y')}}">{{date('Y')}}</option>
                     </select>
-                  </div>                                        
+                    <label id="year_id-error" class="error mt-2 text-danger" for="year_id"></label>
+                  </div>
+                  <div class="col-md-3">
+                    <label>Months</label>
+                    <select class="js-example-basic-single form-control" id="month_id" name="month_id">
+                        <option value="">Select Month</option>
+                        @for($m = 1; $m <= 12; $m++)  
+                          @php
+                            /*if($m > date('m')){
+                              continue;
+                            }*/  
+                          @endphp  
+                          <option value="{{$m}}">{{ date('F', mktime(0, 0, 0, $m, 10)) }}</option>
+                        @endfor
+                    </select>
+                    <label id="month_id-error" class="error mt-2 text-danger" for="month_id"></label>
+                  </div>                                       
                 </div>
                 <div class="row mt-4">
                   <div class="col-md-12">
-                    <button type="submit" id="filters" class="btn btn-success">Filter</button>
-                    <a href="{{ route('billing_officer_approval_list_list') }}" class="btn btn-warning">Reset</a>
+                    <button type="submit" id="filters" class="btn btn-success">Generate Bill</button>
                   </div>                  
                 </div>
                 
@@ -62,63 +59,48 @@
       <div class="card">
         <div class="card-body">
             <h4 class="card-title">Application List
-            <a href="javascript:void(0)" class="btn btn-success float-right" id="generate_bill">Generate Bill</a> 
+              <a href="javascript:void(0)" class="btn btn-success float-right">Billing History</a>
             </h4>
-
+                            
             <div class="row">
               <div class="table-sorter-wrapper col-lg-12 table-responsive">
-                <table id="sampleTable" class="table table-striped">
+                <table id="sampleTable" class="table table-striped table-bordered">
                   <thead>
                     <tr>
-                    <th><input type="checkbox" name="" id="all_application_ids"></th>
-                      <th>Pensioner Type</th>
-                      <th>Application Type</th>
-                      <th>PPO No</th>
-                      <th>Status</th>
-                      <th>Created At</th>
-                      <th>Action</th>
+                    <th>Sl No.</th>
+                      <th>Bank</th>
+                      <th>Total Beneficiaries</th>
+                      <th class="text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @if($applications->count() > 0)
-                      @foreach($applications as $key => $application)
-                        <tr>
-                          <td>
-                            <input type="checkbox" name="" class="application_ids" value="{{ $application->id }}">
-                          </td>
-                          <td>{{ $application->type_name }}</td>
-                          <td>{{ $application->pension_type }}</td>
-                          <td>{{ $application->new_ppo_no }}</td>
-                          <td>{{ $application->status_name }}</td>
-                          <td>{{ \Carbon\Carbon::parse($application->created_at)->format('d-m-Y h:i A') }}</td>
-                          <td>
-                            <a href="{{route('get_existing_pensioner_details', array($application->application_id))}}"><i class="fa fa-eye"></i></a>
-                            <a href="{{route('net_pension_calculation_sheet', array($application->application_id))}}"><i class="fa fa-calculator"></i></a>
-                          </td>
-                        </tr>
-                      @endforeach
-                    @else
-                      <tr><td colspan="5" align="center">No Data Found</td></tr>    
-                    @endif
+                    <tr>
+                      <td>1</td>
+                      <td>SBI</td>
+                      <td>250</td>
+                      <td class="text-center"><a href="javascript:void(0)" class="btn btn-success">Download</a></td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Union</td>
+                      <td>5</td>
+                      <td class="text-center"><a href="javascript:void(0)" class="btn btn-success">Download</a></td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>NEFT</td>
+                      <td>200</td>
+                      <td class="text-center"><a href="javascript:void(0)" class="btn btn-success">Download</a></td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>SBI Nepal</td>
+                      <td>50</td>
+                      <td class="text-center"><a href="javascript:void(0)" class="btn btn-success">Download</a></td>
+                    </tr>
                   </tbody>
                 </table>
-                @if ($applications->lastPage() > 1)
-                  <nav aria-label="..." class="float-right">
-                      <ul class="pagination">
-                          <li class="{{ ($applications->currentPage() == 1) ? ' disabled' : '' }} page-item">
-                              <a class="page-link" href="{{ $applications->url(1) }}">Previous</a>
-                          </li>
-                          @for ($i = 1; $i <= $applications->lastPage(); $i++)
-                              <li class="{{ ($applications->currentPage() == $i) ? ' active' : '' }}  page-item">
-                                  <a class="page-link" href="{{ $applications->url($i) }}">{{ $i }}</a>
-                              </li>
-                          @endfor
-                          <li class="{{ ($applications->currentPage() == $applications->lastPage()) ? ' disabled' : '' }} page-item">
-                              <a class="page-link" href="{{ $applications->url($applications->currentPage()+1) }}" >Next</a>
-                          </li>
-                      </ul>
-                  </nav>
-                @endif
+                
               </div>
             </div>
         </div>
@@ -197,6 +179,37 @@
         if ($('.application_ids:checked').length == $('.application_ids').length ){
           $("#all_application_ids").prop('checked', true);
         }
+      });
+
+      $('#beneficiary_bill_generation').validate({
+          rules: {
+            year_id: {
+                  required: true,
+              },
+              month_id: {
+                  required: true,
+              },
+          },
+          messages: {
+              year_id: {
+                  required: "Please select year",
+              },
+              month_id: {
+                  required: "Please select month",
+              },
+            },
+          submitHandler: function(form, event) { 
+                  event.preventDefault();
+                  form.submit();
+          },
+          errorPlacement: function(label, element) {
+              label.addClass('text-danger');
+              label.insertAfter(element);
+          },
+          highlight: function(element, errorClass) {
+              $(element).parent().addClass('has-danger')
+              $(element).addClass('form-control-danger')
+          }
       });
 
     });

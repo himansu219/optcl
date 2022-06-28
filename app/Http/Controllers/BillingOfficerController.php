@@ -13,6 +13,8 @@ use App\Libraries\Util;
 use App\Libraries\Beneficiary;
 use Session;
 use Auth;
+use App\Exports\BillExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class BillingOfficerController extends Controller { 
@@ -1296,7 +1298,7 @@ class BillingOfficerController extends Controller {
 
         if(!isset($validation['error'])){
             try{
-                //DB::beginTransaction();
+                DB::beginTransaction();
                 $pensionAmountDetails = [
                     "application_type"              => $request->application_type,
                     "pension_type"                  => $request->pensioner_type,
@@ -1360,62 +1362,96 @@ class BillingOfficerController extends Controller {
     }
 
     public function generate_bill(Request $request) {       
-        
-        //dd($request->all());
-        $year_value = $request->year_id;
-        $month_value = $request->month_id;
-        $bill_list = DB::table('optcl_beneficiary_details')
-                        ->join('optcl_beneficiary_account_details', 'optcl_beneficiary_account_details.beneficiary_id', '=', 'optcl_beneficiary_details.id')
-                        ->join('optcl_bank_branch_master', 'optcl_bank_branch_master.id', '=', 'optcl_beneficiary_account_details.bank_branch_id')
-                        ->select('optcl_beneficiary_details.*', 'optcl_beneficiary_account_details.bank_branch_id', 'optcl_beneficiary_account_details.bank_name', 'optcl_beneficiary_account_details.branch_name', 'optcl_beneficiary_account_details.ifsc_code', 'optcl_beneficiary_account_details.account_number', 'optcl_bank_branch_master.bank_id')
-                        ->where('optcl_beneficiary_details.is_dead', 0)
-                        ->where('optcl_beneficiary_details.life_certificate_status', 0)
-                        ->where('optcl_beneficiary_details.status', 1)
-                        ->where('optcl_beneficiary_details.deleted', 0)
-                        ->groupBy('optcl_bank_branch_master.bank_id')
-                        ->get();
-        if($bill_list->count() > 0){
+        try{
+            DB::beginTransaction();
+            //dd($request->all());
+            $year_value = $request->year_id;
+            $month_value = $request->month_id;
+            $bill_list = DB::table('optcl_beneficiary_details')
+                            ->join('optcl_beneficiary_account_details', 'optcl_beneficiary_account_details.beneficiary_id', '=', 'optcl_beneficiary_details.id')
+                            ->join('optcl_bank_branch_master', 'optcl_bank_branch_master.id', '=', 'optcl_beneficiary_account_details.bank_branch_id')
+                            ->join('optcl_beneficiary_pension_amount_details', 'optcl_beneficiary_pension_amount_details.beneficiary_id', '=', 'optcl_beneficiary_details.id')
+                            ->select('optcl_beneficiary_details.*', 'optcl_beneficiary_account_details.bank_branch_id', 'optcl_beneficiary_account_details.bank_name', 'optcl_beneficiary_account_details.branch_name', 'optcl_beneficiary_account_details.ifsc_code', 'optcl_beneficiary_account_details.account_number', 'optcl_bank_branch_master.bank_id', 'optcl_bank_branch_master.address', 'optcl_beneficiary_pension_amount_details.pension_amount')
+                            ->where('optcl_beneficiary_details.is_dead', 0)
+                            ->where('optcl_beneficiary_details.life_certificate_status', 0)
+                            ->where('optcl_beneficiary_details.status', 1)
+                            ->where('optcl_beneficiary_details.deleted', 0)
+                            ->get()->groupBy('optcl_bank_branch_master.bank_id');
             //dd($bill_list);
-            $bill_list->
-            // optcl_bill_generation
-            $data_bill_gen = [
-                "year_value"            => $year_value,
-                "month_value"           => $month_value,
-                "created_by"            => Auth::user()->id,
-                "created_at"            => $this->current_date,
-            ];
-            $bill_gen_id = DB::table('optcl_bill_generation')->insertGetId($data_bill_gen);
-            foreach($bill_list as $bill_value){
-                $ben_id = $bill_value->id;
-                // optcl_bill_bank_wise
-                $data_bill_bank = [
-                    "bill_gen_id"       => $bill_gen_id,
-                    "no_of_ben"         => 0,
-                    "created_by"        => Auth::user()->id,
-                    "created_at"        => $this->current_date,
+            if($bill_list->count() > 0){
+                //dd($bill_list);
+                
+                // optcl_bill_generation
+                $data_bill_gen = [
+                    "year_value"            => $year_value,
+                    "month_value"           => $month_value,
+                    "created_by"            => Auth::user()->id,
+                    "created_at"            => $this->current_date,
                 ];
-                $bill_bank_id = DB::table('optcl_bill_bank_wise')->insertGetId($data_bill_bank);
-                // optcl_bill_ben_details
-                $data_bill_ben = [
-                    "ben_id"       => $ben_id,
-                    "bill_bank_id"         => $bill_bank_id,
-                    "bank_name"         => 0,
-                    "branch_name"         => 0,
-                    "ifsc_code"         => 0,
-                    "branch_address"         => 0,
-                    "ben_name"         => 0,
-                    "ben_ppo_no"         => 0,
-                    "ben_acc_no"         => 0,
-                    "pension_amount"         => 0,
-                    "created_by"        => Auth::user()->id,
-                    "created_at"        => $this->current_date,
-                ];
-                DB::table('optcl_bill_ben_details')->insertGetId($data_bill_ben);
+                $bill_gen_id = DB::table('optcl_bill_generation')->insertGetId($data_bill_gen);
+                foreach($bill_list as $bill_value){
+                    //dd($bill_value);
+                    
+                    //dd($bill_value);
+                    $ben_count = 0;
+                    $ben_ids = [];
+                    foreach($bill_value as $bill_data){
+                        //dd($bill_data);
+                        $ben_name = $bill_data->pensioner_name;
+                        $ben_ppo_no = $bill_data->ppo_no;
+
+                        $bank_name = $bill_data->bank_name;
+                        $branch_name = $bill_data->branch_name;
+                        $ifsc_code = $bill_data->ifsc_code;
+                        $account_number = $bill_data->account_number;
+                        $bank_id = $bill_data->bank_id;
+                        $bank_address = $bill_data->address;
+                        $pension_amount = $bill_data->pension_amount;
+                        $ben_id = $bill_data->id;
+                        // optcl_bill_ben_details
+                        $data_bill_ben = [
+                            "ben_id"            => $ben_id,
+                            //"bill_bank_id"      => $bill_bank_id,
+                            "bank_name"         => $bank_name,
+                            "branch_name"       => $branch_name,
+                            "ifsc_code"         => $ifsc_code,
+                            "branch_address"    => $bank_address,
+                            "ben_name"          => $ben_name,
+                            "ben_ppo_no"        => $ben_ppo_no,
+                            "ben_acc_no"        => $account_number ,
+                            "pension_amount"    => $pension_amount,
+                            "created_by"        => Auth::user()->id,
+                            "created_at"        => $this->current_date,
+                        ];
+                        $ben_ids[] = DB::table('optcl_bill_ben_details')->insertGetId($data_bill_ben);
+                        $ben_count += 1;
+                    }
+                    // optcl_bill_bank_wise
+                    $data_bill_bank = [
+                        "bill_gen_id"       => $bill_gen_id,
+                        "no_of_ben"         => $ben_count,
+                        "bank_id"           => $bank_id,
+                        "created_by"        => Auth::user()->id,
+                        "created_at"        => $this->current_date,
+                    ];
+                    $bill_bank_id = DB::table('optcl_bill_bank_wise')->insertGetId($data_bill_bank);
+                    DB::table('optcl_bill_ben_details')->whereIn('id', $ben_ids)->update(['bill_bank_id' => $bill_bank_id]);                
+                }
             }
+            Session::flash('success','Bill generated successfully');
+            DB::commit();   
+            return redirect()->back();      
+        }catch (\Throwable $e) {
+            DB::rollback();
+            Session::flash('error','Something went wrong!');
+            throw $e;            
+            return redirect()->back();
         }
-                        
-        dd($bill_list);
-        
+    }
+
+    public function download_bill(){
+        //dd(123);
+        return Excel::download(new BillExport, 'bill.xlsx');
     }
 
 }

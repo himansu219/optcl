@@ -4666,6 +4666,7 @@ DROP TABLE IF EXISTS `optcl_bill_bank_wise`;
 CREATE TABLE `optcl_bill_bank_wise` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `bill_gen_id` int(11) DEFAULT NULL COMMENT 'optcl_bill_generation',
+  `bank_id` int(11) DEFAULT NULL,
   `no_of_ben` int(11) DEFAULT NULL,
   `is_bill_downloaded` tinyint(1) DEFAULT 0,
   `created_by` int(11) DEFAULT NULL,
@@ -4675,9 +4676,12 @@ CREATE TABLE `optcl_bill_bank_wise` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_bill_bank_wise` */
+
+insert  into `optcl_bill_bank_wise`(`id`,`bill_gen_id`,`bank_id`,`no_of_ben`,`is_bill_downloaded`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
+(1,1,1,3,0,69,'2022-06-28 15:50:34',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_bill_ben_details` */
 
@@ -4685,16 +4689,15 @@ DROP TABLE IF EXISTS `optcl_bill_ben_details`;
 
 CREATE TABLE `optcl_bill_ben_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ben_id` int(11) DEFAULT NULL COMMENT 'optcl_beneficiary_details',
-  `bill_bank_id` int(11) DEFAULT NULL COMMENT 'optcl_bill_bank_wise',
+  `ben_id` int(11) DEFAULT NULL,
+  `bill_bank_id` int(11) DEFAULT NULL,
   `bank_name` varchar(100) DEFAULT NULL,
   `branch_name` varchar(100) DEFAULT NULL,
   `ifsc_code` varchar(30) DEFAULT NULL,
   `branch_address` text DEFAULT NULL,
   `ben_name` varchar(150) DEFAULT NULL,
-  `ben_address` text DEFAULT NULL,
   `ben_ppo_no` varchar(25) DEFAULT NULL,
-  `ben_acc_no` varchar(25) DEFAULT NULL,
+  `ben_acc_no` varchar(22) DEFAULT NULL,
   `pension_amount` double(18,2) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -4703,9 +4706,14 @@ CREATE TABLE `optcl_bill_ben_details` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_bill_ben_details` */
+
+insert  into `optcl_bill_ben_details`(`id`,`ben_id`,`bill_bank_id`,`bank_name`,`branch_name`,`ifsc_code`,`branch_address`,`ben_name`,`ben_ppo_no`,`ben_acc_no`,`pension_amount`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
+(1,6,1,'State Bank of India','ASKA','SBIN0000012','ASKA, DT GANJAM, ORISSA STATE, PIN 761 110','PENSIONER NAME','2022/06/0026','78946521341',49898.32,69,'2022-06-28 15:50:34',NULL,NULL,1,0),
+(2,7,1,'State Bank of India','ASKA','SBIN0000012','ASKA, DT GANJAM, ORISSA STATE, PIN 761 110','PENSIONER NAME','2022/06/0026','78946521341',49898.32,69,'2022-06-28 15:50:34',NULL,NULL,1,0),
+(3,8,1,'State Bank of India','ASKA','SBIN0000012','ASKA, DT GANJAM, ORISSA STATE, PIN 761 110','PENSIONER NAME','2022/06/0026','78946521341',49898.32,69,'2022-06-28 15:50:34',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_bill_generation` */
 
@@ -4723,9 +4731,12 @@ CREATE TABLE `optcl_bill_generation` (
   `status` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `optcl_bill_generation` */
+
+insert  into `optcl_bill_generation`(`id`,`bill_no`,`year_value`,`month_value`,`created_by`,`created_at`,`updated_by`,`updated_at`,`status`,`deleted`) values 
+(1,NULL,'2022',2,69,'2022-06-28 15:50:34',NULL,NULL,1,0);
 
 /*Table structure for table `optcl_calculation_rule_master` */
 

@@ -2,23 +2,18 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\WithEvents;
+/* use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use App\Models\GenerateBill;
+use App\Models\GenerateBill; */
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 use DB;
 
-class BillExport implements 
-FromCollection, 
-WithMapping, 
-WithHeadings, 
-WithEvents,
-ShouldAutoSize, 
-WithMultipleSheets
+class BillExport implements WithMultipleSheets
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -65,12 +60,20 @@ WithMultipleSheets
         ];
     } */
 
-    public function sheet(): array
+    public function sheets(): array
     {
-        $sheet = [];
-        DB::table('optcl_bill_bank_wise')
-        for
-        
+        //dd(123);
+        $sheets = [];
+        /* 
+            * 1 - State Bank of India
+            * 10 - Union Bank
+            * 999 - Other Banks
+        */
+        $banks = [1, 10, 999];
+        foreach($banks as $bank_data){
+            $sheets[] = new BillPerBank($bank_data);
+        }
+        return $sheets;
     }
 
 }

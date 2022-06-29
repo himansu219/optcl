@@ -1032,6 +1032,8 @@ Route::get('billing-officer/application/revision-basic-pension-view/{appID}', 'A
 Route::post('billing-officer/application/submit-net-pension-calculation/', 'App\Http\Controllers\GenerateBillController@generate_bill_sheet')->name('generate_bill_sheet');
 // Bill Download
 Route::get('billing-officer/application/bill-download/', 'App\Http\Controllers\BillingOfficerController@download_bill')->name('download_bill');
+// Billing History
+Route::get('billing-officer/application/billing-history/', 'App\Http\Controllers\BillingOfficerController@billing_history')->name('billing_history');
 
 // Service Pensioner Application View - Pension Unit User
 Route::get('pention-unit-head/service-pension/application-details/{appID}', 'App\Http\Controllers\ApplicationViewController@sp_application_details')->name('pension_unit_head_sp_application_view');

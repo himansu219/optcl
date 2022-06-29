@@ -29,6 +29,18 @@ class Util {
         return $generated_ppo_number;
     }
 
+    public static function ben_count_bank($bank_id){
+        $ben_count = DB::table('optcl_bill_bank_wise')
+                        ->where('is_bill_downloaded', 0);
+        if(in_array($bank_id, [1,10])){
+            $ben_count = $ben_count->where('bank_id', $bank_id);
+        }else{
+            $ben_count = $ben_count->whereNotIn('bank_id', [1,10]);
+        } 
+        $ben_count = $ben_count->value('no_of_ben');
+        return $ben_count;
+    }
+
     public static function monthly_changed_data_storage($ppo_no, $cr_type_id, $cr_id){
         // Update Monthly Changed Data
         $ppo_details = DB::table('optcl_ppo_no_list')

@@ -19,13 +19,17 @@
     <div class="col-12 grid-margin">
       <div class="card">
         <div class="card-body">
-            <form class="forms-sample" id="beneficiary_bill_generation" method="post" action="{{route('generate_bill')}}" autocomplete="off">
+            <h4 class="card-title">Filter</h4>
+            <form class="forms-sample" id="beneficiary_bill_generation" method="post" action="" autocomplete="off">
                 @csrf
                 <div class="row">
                   <div class="col-md-3">
                     <label>Years</label>
                     <select class="js-example-basic-single form-control" id="year_id" name="year_id">
-                        <option value="{{date('Y')}}">{{date('Y')}}</option>
+                        <option value="">Select Year</option>
+                        @for($i = 2022; $i < date('Y')+10; $i++)
+                        <option value="{{$i}}">{{$i}}</option>
+                        @endfor
                     </select>
                     <label id="year_id-error" class="error mt-2 text-danger" for="year_id"></label>
                   </div>
@@ -33,12 +37,7 @@
                     <label>Months</label>
                     <select class="js-example-basic-single form-control" id="month_id" name="month_id">
                         <option value="">Select Month</option>
-                        @for($m = 1; $m <= 12; $m++)  
-                          @php
-                            /*if($m > date('m')){
-                              continue;
-                            }*/  
-                          @endphp  
+                        @for($m = 1; $m <= 12; $m++) 
                           <option value="{{$m}}">{{ date('F', mktime(0, 0, 0, $m, 10)) }}</option>
                         @endfor
                     </select>
@@ -47,7 +46,8 @@
                 </div>
                 <div class="row mt-4">
                   <div class="col-md-12">
-                    <button type="submit" id="filters" class="btn btn-success">Generate Bill</button>
+                    <button type="submit" id="filters" class="btn btn-success">Filter</button>
+                    <a href="{{ route('billing_history') }}" class="btn btn-warning">Reset</a>
                   </div>                  
                 </div>
                 
@@ -57,51 +57,37 @@
 
       <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Application List
-              <a href="{{route('billing_history')}}" class="btn btn-success float-right">Billing History</a>
-            </h4>
+            <h4 class="card-title">Application List</h4>
                             
             <div class="row">
               <div class="table-sorter-wrapper col-lg-12 table-responsive">
                 <table id="sampleTable" class="table table-striped table-bordered">
                   <thead>
                     <tr>
-                    <th>Sl No.</th>
-                      <th>Bank</th>
-                      <th>Total Beneficiaries</th>
-                      <th class="text-center">Action</th>
+                        <th>Sl No.</th>
+                        <th>Bill No.</th>
+                        <th>Year</th>
+                        <th>Month</th>
+                        <th>Created at</th>
+                        <th class="text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @if($check_download > 0)
-                    <tr>
-                      <td>1</td>
-                      <td>SBI</td>
-                      <td>{{App\Libraries\Util::ben_count_bank(1) ? App\Libraries\Util::ben_count_bank(1) : 0}}</td>
-                      <td class="text-center" rowspan="4"><a href="{{ route('download_bill')}}" class="btn btn-success">Download Bill</a></td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Union</td>
-                      <td>{{App\Libraries\Util::ben_count_bank(10) ? App\Libraries\Util::ben_count_bank(10) : 0}}</td>
-                      <!-- <td class="text-center"><a href="javascript:void(0)" class="btn btn-success">Download</a></td> -->
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>NEFT</td>
-                      <td>{{App\Libraries\Util::ben_count_bank(999) ? App\Libraries\Util::ben_count_bank(999) : 0}}</td>
-                      <!-- <td class="text-center"><a href="javascript:void(0)" class="btn btn-success">Download</a></td> -->
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>SBI Nepal</td>
-                      <td>0</td>
-                      <!-- <td class="text-center"><a href="javascript:void(0)" class="btn btn-success">Download</a></td> -->
-                    </tr>
+                    @if($applications->count() > 0)
+                      @foreach($applications as $key => $application)
+                        <tr>
+                          <td>{{ $applications->firstItem() + $key }}</td>
+                          <td>{{ $application->bill_no }}</td>
+                          <td>{{ $application->year_value }}</td>
+                          <td>{{ date('F', mktime(0, 0, 0, $application->month_value, 10)) }}</td>
+                          <td>{{ \Carbon\Carbon::parse($application->created_at)->format('d-m-Y  h:i A') }}</td>
+                          <td class="text-center">
+                            <a href="{{url('storage/app/'.$application->download_path)}}" title="Bill Download" download><i class="fa fa-download"></i></a>
+                          </td>
+                        </tr>
+                      @endforeach
                     @else
-                      <tr>
-                        <td class="text-center" colspan="4">No data found</td>
-                      </tr>
+                      <tr><td colspan="7" align="center">No Data Found</td></tr>    
                     @endif
                   </tbody>
                 </table>

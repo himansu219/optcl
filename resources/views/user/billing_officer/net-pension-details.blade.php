@@ -417,7 +417,7 @@
                                     }
                                 }else{
                                     // Success
-                                    location.href = "{{route('pension_unit_restoration_commutation')}}";
+                                    location.href = "{{route('monthly_changed_data_list')}}";
                                 }
                             }
                         });

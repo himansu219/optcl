@@ -20,7 +20,7 @@
       <div class="card">
         <div class="card-body">
             <h4 class="card-title">Filter</h4>
-            <form class="forms-sample" id="beneficiary_bill_generation" method="post" action="" autocomplete="off">
+            <form class="forms-sample" method="post" action="" autocomplete="off">
                 @csrf
                 <div class="row">
                   <div class="col-md-3">
@@ -28,7 +28,7 @@
                     <select class="js-example-basic-single form-control" id="year_id" name="year_id">
                         <option value="">Select Year</option>
                         @for($i = 2022; $i < date('Y')+10; $i++)
-                        <option value="{{$i}}">{{$i}}</option>
+                        <option value="{{$i}}" @if($request->year_id == $i) selected @endif>{{$i}}</option>
                         @endfor
                     </select>
                     <label id="year_id-error" class="error mt-2 text-danger" for="year_id"></label>
@@ -38,7 +38,7 @@
                     <select class="js-example-basic-single form-control" id="month_id" name="month_id">
                         <option value="">Select Month</option>
                         @for($m = 1; $m <= 12; $m++) 
-                          <option value="{{$m}}">{{ date('F', mktime(0, 0, 0, $m, 10)) }}</option>
+                          <option value="{{$m}}" @if($request->month_id == $m) selected @endif>{{ date('F', mktime(0, 0, 0, $m, 10)) }}</option>
                         @endfor
                     </select>
                     <label id="month_id-error" class="error mt-2 text-danger" for="month_id"></label>

@@ -86,14 +86,14 @@
                           <td>{{ \Carbon\Carbon::parse($application->created_at)->format('d-m-Y  h:i A') }}</td>
                           <td>
                             @if($application->appliation_type == '2')
-                              <a href="{{route('get_monthly_changed_data_pensioner_details', array($application->application_id))}}"><i class="fa fa-eye"></i></a>
+                              <a href="{{route('get_monthly_changed_data_pensioner_details', array($application->id))}}"><i class="fa fa-eye"></i></a>
                             @else
                               @if($application->pensioner_type == '1')
                                 <!-- Service Pensioner -->
-                                <a href="{{route('pension_unit_head_sp_history_application_view', array($application->application_id))}}"><i class="fa fa-eye"></i></a>
+                                <a href="{{route('pension_unit_head_sp_history_application_view', array($application->id))}}"><i class="fa fa-eye"></i></a>
                               @else
                                 <!-- Family Pensioner -->
-                                <a href="{{route('pension_unit_head_fp_history_application_view', array($application->application_id))}}"><i class="fa fa-eye"></i></a>
+                                <a href="{{route('pension_unit_head_fp_history_application_view', array($application->id))}}"><i class="fa fa-eye"></i></a>
                               @endif
                             @endif
                           </td>

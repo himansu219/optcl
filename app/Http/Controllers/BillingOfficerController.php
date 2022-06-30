@@ -1469,12 +1469,18 @@ class BillingOfficerController extends Controller {
         } */        
     }
 
-    public function billing_history(){
-        $applications = DB::table('optcl_bill_generation')
-                            ->where('deleted', 0)
+    public function billing_history(Request $request){
+        $applications = DB::table('optcl_bill_generation');
+        if(!empty($request->year_id)) {
+            $applications = $applications->where('year_value', $request->year_id);
+        }
+        if(!empty($request->month_id)) {
+            $applications = $applications->where('month_value', $request->month_id);
+        }
+        $applications = $applications->where('deleted', 0)
                             ->orderBy('id', 'DESC')
                             ->paginate(10);
-        return view('user.billing_officer.billing-history', compact('applications'));
+        return view('user.billing_officer.billing-history', compact('applications', 'request'));
     }
 
 }

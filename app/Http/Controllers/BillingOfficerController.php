@@ -1003,8 +1003,7 @@ class BillingOfficerController extends Controller {
         return redirect()->route('billing_officer_sp_application_view', array($approvalID));
     }
     // Revision of Basic Pension View Page Billing Officer
-    public function revision_basic_pension_view_page($appID) {
-        
+    public function revision_basic_pension_view_page($appID) {        
         $mcd_data = DB::table('optcl_monthly_changed_data')
                         ->where('id', $appID)
                         ->where('status', 1)
@@ -1046,6 +1045,7 @@ class BillingOfficerController extends Controller {
                 $application_id = $request->application_id;
                 $pernsioner_type = $request->pensioner_type;
                 $application_type = $request->application_type;
+                //dd($request->all());
                 $parameter_data = [
                     "remarks" => $remarks,
                     "montly_changed_id" => $montly_changed_id,
@@ -1057,11 +1057,25 @@ class BillingOfficerController extends Controller {
                 $monthly_changed_data = DB::table('optcl_monthly_changed_data')
                                                 ->where('id', $montly_changed_id)
                                                 ->first();
+                //dd($monthly_changed_data);
                 if($monthly_changed_data){
-                    // New User and Service Pensioner or Nominee
-                    if($monthly_changed_data->application_type == 1 && ($monthly_changed_data->pensioner_type == 1 || $monthly_changed_data->pensioner_type == 2) ){
-                        Beneficiary::newBeneficiaryDataStorage($parameter_data);
+                    if($monthly_changed_data->is_changed_request == 1){
+                        if($monthly_changed_data->cr_type_id == 1){
+                            // Addition of Pensioner New Pensioner
+
+                        }else if($monthly_changed_data->cr_type_id == 2){
+                            // Revision of Basic Pension
+                            Beneficiary::revisionBasicPensionDataStorage($parameter_data);
+                        }
+                    }else{
+                        // New User and Service Pensioner or Nominee
+                        if($monthly_changed_data->appliation_type == 1 && ($monthly_changed_data->pensioner_type == 1 || $monthly_changed_data->pensioner_type == 2) ){
+                            Beneficiary::newBeneficiaryDataStorage($parameter_data);
+                        }else{
+                            // Existing User
+                        }
                     }
+                    
                     
                 }
                 DB::table('optcl_application_status_history')->insert([
@@ -1129,12 +1143,46 @@ class BillingOfficerController extends Controller {
         //dd($appID);
         $mcd_details = DB::table('optcl_monthly_changed_data')->where('id', $appID)->where('status', 1)->where('deleted', 0)->first();
         $application_id = $mcd_details->application_id;
-        $applicationDetails = DB::table('optcl_existing_user')
-                                ->join('optcl_pension_type_master', 'optcl_pension_type_master.id', '=', 'optcl_existing_user.pensioner_type')
-                                ->select('optcl_existing_user.*', 'optcl_pension_type_master.pension_type')
-                                ->where('optcl_existing_user.id', '=', $application_id)
+        $is_changed_request = $mcd_details->is_changed_request;
+        $cr_type_id = $mcd_details->cr_type_id;
+        $cr_id = $mcd_details->cr_id;
+        $appliation_type = $mcd_details->appliation_type;
+        $pensioner_type = $mcd_details->pensioner_type;
+        if($is_changed_request  == 1){
+            // Monthly Changed Data Update
+            if($cr_type_id == 1){
+                // Addition of Pensioner New Pensioner
+
+            }else if($cr_type_id == 2){
+                // Revision of Basic Pension
+                $applicationDetails = DB::table('optcl_change_data_revision_basic_pension AS rbp')
+                                        ->join('optcl_existing_user AS eu', 'rbp.application_id', '=', 'eu.id')
+                                        ->join('optcl_pension_type_master AS ptm', 'ptm.id', '=', 'eu.pensioner_type')
+                                        ->select('eu.id', 'rbp.pensioner_basic_amount AS total_income_month', 'eu.additional_pension_amount', 'eu.ti_amount', 'eu.pensioner_name', 'eu.new_ppo_no', 'eu.taxable_amount', 'eu.pensioner_type', 'eu.tax_type_id', 'eu.date_of_birth', 'ptm.pension_type')
+                                        ->where('rbp.id', '=', $cr_id)->first();
+                //dd($applicationDetails);
+                /* $applicationDetails = DB::table('optcl_existing_user AS eu')
+                                ->join('optcl_pension_type_master AS ptm', 'ptm.id', '=', 'eu.pensioner_type')
+                                ->select('eu.id', 'eu.total_income_month', 'eu.additional_pension_amount', 'eu.ti_amount', 'eu.pensioner_name', 'eu.new_ppo_no', 'eu.taxable_amount', 'eu.pensioner_type', 'eu.tax_type_id', 'eu.date_of_birth', 'ptm.pension_type')
+                                ->where('eu.id', '=', $application_id)
+                                ->first(); */
+            }
+        }else{
+            // Application
+            if($appliation_type == 1){
+                // New Pensioner
+
+            }else{
+                // Existing User
+                $applicationDetails = DB::table('optcl_existing_user AS eu')
+                                ->join('optcl_pension_type_master AS ptm', 'ptm.id', '=', 'eu.pensioner_type')
+                                ->select('eu.id', 'eu.total_income_month', 'eu.additional_pension_amount', 'eu.ti_amount', 'eu.pensioner_name', 'eu.new_ppo_no', 'eu.taxable_amount', 'eu.pensioner_type', 'eu.tax_type_id', 'eu.date_of_birth', 'ptm.pension_type')
+                                ->where('eu.id', '=', $application_id)
                                 ->first();
-        //dd($applicationDetails);
+            }
+        }        
+        
+        //dd($mcd_details, $applicationDetails);
         $response = [];
         $commutations = [];
         $taxList = [];
@@ -1172,9 +1220,7 @@ class BillingOfficerController extends Controller {
                 //dd($age_data['years']);
                 DB::enableQueryLog();
                 $taxList = DB::table('optcl_tax_slab_master')
-                            //->where(DB::raw($age_value between ('from_age', 'to_age')))
                             ->whereRaw("('".$age_value."' between `from_age` and `to_age`)")
-                            //->where('to_age', '<=', $age_value)
                             ->where('is_new', $applicationDetails->tax_type_id)
                             ->get();
                 //dd(DB::getQueryLog(), $taxList);

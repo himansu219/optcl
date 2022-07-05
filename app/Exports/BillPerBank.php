@@ -33,7 +33,7 @@ class BillPerBank implements WithTitle, ShouldAutoSize, FromView
 
     public function view(): View
     {
-        //DB::enableQueryLog();
+        DB::enableQueryLog();
         if($this->bank_id == 1){
             $view_file = 'export_billing.sbi';
             $data_get = DB::table('optcl_bill_bank_wise')

@@ -73,7 +73,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @if($check_download > 0)
+                    @if($check_download)
                     <tr>
                       <td>1</td>
                       <td>SBI</td>

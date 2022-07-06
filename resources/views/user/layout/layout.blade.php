@@ -821,7 +821,7 @@
                         <li class="nav-item"> 
                             <a class="nav-link" href="{{route('billing_officer_list')}}">
                                 <i class="fa fa-database menu-icon" ></i>
-                                <span class="menu-title highlight_link">Process Bill</span>
+                                <span class="menu-title highlight_link">Bill Generation</span>
                             </a>
                         </li>
                         <li class="nav-item"> 

@@ -18,6 +18,15 @@ class BillExport implements WithMultipleSheets
     /**
     * @return \Illuminate\Support\Collection
     */
+    private $bill_id;
+    private $month_value;
+    private $year_value;
+
+    public function __construct(int $bill_id, int $month_value, int $year_value){
+        $this->bill_id = $bill_id;
+        $this->month_value = $month_value;
+        $this->year_value = $year_value;
+    }
     /* public function collection()
     {
         return DB::table('optcl_bill_ben_details')->get();
@@ -71,7 +80,7 @@ class BillExport implements WithMultipleSheets
         */
         $banks = [1, 10, 999];
         foreach($banks as $bank_data){
-            $sheets[] = new BillPerBank($bank_data);
+            $sheets[] = new BillPerBank($bank_data, $this->bill_id, $this->month_value, $this->year_value);
         }
         return $sheets;
     }

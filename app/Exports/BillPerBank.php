@@ -24,11 +24,17 @@ class BillPerBank implements WithTitle, ShouldAutoSize, FromView
     private $bank_id;
     private $bank_value;
     private $i;
+    private $bill_id;
+    private $month_value;
+    private $year_value;
 
-    public function __construct(int $bank_id, string $bank_value = 'bank name'){
+    public function __construct(int $bank_id, int $bill_id, int $month_value, int $year_value, string $bank_value = 'bank name'){
         $this->bank_id = $bank_id;
         $this->bank_value = $bank_value;
         $this->i = 1;
+        $this->bill_id = $bill_id;
+        $this->month_value = $month_value;
+        $this->year_value = $year_value;
     }
 
     public function view(): View
@@ -39,6 +45,7 @@ class BillPerBank implements WithTitle, ShouldAutoSize, FromView
             $data_get = DB::table('optcl_bill_bank_wise')
                             ->join('optcl_bill_ben_details', 'optcl_bill_ben_details.bill_bank_id', '=', 'optcl_bill_bank_wise.id')
                             ->select('optcl_bill_ben_details.*')
+                            ->where('optcl_bill_bank_wise.bill_gen_id', $this->bill_id)
                             ->where('optcl_bill_bank_wise.bank_id', $this->bank_id)
                             ->get();
                             //dd(1);
@@ -47,6 +54,7 @@ class BillPerBank implements WithTitle, ShouldAutoSize, FromView
             $data_get = DB::table('optcl_bill_bank_wise')
                         ->join('optcl_bill_ben_details', 'optcl_bill_ben_details.bill_bank_id', '=', 'optcl_bill_bank_wise.id')
                         ->select('optcl_bill_ben_details.*')
+                        ->where('optcl_bill_bank_wise.bill_gen_id', $this->bill_id)
                         ->where('optcl_bill_bank_wise.bank_id', $this->bank_id)
                         ->get();
                         //dd(2);
@@ -55,13 +63,14 @@ class BillPerBank implements WithTitle, ShouldAutoSize, FromView
             $data_get = DB::table('optcl_bill_bank_wise')
                             ->join('optcl_bill_ben_details', 'optcl_bill_ben_details.bill_bank_id', '=', 'optcl_bill_bank_wise.id')
                             ->select('optcl_bill_ben_details.*')
+                            ->where('optcl_bill_bank_wise.bill_gen_id', $this->bill_id)
                             ->whereNotIn('optcl_bill_bank_wise.bank_id', [1,10])
                             ->get();
                             //dd(3);
         }
         //dd($data_get, DB::getQueryLog());
         //return $data_get;
-        return view($view_file, ['bills' => $data_get]);
+        return view($view_file, ['bills' => $data_get, 'month_value' => $this->month_value, 'year_value' => $this->year_value]);
         //return GenerateBill::all();
     }
 

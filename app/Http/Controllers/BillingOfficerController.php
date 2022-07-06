@@ -293,6 +293,7 @@ class BillingOfficerController extends Controller {
                     $gross_pension_amount = $application_details->gross_pension_amount;
                     $total_income = $application_details->total_income;
                     $total_income_month = $application_details->total_income_month;
+                    $taxable_amount = $application_details->taxable_amount;
 
                     $user_details = DB::table('optcl_users')
                                         ->select('optcl_users.aadhaar_no', 'optcl_users.mobile', 'optcl_users.email_id', 'optcl_users.optcl_unit_id', 'optcl_users.optcl_unit_id', DB::raw('CONCAT(COALESCE(optcl_users.first_name, ""), " ", COALESCE(optcl_users.last_name, "")) AS full_name'))
@@ -423,7 +424,7 @@ class BillingOfficerController extends Controller {
                     ];
                     DB::table('optcl_beneficiary_account_history')->insert($bHistoryAccountDetails);
                     if($monthly_changed_data->appliation_type == 1){
-                        // Beneficiary Documents
+                        // Beneficiary Documents for New Pensioner
                         $ben_doc_data = [
                             "beneficiary_id" => $beneficiary_id,
                             "sanction_order_file_path" => $sanction_order_file_path,
@@ -437,10 +438,22 @@ class BillingOfficerController extends Controller {
                     
                     // Pension Amount Details
                     $ben_pen_amount_data = [
-                        "beneficiary_id" => $beneficiary_id,
-                        "pension_amount" => $net_pension_amount,
-                        'created_at'        => $this->current_date,
-                        'created_by'        => $user->id,
+                        "beneficiary_id"    => $beneficiary_id,
+                        "basic_amount"                      => $basic_amount,
+                        "basic_amount_effective_from"       => $basic_effective_date,
+                        "additional_pension_amount"         => $additional_pension_amount,
+                        "additional_pension_effective_from" => $additional_pension_effective_date,
+                        "enhanced_pension_amount"           => $enhanced_pension_amount,
+                        "enhanced_pension_effective_from"   => $enhanced_pension_effective_date,
+                        "enhanced_pension_effective_to"     => $enhanced_pension_end_date,
+                        "normal_pension_amount"             => $normal_pension_amount,
+                        "normal_pension_effective_from"     => $normal_pension_effective_date,
+                        "gross_pension_amount"              => $gross_pension_amount,
+                        "total_income"                      => $total_income,
+                        "taxable_amount"                    => $taxable_amount,
+                        "pension_amount"                    => $net_pension_amount,
+                        "created_at"                        => $this->current_date,
+                        "created_by"                        => $user->id,
                     ];
                     DB::table('optcl_beneficiary_pension_amount_details')->insert($ben_pen_amount_data);
                     // Pension Amount History
@@ -1374,7 +1387,7 @@ class BillingOfficerController extends Controller {
         $check_download = DB::table('optcl_bill_generation')
                             ->where('is_downloaded', 0)
                             ->where('deleted', 0)
-                            ->count();
+                            ->first();
         return view('user.billing_officer.application-list', compact('check_download'));
     }
 
@@ -1470,12 +1483,13 @@ class BillingOfficerController extends Controller {
                             $bill_bank_id = DB::table('optcl_bill_bank_wise')->insertGetId($data_bill_bank);
                             DB::table('optcl_bill_ben_details')->whereIn('id', $ben_ids)->update(['bill_bank_id' => $bill_bank_id]);                
                         }
-                    }
-                    Session::flash('success','Bill generated successfully');
+                        Session::flash('success','Bill generated successfully');
+                    }else{
+                        Session::flash('error','No data found');
+                    }                    
                     DB::commit();   
                     return redirect()->back();
-                }        
-                
+                }
             }
         }catch (\Throwable $e) {
             DB::rollback();
@@ -1497,6 +1511,8 @@ class BillingOfficerController extends Controller {
                             ->first();
         if($check_download){
             $bill_id = $check_download->id;
+            $month_value = $check_download->month_value;
+            $year_value = $check_download->year_value;
 
             DB::table('optcl_bill_generation')
                 ->where('is_downloaded', 0)
@@ -1507,8 +1523,9 @@ class BillingOfficerController extends Controller {
                     'download_path' => $file_path,
                 ]);
         }
-        Excel::store(new BillExport, $file_path);
-        return Excel::download(new BillExport, $filename);
+        // To Store in a perticular format
+        Excel::store(new BillExport($bill_id, $month_value, $year_value), $file_path);
+        return Excel::download(new BillExport($bill_id, $month_value, $year_value), $filename);
         /* if(Excel::download(new BillExport, $filename)){
             Session::flash('success','Bill generated successfully');
             return  redirect()->route('billing_officer_list');

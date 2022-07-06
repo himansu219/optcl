@@ -1007,6 +1007,7 @@ Route::post('pensioner-unit/existing/user/monthly-changed-data/single/forward-to
 Route::post('pensioner-unit/existing/user/monthly-changed-data/multiple/forward-to-billing-officer', 'App\Http\Controllers\MonthlyChangedDataController@multiple_application_assignment')->name('monthly_changed_data_multiple_forward_to_billing_officer');
 Route::any('pensioner-unit/existing/user/monthly-changed-data/history', 'App\Http\Controllers\MonthlyChangedDataController@history')->name('monthly_changed_data_history');
 Route::get('pensioner-unit/existing/user/monthly-changed-data/pensioner-details/{penID}', 'App\Http\Controllers\ExistingProposalController@pensioner_details')->name('get_monthly_changed_data_pensioner_details');
+
 // Billing Officer
 Route::get('billing-officer/application/list', 'App\Http\Controllers\BillingOfficerController@list')->name('billing_officer_list');
 Route::post('billing-officer/application/net-amount-details', 'App\Http\Controllers\BillingOfficerController@get_net_amount_details')->name('get_net_amount_details');
@@ -1027,12 +1028,11 @@ Route::get('billing-officer/application/net-pension-calculation-view/{appID}', '
 // Revision of Basic Pension View Page Billing Officer
 Route::get('billing-officer/application/revision-basic-pension-view/{appID}', 'App\Http\Controllers\BillingOfficerController@revision_basic_pension_view_page')->name('billing_officer_revision_basic_pension_view');
 
-
 // Generate Bill
 Route::post('billing-officer/application/submit-net-pension-calculation/', 'App\Http\Controllers\GenerateBillController@generate_bill_sheet')->name('generate_bill_sheet');
 // Bill Download
-Route::get('billing-officer/application/bill-download/', 'App\Http\Controllers\BillingOfficerController@download_bill')->name('download_bill');
-// Billing History
+Route::get('billing-officer/application/bill-download', 'App\Http\Controllers\BillingOfficerController@download_bill')->name('download_bill');
+// Billing Historyx
 Route::any('billing-officer/application/billing-history/', 'App\Http\Controllers\BillingOfficerController@billing_history')->name('billing_history');
 
 // Service Pensioner Application View - Pension Unit User

@@ -15,6 +15,7 @@ class ArrearsController extends Controller
         $this->middleware('auth');
         $this->current_date = date('Y-m-d H:i:s');
     }
+    
     public function index(Request $request){
         $applications = DB::table('optcl_arrear')
                 ->join('optcl_pension_type_master', 'optcl_pension_type_master.id', '=', 'optcl_arrear.pensioner_type')

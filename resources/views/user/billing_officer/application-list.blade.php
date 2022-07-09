@@ -69,6 +69,7 @@
                     <th>Sl No.</th>
                       <th>Bank</th>
                       <th>Total Beneficiaries</th>
+                      <th>No. of Lot</th>
                       <th class="text-center">Action</th>
                     </tr>
                   </thead>
@@ -100,7 +101,7 @@
                     </tr>
                     @else
                       <tr>
-                        <td class="text-center" colspan="4">No data found</td>
+                        <td class="text-center" colspan="5">No data found</td>
                       </tr>
                     @endif
                   </tbody>

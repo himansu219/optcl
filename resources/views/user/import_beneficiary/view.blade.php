@@ -1,4 +1,5 @@
 @extends('user.layout.layout')
+
 @section('section_content')
 <style type="text/css">
     #upload-demo{
@@ -50,4 +51,6 @@
         </div>
     </div>
 </div>
+
+
 @endsection

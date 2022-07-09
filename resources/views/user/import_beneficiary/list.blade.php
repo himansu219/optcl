@@ -81,16 +81,8 @@
                     @csrf
                     <div class="row">
                       <div class="col-md-3">
-                        <label>Change Data Type</label>
-                        <select class="js-example-basic-single form-control" id="change_data_type" name="change_data_type">
-                            <option value="">Select Status</option>
-                            
-                        </select>
-                      </div>
-
-                      <div class="col-md-3">
-                        <label>CR Number</label>
-                        <input type="text" name="cr_number" class="form-control" id="cr_number" value="{{ !empty($request->cr_number) ? $request->cr_number : '' }}" maxlength="11">
+                        <label>Import Date</label>
+                        <input type="text" name="import_date" class="form-control" id="import_date" value="{{ !empty($request->import_date) ? $request->import_date : '' }}" maxlength="11">
                       </div>             
                     </div><br>
                     <button type="submit" id="filters" class="btn btn-success">Filter</button>
@@ -102,7 +94,7 @@
           <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Application List                
-                    <a href="{{ route('pension_unit_life_certificate_form_page') }}" class="btn btn-success float-right">Import Life Certificate</a>                 
+                    <a href="{{ route('beneficiary_import_add') }}" class="btn btn-success float-right">Import Beneficiaries File</a>                 
                 </h4>
                 <div class="row">
                   <div class="table-sorter-wrapper col-lg-12 table-responsive">
@@ -111,9 +103,6 @@
                         <tr>
                           <th>Sl No.</th>
                           <th>Year</th>
-                          <th>Month</th>
-                          <th>PPO No</th>
-                          <th>Account No</th>
                           <th>Created at</th>
                           <th>Action</th>
                         </tr>
@@ -124,9 +113,6 @@
                             <tr>
                               <td>{{ $applications->firstItem() + $key }}</td>
                               <td>{{ $application->year }}</td>
-                              <td>{{ $application->month }}</td>
-                              <td>{{ $application->ppo_number }}</td>
-                              <td>{{ $application->bank_account }}</td>
                               <td>{{ \Carbon\Carbon::parse($application->created_at)->format('d-m-Y  h:i A') }}</td>
                               <td class="text-center">
                                 <div class="list-icons">
@@ -143,7 +129,9 @@
                             </tr>  
                           @endforeach
                         @else
-                          <tr><td colspan="7" align="center">No Data Found</td></tr>    
+                          <tr>
+                            <td colspan="4" align="center">No Data Found</td>
+                          </tr>    
                         @endif           
                       </tbody>
                     </table>                  

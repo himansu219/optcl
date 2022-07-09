@@ -57,26 +57,26 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{route('user_dashboard')}}">Dashboard</a></li>
                     <li class="breadcrumb-item">Update Pension Record</li>
-                    <li class="breadcrumb-item"><a href="{{ route('pension_unit_life_certificate_list_page') }}">Life Certificate</a></li>
-                    <li class="breadcrumb-item">Import Life Certificate</li>
+                    <li class="breadcrumb-item"><a href="{{ route('beneficiary_import_list') }}">Import Beneficiaries</a></li>
+                    <li class="breadcrumb-item">Import Beneficiaries File</li>
                 </ol>
             </nav> 
             <div class="card">
                 <div class="card-body">
-                <h4 class="card-title">Import Life Certificate</h4>
-                <form method="post" action="" autocomplete="off" id="life_certificate_form" enctype="multipart/form-data">
+                <h4 class="card-title">Import Beneficiaries File</h4>
+                <form method="post" action="" autocomplete="off" id="beneficiary_file_import_form" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-4 form-group">
                             <label>Upload File<span class="text-danger">*</span></label>
-                            <input type="file" name="life_certificates_file" id="life_certificates_file" class="file-upload-default dob_attachment_path">
+                            <input type="file" name="beneficiary_file" id="beneficiary_file" class="file-upload-default dob_attachment_path">
                             <div class="input-group col-xs-12">
                                 <input type="text" class="form-control file-upload-info" disabled placeholder="Upload File">
                                 <div class="input-group-append">
                                     <button class="file-upload-browse btn btn-info" type="button">Upload</button>
                                 </div>
                             </div>
-                            <label id="life_certificates_file-error" class="error text-danger" for="life_certificates_file"></label>
+                            <label id="beneficiary_file-error" class="error text-danger" for="beneficiary_file"></label>
                         </div>
                     </div>
                     <div class="row">
@@ -98,14 +98,14 @@
 <script type="text/javascript">
     $(document).ready(function(){
         
-        $("#life_certificate_form").validate({
+        $("#beneficiary_file_import_form").validate({
             rules: {
-                'life_certificates_file': {
+                'beneficiary_file': {
                     required: true,
                 },
             },
             messages: {
-                'life_certificates_file': {
+                'beneficiary_file': {
                     required: 'Please upload file',
                 },
             },
@@ -114,7 +114,7 @@
                     var formData = new FormData(form);
                     $.ajax({
                         type:'POST',
-                        url:'{{ route("pension_unit_life_certificate_form_submission") }}',
+                        url:'{{ route("beneficiary_import_file_submission") }}',
                         data: formData,
                         dataType: 'JSON',
                         processData: false,
@@ -134,7 +134,7 @@
                                 }
                             }else{
                                 // Success
-                                location.href = "{{route('pension_unit_life_certificate_list_page')}}";
+                                location.href = "{{route('beneficiary_import_list')}}";
                             }
                         }
                     });

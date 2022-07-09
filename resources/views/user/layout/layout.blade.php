@@ -817,11 +817,17 @@
                                 <i class="fa fa-database menu-icon"></i>
                                 <span class="menu-title highlight_link">Monthly Changed Data</span>
                             </a>
-                        </li>                           
+                        </li>
+                        <li class="nav-item"> 
+                            <a class="nav-link" href="{{route('beneficiary_import_list')}}">
+                                <i class="fa fa-database menu-icon" ></i>
+                                <span class="menu-title highlight_link">Import Beneficiaries</span>
+                            </a>
+                        </li>                         
                         <li class="nav-item"> 
                             <a class="nav-link" href="{{route('billing_officer_list')}}">
                                 <i class="fa fa-database menu-icon" ></i>
-                                <span class="menu-title highlight_link">Bill Generation</span>
+                                <span class="menu-title highlight_link">Bank Payment</span>
                             </a>
                         </li>
                         <li class="nav-item"> 

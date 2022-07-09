@@ -1028,11 +1028,19 @@ Route::get('billing-officer/application/net-pension-calculation-view/{appID}', '
 // Revision of Basic Pension View Page Billing Officer
 Route::get('billing-officer/application/revision-basic-pension-view/{appID}', 'App\Http\Controllers\BillingOfficerController@revision_basic_pension_view_page')->name('billing_officer_revision_basic_pension_view');
 
+// Import Beneficiary List
+Route::any('billing-officer/beneficiary/import/list', 'App\Http\Controllers\BenImportController@index')->name('beneficiary_import_list');
+// Import Beneficiary Add
+Route::get('billing-officer/beneficiary/import/add', 'App\Http\Controllers\BenImportController@add')->name('beneficiary_import_add');
+// Import file submission
+Route::post('billing-officer/beneficiary/import/submission', 'App\Http\Controllers\BenImportController@file_submission')->name('beneficiary_import_file_submission');
+
+
 // Generate Bill
 Route::post('billing-officer/application/submit-net-pension-calculation/', 'App\Http\Controllers\GenerateBillController@generate_bill_sheet')->name('generate_bill_sheet');
 // Bill Download
 Route::get('billing-officer/application/bill-download', 'App\Http\Controllers\BillingOfficerController@download_bill')->name('download_bill');
-// Billing Historyx
+// Billing History
 Route::any('billing-officer/application/billing-history/', 'App\Http\Controllers\BillingOfficerController@billing_history')->name('billing_history');
 
 // Service Pensioner Application View - Pension Unit User
@@ -1051,6 +1059,7 @@ Route::get('billing-officer/family-pension/application-details/{appID}', 'App\Ht
 Route::get('billing-officer/service-pension/approved/application-details/{appID}', 'App\Http\Controllers\ApplicationViewController@sp_application_details')->name('billing_officer_sp_approved_application_view');
 // Family Pensioner Application Approved View - Billing Officer
 Route::get('billing-officer/family-pension/approved/application-details/{appID}', 'App\Http\Controllers\ApplicationViewController@fp_application_details')->name('billing_officer_fp_approved_application_view');
+
 
 
 Route::get('form16/show', [Form16MasterController::class, 'fetch_form16_show'])->name('form16_show');
